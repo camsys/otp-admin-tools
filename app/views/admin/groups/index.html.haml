@@ -1,6 +1,7 @@
 =content_for :title do
   Groups 
 
+
 %table.table.table-hover#group-table
   %thead.thead-default
     %tr
@@ -21,7 +22,7 @@
         =group.created_at
 
 = simple_form_for @new_group, url: admin_groups_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-  //=render partial: 'new_eligibility', layout: '/layouts/new_record_panel', locals: {f: f}
+  =render partial: 'new_group', layout: '/layouts/new_record_panel', locals: {f: f}
 
 :javascript
   $(document).ready(function() {
