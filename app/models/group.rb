@@ -4,8 +4,8 @@ class Group < ApplicationRecord
 
   #### METHODS ####
   # Load new Trips from CSV
-  def update file
-    #require 'open-uri'
+  def update_trips file
+    require 'open-uri'
     require 'csv'
     trips_file = open(file)
 

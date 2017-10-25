@@ -1,1 +1,41 @@
-Hello World
+=content_for :title do
+  =@group.name
+%h4.text-center
+  =@group.comment
+
+=simple_form_for @group, url: admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :patch }, authenticity_token: true do |f|
+  ="Update Landmarks"
+  = f.input "file", required:true, label: "Upload CSV", :as => :file
+  = f.button :submit
+
+.row
+  .col-md-12
+    %table.table.table-hover#trip-table
+      %thead.thead-default
+        %tr
+          %th Origin
+          %th Destination
+          %th Time
+          %th Arrive By?
+
+          
+      -@group.trips.each do |trip|
+        %tr{style: "cursor: pointer", data: {url: "http://www.google.com"}}
+          %td
+            =trip.origin
+          %td
+            =trip.destination
+          %td
+            =trip.time
+          %td
+            =trip.arrive_by
+
+:javascript
+  $(document).ready(function() {
+  
+    // Link to appropriate feedback detail on row click
+    $('#trip-table tbody tr').click(function() {
+      window.location = $(this).data("url");
+    });
+  });
+
