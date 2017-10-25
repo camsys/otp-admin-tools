@@ -1,9 +1,22 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
+
+### API & SERIALIZING ######################
+# ActiveModel Serializers for serving JSON via the API
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'rack-cors', require: 'rack/cors'
+
+### Formatting ########################
+gem 'awesome_print' 
+gem 'haml-rails'
+gem 'simple_form'
+gem 'autoprefixer-rails'
+gem 'font-awesome-rails'
+gem 'bootstrap-sass', '~> 3.3.6'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
