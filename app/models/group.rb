@@ -1,8 +1,17 @@
 class Group < ApplicationRecord
 
   has_many :trips
+  has_many :tests
 
   #### METHODS ####
+  
+  def run_test
+    test = Test.create(comment: "THIS SHOULD BE OTP STUFF", group: self)
+    test.trips.each do |trip|
+      Result.create(trip: trip, request: trip.origin, response: "FAKE")
+    end
+  end
+
   # Load new Trips from CSV
   def update_trips file
     require 'open-uri'
