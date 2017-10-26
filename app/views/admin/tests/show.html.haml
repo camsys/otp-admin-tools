@@ -3,38 +3,50 @@
 %h4.text-center
   =@test.created_at
 
+.row
+  .col-md-1
+  .col-md-10
+    -@test.results.each do |result|
+      .row
+        %div.well
+          .row 
+            .col-md-3
+              .row
+                .col-md-8
+                  .row
+                    = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
+                      =result.trip.origin
+                  .row
+                    to
+                  .row
+                    = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
+                      =result.trip.destination
+                .col-md-4
+                  =result.trip.arrive_by ? "Arrive by #{result.trip.time}" : "Depart at #{result.trip.time}"
+            .col-md-3
+              .row.text-center
+                = link_to result.otp_viewable_request, target: :_blank do
+                  View OTP Results
+              .row
+                -result.otp_summary.each do |itin|
+                  .row
+                    .col-md-6
+                      ="W #{itin[:walk_time]}"
+                      ="X #{itin[:transfers]}"
+                      ="T #{itin[:duration]}"
+                    .col-md-6
+                      .row
+                        ="Depart at #{itin[:start_time]}"
+                      .row
+                        ="Arrive at #{itin[:end_time]}"
 
-%table.table.table-hover#result-table
-  %thead.thead-default
-    %tr
-      %th Origin
-      %th Lat,Lng
-      %th Destination
-      %th Lat,Lng
-      %th Time
-      %th Arrive By?
-      %th Request
-      %th Response
-      
-  -@test.results.each do |result|
-    %tr{style: "cursor: pointer"}
-      %td
-        =result.trip.origin
-      %td
-        = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
-          ="#{result.trip.origin_lat},#{result.trip.origin_lng}" 
-      %td
-        =result.trip.destination
-      %td
-        = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
-          ="#{result.trip.destination_lat},#{result.trip.destination_lng}" 
-      %td
-        =result.trip.time
-      %td
-        =result.trip.arrive_by
-      %td
-        =result.request
-      %td
-        =result.response
+            .col-md-3
+              ATIS Details
+            .col-md-3
+              Summary
+
+
+
+
 
 

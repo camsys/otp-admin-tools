@@ -7,10 +7,13 @@ class Group < ApplicationRecord
   
   def run_test
     otp = OtpService.new
-    test = Test.create(comment: "THIS SHOULD BE OTP STUFF", group: self)
+    test = Test.create(group: self)
+    test.comment = test.id 
+    test.save 
     test.trips.each do |trip|
       request, response = otp.plan([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
-      Result.create(trip: trip, request: request, response: response)
+      viewable = otp.viewable_url([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
+      Result.create(trip: trip, otp_request: request, otp_response: response, otp_viewable_request: viewable)
     end
   end
 
