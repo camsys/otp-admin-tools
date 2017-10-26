@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023211338) do
+ActiveRecord::Schema.define(version: 20171026010511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,15 +22,36 @@ ActiveRecord::Schema.define(version: 20171023211338) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "results", force: :cascade do |t|
+    t.text     "request"
+    t.text     "response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "trip_id"
+    t.index ["trip_id"], name: "index_results_on_trip_id", using: :btree
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.text     "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "group_id"
+    t.index ["group_id"], name: "index_tests_on_group_id", using: :btree
+  end
+
   create_table "trips", force: :cascade do |t|
     t.text     "origin"
     t.text     "destination"
     t.datetime "time"
     t.boolean  "arrive_by"
     t.string   "request_url"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "group_id"
+    t.decimal  "origin_lat"
+    t.decimal  "origin_lng"
+    t.decimal  "destination_lat"
+    t.decimal  "destination_lng"
     t.index ["group_id"], name: "index_trips_on_group_id", using: :btree
   end
 

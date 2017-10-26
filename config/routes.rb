@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   namespace :admin do 
     resources :groups, :only => [:index, :destroy, :create, :edit, :update]
+    resources :tests, :only => [:show]
   end
 end

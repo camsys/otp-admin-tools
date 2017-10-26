@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    Indirizzo (0.1.7)
     actioncable (5.0.6)
       actionpack (= 5.0.6)
       nio4r (>= 1.2, < 3.0)
@@ -69,6 +70,7 @@ GEM
     ffi (1.9.18)
     font-awesome-rails (4.7.0.2)
       railties (>= 3.2, < 5.2)
+    geocoder (1.4.4)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     haml (5.0.4)
@@ -199,6 +201,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  Indirizzo
   active_model_serializers (~> 0.10.0)
   autoprefixer-rails
   awesome_print
@@ -206,6 +209,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   font-awesome-rails
+  geocoder (~> 1.4, >= 1.4.4)
   haml-rails
   jbuilder (~> 2.5)
   jquery-rails

@@ -1,8 +1,42 @@
 class Group < ApplicationRecord
 
   has_many :trips
+  has_many :tests
 
   #### METHODS ####
+  
+  def run_test
+    otp = OtpService.new
+    test = Test.create(comment: "THIS SHOULD BE OTP STUFF", group: self)
+    test.trips.each do |trip|
+      request, response = otp.plan([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
+      Result.create(trip: trip, request: request, response: response)
+    end
+  end
+
+  def geocode_trips
+    geocoder = GeocodingService.new
+    self.trips.each do |trip|
+      
+      #Geocode Origin
+      unless trip.origin_lat and trip.origin_lng
+        res = geocoder.geocode(trip.origin)
+        if res.first #The first value is a true/false indicating success
+          trip.origin_lat, trip.origin_lng = res[1].first[:lat], res[1].first[:lon]
+        end
+      end
+
+      #Geocode Destination
+      unless trip.destination_lat and trip.destination_lng
+        res = geocoder.geocode(trip.destination)
+        if res.first #The first value is a true/false indicating success
+          trip.destination_lat, trip.destination_lng = res[1].first[:lat], res[1].first[:lon]
+        end
+      end
+      trip.save
+    end
+  end
+
   # Load new Trips from CSV
   def update_trips file
     require 'open-uri'
@@ -47,6 +81,7 @@ class Group < ApplicationRecord
     if failed
       return false, message
     else
+      self.geocode_trips
       return true, self.trips.count.to_s + " trips loaded"
     end
 

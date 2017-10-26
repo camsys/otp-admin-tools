@@ -3,8 +3,29 @@
 %h4.text-center
   =@group.comment
 
+%h3
+  Tests
+
+.row
+  .col-md-12
+    %table.table.table-hover#test-table
+      %thead.thead-default
+        %tr
+          %th Comment
+          %th Time
+          
+      -@group.tests.each do |test|
+        %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
+          %td
+            =test.comment
+          %td
+            =test.created_at
+
+%h3
+  Trips
+
 =simple_form_for @group, url: admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :patch }, authenticity_token: true do |f|
-  ="Update Landmarks"
+  ="Upload Trips"
   = f.input "file", required:true, label: "Upload CSV", :as => :file
   = f.button :submit
 
@@ -14,7 +35,9 @@
       %thead.thead-default
         %tr
           %th Origin
+          %th Lat,Lng
           %th Destination
+          %th Lat,Lng
           %th Time
           %th Arrive By?
 
@@ -24,7 +47,13 @@
           %td
             =trip.origin
           %td
+            = link_to "https://www.google.com/maps/?q=#{trip.origin_lat},#{trip.origin_lng}", target: :_blank do
+              ="#{trip.origin_lat},#{trip.origin_lng}" 
+          %td
             =trip.destination
+          %td
+            = link_to "https://www.google.com/maps/?q=#{trip.destination_lat},#{trip.destination_lng}", target: :_blank do
+              ="#{trip.destination_lat},#{trip.destination_lng}" 
           %td
             =trip.time
           %td
@@ -33,8 +62,11 @@
 :javascript
   $(document).ready(function() {
   
-    // Link to appropriate feedback detail on row click
     $('#trip-table tbody tr').click(function() {
+      window.location = $(this).data("url");
+    });
+
+    $('#test-table tbody tr').click(function() {
       window.location = $(this).data("url");
     });
   });
