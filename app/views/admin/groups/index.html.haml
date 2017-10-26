@@ -1,28 +1,32 @@
 =content_for :title do
   Groups 
 
-
-%table.table.table-hover#group-table
-  %thead.thead-default
-    %tr
-      %th Name
-      %th Comment
-      %th Trips
-      %th Created
-      
-  -@groups.each do |group|
-    %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
-      %td
-        =group.name
-      %td
-        =group.comment
-      %td
-        =group.trips.count
-      %td
-        =group.created_at
-
-= simple_form_for @new_group, url: admin_groups_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-  =render partial: 'new_group', layout: '/layouts/new_record_panel', locals: {f: f}
+.row
+  .col-md-3
+  .col-md-6
+    %table.table.table-hover#group-table
+      %thead.thead-default
+        %tr
+          %th Name
+          %th Comment
+          %th Trips
+          %th Created
+          
+      -@groups.each do |group|
+        %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
+          %td
+            =group.name
+          %td
+            =group.comment
+          %td
+            =group.trips.count
+          %td
+            =group.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
+.row
+  .col-md-4
+  .col-md-4
+    = simple_form_for @new_group, url: admin_groups_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+      =render partial: 'new_group', layout: '/layouts/new_record_panel', locals: {f: f}
 
 :javascript
   $(document).ready(function() {

@@ -9,7 +9,4 @@
       =yield
   .panel-footer.panel-primary
     %center
-      -if content_for?(:footer)
-        =yield_content :footer
-      -else
-        = f.button :submit, "OK"
+      = f.button :submit, "OK", class: "btn btn-primary"
