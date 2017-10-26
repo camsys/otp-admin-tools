@@ -64,11 +64,14 @@ class OtpService
 
     begin
       resp = Net::HTTP.get_response(URI.parse(url))
+      return url, JSON.parse(resp.body)
     rescue Exception=>e
       return url, {'id'=>500, 'msg'=>e.to_s}
     end
 
-    return url, JSON.parse(resp.body)
+    return url, {'id'=>500, 'msg'=>'Error'}
+
+    
 
   end
 
