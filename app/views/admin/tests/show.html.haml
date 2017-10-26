@@ -27,10 +27,13 @@
                 .row
                   -result.otp_summary.each do |itin|
                     .row
-                      .col-md-6
-                        ="W #{itin[:walk_time]}"
-                        ="X #{itin[:transfers]}"
-                        ="T #{itin[:duration]}"
+                      .col-md-6.text-center
+                        =image_tag("/assets/ped.svg", size: "14x14")
+                        ="#{(itin[:walk_time]/60.0).round} "
+                        %i.fa.fa-times
+                        ="#{itin[:transfers]} "
+                        %i.fa.fa-clock-o
+                        ="#{(itin[:duration]/60.0).round}"
                       .col-md-6
                         .row
                           ="Depart: #{Time.at(itin[:start_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
