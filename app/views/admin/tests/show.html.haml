@@ -1,49 +1,46 @@
 =content_for :title do
   =@test.comment
-%h4.text-center
-  =@test.created_at
+%h5.text-center
+  ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
 .row
   .col-md-1
   .col-md-10
     -@test.results.each do |result|
       .row
-        %div.well
-          .row 
-            .col-md-3
-              .row
-                .col-md-8
-                  .row
-                    = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
-                      =result.trip.origin
-                  .row
-                    to
-                  .row
-                    = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
-                      =result.trip.destination
-                .col-md-4
-                  =result.trip.arrive_by ? "Arrive by #{result.trip.time}" : "Depart at #{result.trip.time}"
-            .col-md-3
-              .row.text-center
-                = link_to result.otp_viewable_request, target: :_blank do
-                  View OTP Results
-              .row
-                -result.otp_summary.each do |itin|
-                  .row
-                    .col-md-6
-                      ="W #{itin[:walk_time]}"
-                      ="X #{itin[:transfers]}"
-                      ="T #{itin[:duration]}"
-                    .col-md-6
-                      .row
-                        ="Depart at #{itin[:start_time]}"
-                      .row
-                        ="Arrive at #{itin[:end_time]}"
+        %div.panel.panel-default
+          %div.panel-heading.text-center
+            ="From "
+            = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
+              =result.trip.origin
+            =" to "
+            = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
+              =result.trip.destination
+            =result.trip.arrive_by ? " arriving by #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
-            .col-md-3
-              ATIS Details
-            .col-md-3
-              Summary
+          %div.panel-body
+            .row 
+              .col-md-4
+                .row.text-center
+                  = link_to result.otp_viewable_request, target: :_blank do
+                    OTP Results
+                .row
+                  -result.otp_summary.each do |itin|
+                    .row
+                      .col-md-6
+                        ="W #{itin[:walk_time]}"
+                        ="X #{itin[:transfers]}"
+                        ="T #{itin[:duration]}"
+                      .col-md-6
+                        .row
+                          ="Depart: #{Time.at(itin[:start_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+                        .row
+                          ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+
+              .col-md-4.text-center
+                ATIS Details Coming Soon
+              .col-md-4.text-center
+                Comparison Coming Soon
 
 
 

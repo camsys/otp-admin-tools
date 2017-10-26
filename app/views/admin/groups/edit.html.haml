@@ -3,36 +3,45 @@
 %h4.text-center
   =@group.comment
 
-%h3
-  Tests
+.row
+  .col-md-3
+  .col-md-6
+    %h3.text-center
+      Tests
+    .row
+      .col-md-12
+        %table.table.table-hover#test-table
+          %thead.thead-default
+            %tr
+              %th Number
+              %th Time
+              %th Summary
+              
+          -@group.tests.each do |test|
+            %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
+              %td
+                =test.id
+              %td
+                =test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
+              %td
+                Coming Soon
+.row
+  .col-md-12.text-center
+    %h4
+      = link_to run_test_admin_group_path(@group) do
+        ="Run Test"
 
 .row
-  .col-md-12
-    %table.table.table-hover#test-table
-      %thead.thead-default
-        %tr
-          %th Time
-          
-      -@group.tests.each do |test|
-        %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
-          %td
-            =test.created_at
-
-.row.text-center
-  %h4
-    = link_to run_test_admin_group_path(@group) do
-      ="Run Test"
-
-%h3
-  Trips
-
-=simple_form_for @group, url: admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :patch }, authenticity_token: true do |f|
-  ="Upload Trips"
-  = f.input "file", required:true, label: "Upload CSV", :as => :file
-  = f.button :submit
+  .col-md-1
+  .col-md-10
+    %hr
+.row
+  %h3.text-center
+    Trips
 
 .row
-  .col-md-12
+  .col-md-1
+  .col-md-10
     %table.table.table-hover#trip-table
       %thead.thead-default
         %tr
@@ -57,9 +66,21 @@
             = link_to "https://www.google.com/maps/?q=#{trip.destination_lat},#{trip.destination_lng}", target: :_blank do
               ="#{trip.destination_lat},#{trip.destination_lng}" 
           %td
-            =trip.time
+            =trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
           %td
             =trip.arrive_by
+
+.row
+  .col-md-4
+  .col-md-4.text-center
+    .well
+      =simple_form_for @group, url: admin_group_path(@group), html: {class: 'form-vertical', multipart: true, method: :patch }, authenticity_token: true do |f|
+        %h3
+          ="Upload Trips"
+        = f.input "file", required:true, label: "Upload CSV", :as => :file
+        %br
+        %br
+        = f.button :submit
 
 :javascript
   $(document).ready(function() {
