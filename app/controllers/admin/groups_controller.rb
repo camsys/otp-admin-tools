@@ -15,6 +15,12 @@ module Admin
       @group = Group.find(params[:id])
     end
 
+    def run_test
+      @group = Group.find(params[:id])
+      @group.run_test
+      redirect_to edit_admin_group_path(@group)
+    end
+
     def update
       info_msgs = []
       error_msgs = []
