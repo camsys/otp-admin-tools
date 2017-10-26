@@ -1,0 +1,40 @@
+=content_for :title do
+  =@test.comment
+%h4.text-center
+  =@test.created_at
+
+
+%table.table.table-hover#result-table
+  %thead.thead-default
+    %tr
+      %th Origin
+      %th Lat,Lng
+      %th Destination
+      %th Lat,Lng
+      %th Time
+      %th Arrive By?
+      %th Request
+      %th Response
+      
+  -@test.results.each do |result|
+    %tr{style: "cursor: pointer"}
+      %td
+        =result.trip.origin
+      %td
+        = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
+          ="#{result.trip.origin_lat},#{result.trip.origin_lng}" 
+      %td
+        =result.trip.destination
+      %td
+        = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
+          ="#{result.trip.destination_lat},#{result.trip.destination_lng}" 
+      %td
+        =result.trip.time
+      %td
+        =result.trip.arrive_by
+      %td
+        =result.request
+      %td
+        =result.response
+
+
