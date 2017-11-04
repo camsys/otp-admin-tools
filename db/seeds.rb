@@ -10,9 +10,8 @@
 admin = User.where(email: 'admin@test.com').first_or_create do |user|
   user.password = 'welcome1'
   user.password_confirmation = 'welcome1'
-  user.add_role :admin
-  user.first_name "Delete"
-  user.last_name "Me"
+  user.first_name = "Delete"
+  user.last_name = "Me"
   puts 'Creating Default Admin User (Change these settings)'
   puts 'email: ' + user.email
   puts 'password: '+ 'welcome1'
