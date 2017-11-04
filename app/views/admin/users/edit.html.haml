@@ -1,0 +1,15 @@
+=content_for :title do
+  ="Edit: #{@user.first_name} #{@user.last_name}"
+
+= simple_form_for @user, 
+    url: admin_user_path, 
+    html: {method: :put, class: "form-horizontal" }, 
+    authenticity_token: true do |f|
+  =render partial: 'edit_user', layout: '/layouts/new_record_panel', locals: {f: f}
+
+.row.text-center
+  -unless current_user == @user
+    =link_to "Delete this User", admin_user_path(@user), 
+        method: :delete, 
+        class: "btn btn-danger", 
+        data: {confirm: "Are you sure?  This action cannot be undone!"}
