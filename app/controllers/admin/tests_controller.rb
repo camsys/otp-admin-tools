@@ -1,5 +1,5 @@
 module Admin
-  class TestsController < ApplicationController
+  class TestsController < Admin::AdminController
 
     def show
       @test = Test.find(params[:id])

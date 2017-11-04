@@ -1,5 +1,5 @@
 module Admin
-  class GroupsController < ApplicationController
+  class GroupsController < Admin::AdminController
 
     def index
       @groups = Group.all 
@@ -12,7 +12,7 @@ module Admin
     end
 
     def edit
-      @group = Group.find(params[:id])
+      @group = Group.find(params[:id]) 
     end
 
     def run_test
