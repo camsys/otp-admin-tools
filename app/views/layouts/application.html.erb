@@ -9,6 +9,63 @@
   </head>
 
   <body>
+
+
+    <!-- NAV MENU -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href=<%= root_path %>>TripCompare</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+            
+            <% if current_user%>
+              <li>
+                <%= link_to("Welcome #{current_user.first_name}", edit_admin_user_path(current_user), :method => :get) %> 
+              </li>
+            <% end %>
+            
+            <li class="dropdown">
+
+              <% if current_user %>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Utilities<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <%- @admin_pages.each do |page| %>
+                    <li>
+                      <%= link_to page[:label], page[:url] %>
+                    </li>
+                  <% end %>
+
+                  <li role="separator" class="divider"></li>
+                  <li>
+                    <%= link_to('My Profile', edit_admin_user_path(current_user), :method => :get) %>  
+                  </li>
+                  <li>
+                    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>  
+                  </li>
+
+
+                </ul>
+              <% end %>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <!-- NAV MENU -->
+
+
+
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <div class="row">

@@ -1,8 +1,11 @@
 module Admin
   class AdminController < ApplicationController
     
+    include AdminHelpers
+
     before_action :authenticate_user!
     before_action :confirm_admin
+    before_action :get_admin_pages
 
     def confirm_admin
     
