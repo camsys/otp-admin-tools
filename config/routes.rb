@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       end
     end
 
+    # Users
+    resources :users, :only => [:index, :create, :destroy, :edit, :update]
+
     resources :tests, :only => [:show]
   end
 end
