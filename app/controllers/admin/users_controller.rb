@@ -19,6 +19,7 @@ class Admin::UsersController < Admin::AdminController
       end
     else
       present_error_messages(@user)
+      @staff = User.all
       respond_to do |format|
         format.html {render :index}
       end
@@ -37,6 +38,8 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def update
+
+    @user = User.find(params[:id])
 
     #We need to pull out the password and password_confirmation and handle them separately
     update_params = user_params
