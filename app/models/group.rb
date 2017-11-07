@@ -13,7 +13,7 @@ class Group < ApplicationRecord
     test.trips.each do |trip|
       request, response = otp.plan([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
       viewable = otp.viewable_url([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
-      Result.create(trip: trip, otp_request: request, otp_response: response, otp_viewable_request: viewable)
+      Result.create(trip: trip, test: test, otp_request: request, otp_response: response, otp_viewable_request: viewable)
     end
   end
 

@@ -1,6 +1,6 @@
 class Result < ApplicationRecord
   belongs_to :trip
-  has_one :test, through: :trip
+  belongs_to :test
 
   serialize :otp_response
 
