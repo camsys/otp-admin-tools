@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :groups do
       member do
         get 'run_test'
+        get 'geocode'
       end
     end
 

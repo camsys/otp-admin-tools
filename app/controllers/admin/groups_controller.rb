@@ -21,6 +21,12 @@ module Admin
       redirect_to edit_admin_group_path(@group)
     end
 
+    def geocode
+      @group = Group.find(params[:id])
+      @group.geocode_trips
+      redirect_to edit_admin_group_path(@group)
+    end
+
     def update
       info_msgs = []
       error_msgs = []
