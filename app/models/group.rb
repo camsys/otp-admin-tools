@@ -58,9 +58,13 @@ class Group < ApplicationRecord
           #If we have already created this Landmark, don't create it again.
           Trip.create!({
             origin: row[0],
-            destination: row[1],
-            time: "#{row[2]} #{row[3]}",
-            arrive_by: row[4],
+            origin_lat: row[1],
+            origin_lng: row[2],
+            destination: row[3],
+            destination_lat: row[4],
+            destination_lng: row[5],
+            time: "#{row[6]} #{row[7]}",
+            arrive_by: row[8],
             group: self
           })
         rescue
@@ -84,7 +88,6 @@ class Group < ApplicationRecord
     if failed
       return false, message
     else
-      self.geocode_trips
       return true, self.trips.count.to_s + " trips loaded"
     end
 
