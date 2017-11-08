@@ -63,7 +63,7 @@ class Group < ApplicationRecord
             destination: row[3],
             destination_lat: row[4],
             destination_lng: row[5],
-            time: "#{row[6]} #{row[7]}",
+            time: DateTime.strptime("#{row[6]} #{row[7]} -0500", "%m/%e/%y %l:%M %p %z"),
             arrive_by: row[8],
             group: self
           })
