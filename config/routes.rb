@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   root "admin/groups#index"
 
   namespace :admin do 
+    
+    # Groups
     resources :groups, :only => [:index, :destroy, :create, :edit, :update]
     resources :groups do
       member do
@@ -16,6 +18,11 @@ Rails.application.routes.draw do
     # Users
     resources :users, :only => [:index, :create, :destroy, :edit, :update]
 
+    # Tests
     resources :tests, :only => [:show]
+
+    # Configs
+    resources :configs, only: [:index]
+    patch 'configs' => 'configs#update'
   end
 end

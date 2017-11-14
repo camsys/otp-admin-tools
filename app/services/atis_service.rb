@@ -10,10 +10,11 @@ class AtisService
   #   arrive_by: self.arrive_by
   # }
 
-  attr_accessor :app_id
+  attr_accessor :app_id, :base_url
 
-  def initialize(app_id)
+  def initialize(base_url, app_id)
       @app_id = app_id
+      @base_url = base_url
   end
 
   ## Send the Requests

@@ -3,6 +3,12 @@ require 'net/http'
 
 class OtpService
 
+  attr_accessor :base_url
+
+  def initialize(base_url)
+      @base_url = base_url
+  end
+
   def plan(from,
       to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
       max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3,
@@ -15,7 +21,7 @@ class OtpService
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
 
-    base_url = 'http://otp-mta-demo.camsys-apps.com/otp/routers/default' + '/plan?'
+    base_url = @base_url.to_s + '/plan?'
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
