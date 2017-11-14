@@ -7,13 +7,17 @@ class Group < ApplicationRecord
   
   def run_test
     otp = OtpService.new
+    atis = AtisService.new(Config.atis_app_id)
     test = Test.create(group: self)
     test.comment = test.id 
     test.save 
     test.trips.each do |trip|
-      request, response = otp.plan([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
+      otp_request, otp_response = otp.plan([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
+      atis_request, atis_response = atis.plan_trip(trip.params)
       viewable = otp.viewable_url([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
-      Result.create(trip: trip, test: test, otp_request: request, otp_response: response, otp_viewable_request: viewable)
+      Result.create(trip: trip, test: test, 
+                    otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
+                    atis_request: atis_request, atis_response: atis_response)
     end
   end
 
@@ -55,7 +59,6 @@ class Group < ApplicationRecord
       CSV.foreach(trips_file, {:col_sep => ",", :headers => true}) do |row|
 
         begin
-          #If we have already created this Landmark, don't create it again.
           Trip.create!({
             origin: row[0],
             origin_lat: row[1],
