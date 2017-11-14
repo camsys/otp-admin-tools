@@ -1,11 +1,14 @@
 =content_for :title do
   ="Edit: #{@user.first_name} #{@user.last_name}"
 
-= simple_form_for @user, 
-    url: admin_user_path, 
-    html: {method: :put, class: "form-horizontal" }, 
-    authenticity_token: true do |f|
-  =render partial: 'edit_user', layout: '/layouts/new_record_panel', locals: {f: f}
+.row
+  .col-md-2
+  .col-md-10
+    = simple_form_for @user, 
+        url: admin_user_path, 
+        html: {method: :put, class: "form-horizontal" }, 
+        authenticity_token: true do |f|
+      =render partial: 'edit_user', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row.text-center
   -unless current_user == @user
