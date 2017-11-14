@@ -21,7 +21,7 @@ class AtisService
   def plan_trip trip_params
     
     type = 'post'
-    url = "http://dataservice.mta.info/cgi-bin-soap-2.10.1/soap.cgi"
+    url = @base_url
     uri = URI.parse(url)
     case type.downcase
       when 'post'
