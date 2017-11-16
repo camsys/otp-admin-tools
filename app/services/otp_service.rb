@@ -11,7 +11,7 @@ class OtpService
 
   def plan(from,
       to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
-      max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3,
+      max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=1,
       min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
 
     #walk_speed is defined in MPH and converted to m/s before going to OTP

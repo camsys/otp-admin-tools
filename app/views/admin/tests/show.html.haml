@@ -59,7 +59,33 @@
                         .row
                           ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
               .col-md-4.text-center
-                Comparison Coming Soon
+                .row.text-center
+                  Comparison
+                .row
+                  -result.compare_summary.each do |k, v|
+                    .row
+                      .col-md-1
+                      .col-md-10
+                        -if v == "inf" 
+                          .well.well-sm.bad 
+                            %h4  
+                              =k.to_s.humanize
+                              =v.round(3)
+                        -elsif v <= 1.1
+                          .well.well-sm.good
+                            %h4
+                              =k.to_s.humanize
+                              =v.round(3)
+                        -elsif v <= 1.25
+                          .well.well-sm.ok
+                            %h4
+                              =k.to_s.humanize
+                              =v.round(3)
+                        -else
+                          .well.well-sm.bad 
+                            %h4  
+                              =k.to_s.humanize
+                              =v.round(3)
 
 
 

@@ -6,8 +6,10 @@ git_source(:github) do |repo_name|
 end
 
 ### Needed for Production/Ubuntu ###########
-gem 'execjs'
-gem 'therubyracer'
+group :production do
+  gem 'execjs'
+  gem 'therubyracer'
+end
 
 ### API & SERIALIZING ######################
 # ActiveModel Serializers for serving JSON via the API
