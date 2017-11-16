@@ -9,6 +9,12 @@ class Result < ApplicationRecord
     summary = []
     if self.otp_response["plan"]
       self.otp_response["plan"]["itineraries"].each do |itin|
+        routes = []
+        itin["legs"].each do |leg|
+          unless leg["route"].blank?
+            routes << leg["route"]
+          end
+        end
         summary << {duration: itin["duration"], 
                     start_time: itin["startTime"], 
                     end_time: itin["endTime"], 
@@ -16,7 +22,8 @@ class Result < ApplicationRecord
                     transit_time: itin["transitTime"], 
                     waiting_time: itin["waitingTime"],
                     walk_distance: itin["walkDistance"],
-                    transfers: itin["transfers"]}
+                    transfers: itin["transfers"],
+                    routes: routes}
       end
     end
 
@@ -26,7 +33,16 @@ class Result < ApplicationRecord
 
   def atis_summary
     summary = []
+
     if self.atis_response["Itin"].each do |itin|
+
+      routes = []
+      itin["Legs"].each do |leg, value|
+        unless value["Service"].blank? 
+          routes << value["Service"]["Route"]
+        end
+      end
+
       summary << {duration: itin["Totaltime"].to_f*60, 
                   start_time: nil, 
                   end_time: nil,
@@ -34,7 +50,8 @@ class Result < ApplicationRecord
                   transit_time: itin["Transittime"].to_f*60, 
                   waiting_time: nil,
                   walk_distance: nil,
-                  transfers: itin["Legs"].count,}
+                  transfers: [routes.count - 1, 0].max,
+                  routes: routes}
       end
     end
 
