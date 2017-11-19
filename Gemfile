@@ -5,6 +5,12 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+### Needed for Production/Ubuntu ###########
+group :production do
+  gem 'execjs'
+  gem 'therubyracer'
+end
+
 ### API & SERIALIZING ######################
 # ActiveModel Serializers for serving JSON via the API
 gem 'active_model_serializers', '~> 0.10.0'

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   root "admin/groups#index"
 
   namespace :admin do 
+    
+    # Groups
     resources :groups, :only => [:index, :destroy, :create, :edit, :update]
     resources :groups do
       member do
@@ -16,6 +18,12 @@ Rails.application.routes.draw do
     # Users
     resources :users, :only => [:index, :create, :destroy, :edit, :update]
 
-    resources :tests, :only => [:show]
+    # Tests
+    resources :tests, :only => [:show, :destroy]
+
+    # Configs
+    resources :configs, only: [:index]
+    patch 'configs' => 'configs#update'
+    patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
   end
 end

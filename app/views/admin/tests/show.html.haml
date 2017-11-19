@@ -1,7 +1,10 @@
 =content_for :title do
   =@test.comment
 %h5.text-center
-  ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+  .row
+    ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+  .row
+    ="Percent Matched: #{@test.get_percent_matched*100.round(2)}%"
 
 .row
   .col-md-1
@@ -22,18 +25,22 @@
             .row 
               .col-md-4
                 .row.text-center
-                  = link_to result.otp_viewable_request, target: :_blank do
-                    OTP Results
+                  %h3
+                    = link_to result.otp_viewable_request, target: :_blank do
+                      OTP Results
                 .row
                   -result.otp_summary.each do |itin|
                     .row
                       .col-md-6.text-center
-                        =image_tag("/assets/ped.svg", size: "14x14")
-                        ="#{(itin[:walk_time]/60.0).round} "
-                        %i.fa.fa-times
-                        ="#{itin[:transfers]} "
-                        %i.fa.fa-clock-o
-                        ="#{(itin[:duration]/60.0).round}"
+                        .row 
+                          =image_tag("/assets/ped.svg", size: "14x14")
+                          ="#{(itin[:walk_time]/60.0).round} "
+                          %i.fa.fa-times
+                          ="#{itin[:transfers]} "
+                          %i.fa.fa-clock-o
+                          ="#{(itin[:duration]/60.0).round}"
+                        .row
+                          =itin[:routes]
                       .col-md-6
                         .row
                           ="Depart: #{Time.at(itin[:start_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
@@ -41,9 +48,59 @@
                           ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
               .col-md-4.text-center
-                ATIS Details Coming Soon
+                .row.text-center
+                  %h3
+                    ATIS Results
+                .row
+                  -result.atis_summary.each do |itin|
+                    .row
+                      .col-md-6.text-center
+                        .row
+                          =image_tag("/assets/ped.svg", size: "14x14")
+                          ="#{(itin[:walk_time]/60.0).round} "
+                          %i.fa.fa-times
+                          ="#{itin[:transfers]} "
+                          %i.fa.fa-clock-o
+                          ="#{(itin[:duration]/60.0).round}"
+                        .row
+                          =itin[:routes]
+                      .col-md-6
+                        .row
+                          ="Depart: #{Time.at(itin[:start_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+                        .row
+                          ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
               .col-md-4.text-center
-                Comparison Coming Soon
+                .row.text-center
+                  %h3
+                    Comparison
+                .row
+                  %h4
+                    ="Percent of Matching Routes: #{result.get_percent_matched*100.round(2)}%"
+                .row
+                  -result.compare_summary.each do |k, v|
+                    .row
+                      .col-md-1
+                      .col-md-10
+                        -if v == "inf" 
+                          .well.well-sm.bad 
+                            %h4  
+                              =k.to_s.humanize
+                              =v.round(3)
+                        -elsif v <= 1.1
+                          .well.well-sm.good
+                            %h4
+                              =k.to_s.humanize
+                              =v.round(3)
+                        -elsif v <= 1.25
+                          .well.well-sm.ok
+                            %h4
+                              =k.to_s.humanize
+                              =v.round(3)
+                        -else
+                          .well.well-sm.bad 
+                            %h4  
+                              =k.to_s.humanize
+                              =v.round(3)
 
 
 

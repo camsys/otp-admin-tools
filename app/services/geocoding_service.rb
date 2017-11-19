@@ -1,4 +1,4 @@
-require 'indirizzo'
+#require 'indirizzo'
 
 class GeocodingService
 
