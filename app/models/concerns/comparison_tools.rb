@@ -8,9 +8,11 @@ module ComparisonTools
     if self.otp_response["plan"]
       self.otp_response["plan"]["itineraries"].each do |itin|
         routes = []
+        route_ids = []
         itin["legs"].each do |leg|
           unless leg["route"].blank?
             routes << leg["route"]
+            route_ids << leg["routeId"]
           end
         end
         summary << {duration: itin["duration"], 
@@ -21,7 +23,8 @@ module ComparisonTools
                     waiting_time: itin["waitingTime"],
                     walk_distance: itin["walkDistance"],
                     transfers: itin["transfers"],
-                    routes: routes}
+                    routes: routes,
+                    route_ids: route_ids}
       end
     end
 
@@ -42,7 +45,8 @@ module ComparisonTools
         legs = arrayify itin["Legs"]["Leg"]
         legs.each do |value|
           unless value["Service"].blank? 
-            routes << value["Service"]["Route"]
+            routes << value["Service"]["Publicroute"]
+            route_ids << value["Service"]["Route"]
           end
         end
 
@@ -54,7 +58,8 @@ module ComparisonTools
                     waiting_time: nil,
                     walk_distance: nil,
                     transfers: [routes.count - 1, 0].max,
-                    routes: routes}
+                    routes: routes,
+                    route_ids: route_ids}
       end
     end
 
@@ -66,12 +71,23 @@ module ComparisonTools
 
     return self.percent_matched if self.percent_matched
 
-    otp_routes = (self.otp_summary.map{ |i| i[:routes] }).uniq
-    atis_routes = (self.atis_summary.map{ |i| i[:routes] }).uniq
+    otp_routes = (self.otp_summary.map{ |i| i[:route_ids] }).uniq
+    atis_routes = (self.atis_summary.map{ |i| i[:route_ids] }).uniq
+
+    #Convert the ATIS Route IDs to GTFS Ids
+    mapping = Config.atis_otp_mapping
+    mapped_atis_routes = []
+    atis_routes.each do |itinerary|
+      this_itin = []
+      itinerary.each do |route|
+         this_tin << mapping[route.to_sym][:gtfs_id]
+      end
+      mapped_atis_routes << this_itin
+    and
 
     match = 0.0
     otp_routes.each do |route|
-      match += 1 if route.in? atis_routes 
+      match += 1 if route.in? mapped_atis_routes 
     end
 
     self.percent_matched = match.to_f/otp_routes.count
