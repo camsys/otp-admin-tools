@@ -28,8 +28,12 @@ class Admin::ConfigsController < Admin::AdminController
 
   end
 
-  def upload_atis_otp_mapping
-    
+  def update_atis_otp_mapping
+    atis_otp_mapping = params[:config][:atis_otp_mapping] if params[:config]
+    if !atis_otp_mapping.nil?
+      Config.update_atis_otp_mapping atis_otp_mapping
+    end
+    redirect_to admin_configs_path
   end
   
   def configs_params

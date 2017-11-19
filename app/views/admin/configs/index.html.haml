@@ -64,7 +64,28 @@
           %h4
             = "ATIS OTP Mapping"
         .panel-body.panel-primary
-          =@configs.find_by(key: :atis_otp_mapping).try(:value)
+          %table.table.table-hover
+            %thead.thead-default
+              %tr
+                %th atis_id
+                %th gtfs_id
+                %th gtfs_short_name
+                %th gtfs_long_name
+              -(Config.atis_otp_mapping || {}).each do |key, value|
+                %tr
+                  %td
+                    =key
+                  %td
+                    =value[:gtfs_id]
+                  %td
+                    =value[:gtfs_short_name]
+                  %td
+                    =value[:gtfs_long_name]
+
+
+          = f.input "atis_otp_mapping", required:true, label: "Upload CSV", :as => :file
         .panel-footer.panel-primary.text-center
           = f.button :submit, "OK", class: 'btn action-button btn-primary', role: 'button'
+
+
 

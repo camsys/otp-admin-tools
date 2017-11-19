@@ -20,5 +20,20 @@ class Config < ApplicationRecord
     return false if Rails.application.config.respond_to?(key)
     return Config.find_or_create_by(key: key).update_attributes(value: args.first)
   end
+
+
+  ### ATIS MAPPING ##########################
+  def self.update_atis_otp_mapping file
+    require 'open-uri'
+    require 'csv'
+    mapping_file = open(file)
+    mapping = {}
+    CSV.foreach(mapping_file, {:col_sep => ",", :headers => true}) do |row|
+      mapping[row[0].to_sym] = {gtfs_id: row[1], gtfs_short_name: row[2], gtfs_long_name: row[3]}
+    end
+    self.set_config_variable("atis_otp_mapping", mapping)
+    return
+  end 
+  ### END ATIS MAPPING ######################
   
 end
