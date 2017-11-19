@@ -83,7 +83,7 @@ module ComparisonTools
          this_tin << mapping[route.to_sym][:gtfs_id]
       end
       mapped_atis_routes << this_itin
-    and
+    end
 
     match = 0.0
     otp_routes.each do |route|
