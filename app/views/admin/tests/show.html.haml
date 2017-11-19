@@ -1,7 +1,10 @@
 =content_for :title do
   =@test.comment
 %h5.text-center
-  ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+  .row
+    ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+  .row
+    ="Percent Matched: #{@test.get_percent_matched*100.round(2)}%"
 
 .row
   .col-md-1
@@ -22,8 +25,9 @@
             .row 
               .col-md-4
                 .row.text-center
-                  = link_to result.otp_viewable_request, target: :_blank do
-                    OTP Results
+                  %h3
+                    = link_to result.otp_viewable_request, target: :_blank do
+                      OTP Results
                 .row
                   -result.otp_summary.each do |itin|
                     .row
@@ -45,7 +49,8 @@
 
               .col-md-4.text-center
                 .row.text-center
-                  ATIS Results
+                  %h3
+                    ATIS Results
                 .row
                   -result.atis_summary.each do |itin|
                     .row
@@ -66,7 +71,11 @@
                           ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
               .col-md-4.text-center
                 .row.text-center
-                  Comparison
+                  %h3
+                    Comparison
+                .row
+                  %h4
+                    ="Percent of Matching Routes: #{result.get_percent_matched*100.round(2)}%"
                 .row
                   -result.compare_summary.each do |k, v|
                     .row

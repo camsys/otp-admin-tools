@@ -19,10 +19,11 @@ Rails.application.routes.draw do
     resources :users, :only => [:index, :create, :destroy, :edit, :update]
 
     # Tests
-    resources :tests, :only => [:show]
+    resources :tests, :only => [:show, :destroy]
 
     # Configs
     resources :configs, only: [:index]
     patch 'configs' => 'configs#update'
+    patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
   end
 end

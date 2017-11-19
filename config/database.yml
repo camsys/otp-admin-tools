@@ -23,7 +23,10 @@ default: &default
 
 development:
   <<: *default
-  database: TripCompare_development
+  database: otp_test
+  username: otp_test
+  password: fUfb=kWE3sk_
+  host:  otp-test-backend.ckgyhi5n2bdz.us-east-1.rds.amazonaws.com
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.

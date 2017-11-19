@@ -16,6 +16,7 @@
               %th Number
               %th Time
               %th Summary
+              %th 
               
           -@group.tests.each do |test|
             %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
@@ -24,7 +25,12 @@
               %td
                 =test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
               %td
-                Coming Soon
+                ="#{test.get_percent_matched*100.round(2)}%"
+              %td.text-right
+                =link_to "Delete", admin_test_path(test), 
+                  method: :delete, 
+                  class: "btn btn-sm btn-danger", 
+                  data: {confirm: "Are you sure?  This action cannot be undone!"}
 .row
   .col-md-12.text-center
     %h4

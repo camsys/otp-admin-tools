@@ -5,7 +5,8 @@ class Admin::ConfigsController < Admin::AdminController
   PERMITTED_CONFIGS = [
     :otp_url,
     :atis_app_id,
-    :atis_url
+    :atis_url,
+    :atis_otp_mapping
   ].freeze
 
   def index
@@ -25,6 +26,10 @@ class Admin::ConfigsController < Admin::AdminController
 
     redirect_to admin_configs_path 
 
+  end
+
+  def upload_atis_otp_mapping
+    
   end
   
   def configs_params

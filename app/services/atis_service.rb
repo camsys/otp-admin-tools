@@ -64,7 +64,7 @@ class AtisService
       <Walkdist>1</Walkdist>
       <Walkspeed>5</Walkspeed>
       <Walkincrease>Y</Walkincrease>
-      <Maxanswers>1</Maxanswers>
+      <Maxanswers>3</Maxanswers>
       <Maxtransfers>3</Maxtransfers>
       <Debug>1</Debug>
       <Xmode>BCXTFRSLK123</Xmode>

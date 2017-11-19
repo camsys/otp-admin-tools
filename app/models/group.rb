@@ -95,4 +95,5 @@ class Group < ApplicationRecord
     end
 
   end #Update
+
 end
