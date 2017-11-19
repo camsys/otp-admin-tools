@@ -48,7 +48,7 @@ class AtisService
     "<?xml version='1.0' encoding='UTF-8'?>
     <SOAP-ENV:Envelope xmlns:xsi='http://www.w3.org/1999/XMLSchema-instance' xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsd='http://www.w3.org/1999/XMLSchema' SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'>
     <SOAP-ENV:Body>
-    <namesp1:Plantrip xmlns:namesp1='NY_SOAP'>
+    <namesp1:Plantrip xmlns:namesp1='NY_SOAP2'>
       <Appid>#{@app_id}</Appid>
       <Originlat>#{trip_params[:origin][:lat]}</Originlat>
       <Originlong>#{trip_params[:origin][:lng]}</Originlong>
