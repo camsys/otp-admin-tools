@@ -37,7 +37,7 @@ class AtisService
     req.add_field 'Content-Type', 'text/xml'
 
     http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = false
+    http.use_ssl = 's'.in? url[0..4]
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     resp = http.start {|http| http.request(req)}
     return req.body, Hash.from_xml(resp.body)["Envelope"]["Body"]["PlantripResponse"]
@@ -73,12 +73,5 @@ class AtisService
     </SOAP-ENV:Envelope>"
   end
 
-  def plan(from,
-      to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
-      max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3,
-      min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
-
-
-  end
 end
  
