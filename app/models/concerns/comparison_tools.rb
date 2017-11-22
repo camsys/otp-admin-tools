@@ -41,8 +41,9 @@ module ComparisonTools
       routes = []
 
       if itin["Legs"] 
-        
         legs = arrayify itin["Legs"]["Leg"]
+        routes  = []
+        route_ids  = []
         legs.each do |value|
           unless value["Service"].blank? 
             routes << value["Service"]["Publicroute"]
@@ -76,18 +77,18 @@ module ComparisonTools
 
     #Convert the ATIS Route IDs to GTFS Ids
     mapping = Config.atis_otp_mapping
-    mapped_atis_routes = []
-    atis_routes.each do |itinerary|
+    mapped_otp_routes = []
+    otp_routes.each do |itinerary|
       this_itin = []
       itinerary.each do |route|
-         this_tin << mapping[route.to_sym][:gtfs_id]
+         this_itin << mapping[route.to_sym][:atis_id]
       end
-      mapped_atis_routes << this_itin
+      mapped_otp_routes << this_itin
     end
 
     match = 0.0
-    otp_routes.each do |route|
-      match += 1 if route.in? mapped_atis_routes 
+    mapped_otp_routes.each do |route|
+      match += 1 if route.in? atis_routes 
     end
 
     self.percent_matched = match.to_f/otp_routes.count

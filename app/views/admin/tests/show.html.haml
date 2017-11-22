@@ -4,7 +4,7 @@
   .row
     ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
   .row
-    ="Percent Matched: #{@test.get_percent_matched*100.round(2)}%"
+    ="Percent Matched: #{(@test.get_percent_matched*100).round(2)}%"
 
 .row
   .col-md-1
@@ -75,7 +75,7 @@
                     Comparison
                 .row
                   %h4
-                    ="Percent of Matching Routes: #{result.get_percent_matched*100.round(2)}%"
+                    ="Percent of Matching Routes: #{(result.get_percent_matched*100).round(2)}%"
                 .row
                   -result.compare_summary.each do |k, v|
                     .row

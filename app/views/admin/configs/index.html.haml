@@ -74,9 +74,9 @@
               -(Config.atis_otp_mapping || {}).each do |key, value|
                 %tr
                   %td
-                    =key
+                    =value[:atis_id]
                   %td
-                    =value[:gtfs_id]
+                    =key
                   %td
                     =value[:gtfs_short_name]
                   %td
