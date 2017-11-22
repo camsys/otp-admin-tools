@@ -87,11 +87,11 @@ module ComparisonTools
     end
 
     match = 0.0
-    mapped_otp_routes.each do |route|
-      match += 1 if route.in? atis_routes 
+    atis_routes.each do |route|
+      match += 1 if route.in? mapped_otp_routes 
     end
 
-    self.percent_matched = match.to_f/otp_routes.count
+    self.percent_matched = match.to_f/atis_routes.count 
     self.save
     return self.percent_matched
 
