@@ -31,7 +31,7 @@
                 .row
                   -result.otp_summary.each do |itin|
                     .row
-                      .col-md-6.text-center
+                      .col-md-12.text-center
                         .row 
                           =image_tag("/assets/ped.svg", size: "14x14")
                           ="#{(itin[:walk_time]/60.0).round} "
@@ -41,11 +41,6 @@
                           ="#{(itin[:duration]/60.0).round}"
                         .row
                           =itin[:routes]
-                      .col-md-6
-                        .row
-                          ="Depart: #{Time.at(itin[:start_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
-                        .row
-                          ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
               .col-md-4.text-center
                 .row.text-center
@@ -54,7 +49,7 @@
                 .row
                   -result.atis_summary.each do |itin|
                     .row
-                      .col-md-6.text-center
+                      .col-md-12.text-center
                         .row
                           =image_tag("/assets/ped.svg", size: "14x14")
                           ="#{(itin[:walk_time]/60.0).round} "
@@ -64,11 +59,7 @@
                           ="#{(itin[:duration]/60.0).round}"
                         .row
                           =itin[:routes]
-                      .col-md-6
-                        .row
-                          ="Depart: #{Time.at(itin[:start_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
-                        .row
-                          ="Arrive: #{Time.at(itin[:end_time].to_i/1000).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+                          
               .col-md-4.text-center
                 .row.text-center
                   %h3

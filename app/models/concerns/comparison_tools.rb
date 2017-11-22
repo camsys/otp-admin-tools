@@ -35,7 +35,7 @@ module ComparisonTools
   def atis_summary
     summary = []
 
-    itineraries = arrayify self.atis_response["Itin"]
+    itineraries = self.atis_response.nil? ? [] : (arrayify self.atis_response["Itin"])
 
     itineraries.each do |itin|
       routes = []
@@ -99,6 +99,11 @@ module ComparisonTools
 
 
   def compare_summary
+    
+    if self.atis_response.nil? 
+      return {walk_time: 0, transit_time: 0, transfer: 0}
+    end
+
     atis = arrayify(self.atis_response["Itin"]).first 
     otp = self.otp_response["plan"]["itineraries"].first 
     walk_time_ratio = otp["walkTime"].to_f/(atis["Walktime"].to_f*60)
