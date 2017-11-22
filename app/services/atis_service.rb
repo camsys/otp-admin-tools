@@ -56,11 +56,11 @@ class AtisService
       <Destinationlat>#{trip_params[:destination][:lat]}</Destinationlat>
       <Destinationlong>#{trip_params[:destination][:lng]}</Destinationlong>
       <Destinationtext>Destination Name</Destinationtext>
-      <Time>1357</Time>
-      <Date>11/25/17</Date>
+      <Time>#{trip_params[:time].strftime("%H%M")}</Time>
+      <Date>#{trip_params[:time].strftime("%D")}</Date>
       <Minimize>T</Minimize>
       <Accessible>N</Accessible>
-      <Arrdep>A</Arrdep>
+      <Arrdep>#{trip_params[:arrive_by] ? 'A' : 'D'}</Arrdep>
       <Walkdist>1</Walkdist>
       <Walkspeed>5</Walkspeed>
       <Walkincrease>Y</Walkincrease>
