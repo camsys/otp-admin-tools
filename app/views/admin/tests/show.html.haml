@@ -13,13 +13,14 @@
       .row
         %div.panel.panel-default
           %div.panel-heading.text-center
-            ="From "
-            = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
-              =result.trip.origin
-            =" to "
-            = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
-              =result.trip.destination
-            =result.trip.arrive_by ? " arriving by #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+            %h4
+              ="From "
+              = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
+                =result.trip.origin
+              =" to "
+              = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
+                =result.trip.destination
+              =result.trip.arrive_by ? " arriving by #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
           %div.panel-body
             .row 
