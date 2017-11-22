@@ -62,7 +62,7 @@ class AtisService
       <Accessible>N</Accessible>
       <Arrdep>#{trip_params[:arrive_by] ? 'A' : 'D'}</Arrdep>
       <Walkdist>1</Walkdist>
-      <Walkspeed>5</Walkspeed>
+      <Walkspeed>3</Walkspeed>
       <Walkincrease>Y</Walkincrease>
       <Maxanswers>3</Maxanswers>
       <Maxtransfers>3</Maxtransfers>

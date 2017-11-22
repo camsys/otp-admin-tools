@@ -1,0 +1,18 @@
+.col-md-1
+.col-md-10
+  -itins.each_with_index do |itin, index|
+    .row
+      .col-md-12.text-center
+        .h4
+          =image_tag("/assets/ped.svg", size: "16x16")
+          ="#{(itin[:walk_time]/60.0).round} | "
+          %i.fa.fa-times
+          ="#{itin[:transfers]} | "
+          %i.fa.fa-clock-o
+          ="#{(itin[:duration]/60.0).round}"
+        .h4
+          -itin[:routes].each do |route|
+            =route
+
+    -unless index == (itins.count - 1)
+      %hr      

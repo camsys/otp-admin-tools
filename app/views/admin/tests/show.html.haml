@@ -29,36 +29,14 @@
                     = link_to result.otp_viewable_request, target: :_blank do
                       OTP Results
                 .row
-                  -result.otp_summary.each do |itin|
-                    .row
-                      .col-md-12.text-center
-                        .row 
-                          =image_tag("/assets/ped.svg", size: "14x14")
-                          ="#{(itin[:walk_time]/60.0).round} "
-                          %i.fa.fa-times
-                          ="#{itin[:transfers]} "
-                          %i.fa.fa-clock-o
-                          ="#{(itin[:duration]/60.0).round}"
-                        .row
-                          =itin[:routes]
+                  =render partial: "itin_summary", locals: {itins: result.otp_summary}
 
               .col-md-4.text-center
                 .row.text-center
                   %h3
                     ATIS Results
                 .row
-                  -result.atis_summary.each do |itin|
-                    .row
-                      .col-md-12.text-center
-                        .row
-                          =image_tag("/assets/ped.svg", size: "14x14")
-                          ="#{(itin[:walk_time]/60.0).round} "
-                          %i.fa.fa-times
-                          ="#{itin[:transfers]} "
-                          %i.fa.fa-clock-o
-                          ="#{(itin[:duration]/60.0).round}"
-                        .row
-                          =itin[:routes]
+                  =render partial: "itin_summary", locals: {itins: result.atis_summary}
                           
               .col-md-4.text-center
                 .row.text-center
