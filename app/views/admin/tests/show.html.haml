@@ -2,9 +2,10 @@
   =@test.comment
 %h5.text-center
   .row
-    ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+    %h3
+      ="Percent Matched: #{(@test.get_percent_matched*100).round(2)}%"
   .row
-    ="Percent Matched: #{(@test.get_percent_matched*100).round(2)}%"
+    ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
 .row
   .col-md-1
