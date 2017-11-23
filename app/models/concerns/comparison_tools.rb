@@ -107,9 +107,9 @@ module ComparisonTools
     atis = arrayify(self.atis_response["Itin"]).first 
     otp = self.otp_response["plan"]["itineraries"].first 
     walk_time_ratio = (otp["walkTime"].to_f/(atis["Walktime"].to_f*60)) - 1
-    transit_time_ratio = (otp["transitTime"].to_f/(atis["Transittime"].to_f*60)) - 1
+    total_time_ratio = (otp["duration"].to_f/(atis["Totaltime"].to_f*60)) - 1
     transfers_ratio = otp["transfers"] - self.atis_summary.first[:transfers]
 
-    return {walk_time: walk_time_ratio, transit_time: transit_time_ratio, transfer: transfers_ratio}
+    return {walk_time: walk_time_ratio, total_time: total_time_ratio, transfer: transfers_ratio}
   end
 end
