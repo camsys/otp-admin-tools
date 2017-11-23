@@ -11,6 +11,7 @@
           %th Comment
           %th Trips
           %th Created
+          %th
           
       -@groups.each do |group|
         %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
@@ -22,6 +23,11 @@
             =group.trips.count
           %td
             =group.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
+          %td.text-right
+            =link_to "Delete", admin_group_path(group), 
+              method: :delete, 
+              class: "btn btn-sm btn-danger", 
+              data: {confirm: "Are you sure?  This action cannot be undone!"}
 .row
   .col-md-4
   .col-md-4

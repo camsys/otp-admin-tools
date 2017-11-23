@@ -18,7 +18,7 @@
               %th Summary
               %th 
               
-          -@group.tests.each do |test|
+          -@group.tests.order(:created_at).each do |test|
             %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
               %td
                 =test.id
