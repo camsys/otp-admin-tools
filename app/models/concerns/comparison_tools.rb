@@ -106,16 +106,9 @@ module ComparisonTools
 
     atis = arrayify(self.atis_response["Itin"]).first 
     otp = self.otp_response["plan"]["itineraries"].first 
-    walk_time_ratio = otp["walkTime"].to_f/(atis["Walktime"].to_f*60)
-    transit_time_ratio = otp["transitTime"].to_f/(atis["Transittime"].to_f*60)
-
-    if (atis["Legs"].count == 0) and otp["transfers"] > 0
-      transfers_ratio = "inf"
-    elsif (atis["Legs"].count == 0) and otp["transfers"] == 0
-      transfers_ratio = 1
-    else
-      transfers_ratio = otp["transfers"].to_f/(atis["Legs"].count.to_f)
-    end
+    walk_time_ratio = (otp["walkTime"].to_f/(atis["Walktime"].to_f*60)) - 1
+    transit_time_ratio = (otp["transitTime"].to_f/(atis["Transittime"].to_f*60)) - 1
+    transfers_ratio = otp["transfers"] - self.atis_summary.first[:transfers]
 
     return {walk_time: walk_time_ratio, transit_time: transit_time_ratio, transfer: transfers_ratio}
   end

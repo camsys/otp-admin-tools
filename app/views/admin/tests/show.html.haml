@@ -40,37 +40,53 @@
                   =render partial: "itin_summary", locals: {itins: result.atis_summary}
                           
               .col-md-4.text-center
-                .row.text-center
+                .row
                   %h3
-                    Comparison
+                    ="Percent of Matching Results: #{(result.get_percent_matched*100).round(2)}%"
+                .row
+                  .col-md-1
+                  .col-md-10
+                    %hr
                 .row
                   %h4
-                    ="Percent of Matching Routes: #{(result.get_percent_matched*100).round(2)}%"
-                .row
+                    Comparing the top result from OTP and ATIS
                   -result.compare_summary.each do |k, v|
-                    .row
-                      .col-md-1
-                      .col-md-10
-                        -if v == "inf" 
-                          .well.well-sm.bad 
-                            %h4  
-                              =k.to_s.humanize
-                              =v.round(3)
-                        -elsif v <= 1.1
-                          .well.well-sm.good
-                            %h4
-                              =k.to_s.humanize
-                              =v.round(3)
-                        -elsif v <= 1.25
-                          .well.well-sm.ok
-                            %h4
-                              =k.to_s.humanize
-                              =v.round(3)
-                        -else
-                          .well.well-sm.bad 
-                            %h4  
-                              =k.to_s.humanize
-                              =v.round(3)
+                    -if k == :transfer
+                      .row
+                        .col-md-1
+                        .col-md-10
+                          -if v < 0.0
+                            .well.well-sm.good
+                              %h4
+                                ="OTP route has #{(v.abs)} fewer transfers"
+                          -elsif v == 0.0
+                            .well.well-sm.good
+                              %h4
+                                ="OTP & ATIS transfers are equal"
+                          -else
+                            .well.well-sm.bad 
+                              %h4  
+                                ="OTP route has #{(v.abs)} more transfers"
+                    -else
+                      .row
+                        .col-md-1
+                        .col-md-10
+                          -if v < 0.0
+                            .well.well-sm.good
+                              %h4
+                                ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% less"
+                          -elsif v == 0.0
+                            .well.well-sm.good
+                              %h4
+                                ="OTP & ATIS #{k.to_s.humanize.downcase} are equal"
+                          -elsif v < 0.15
+                            .well.well-sm.ok
+                              %h4
+                                ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
+                          -else
+                            .well.well-sm.bad 
+                              %h4  
+                                ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
 
 
 
