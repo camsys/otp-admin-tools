@@ -86,8 +86,8 @@ class OtpService
       max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3,
       min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
 
-    time = trip_datetime.strftime("%-I:%M%p")
-    date = trip_datetime.strftime("%Y-%m-%d")
+    time = trip_datetime.strftime("%I:%M %p")
+    date = trip_datetime.strftime("%m-%d-%Y")
 
     base_url = 'http://otp-mta-demo-ui.camsys-apps.com/#' + 'plan?'
     url_options = "&time=" + time
