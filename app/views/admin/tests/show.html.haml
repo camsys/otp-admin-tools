@@ -59,7 +59,7 @@
                           -if v < 0.0
                             .well.well-sm.good
                               %h4
-                                ="OTP route has #{(v.abs)} fewer transfers"
+                                ="OTP route has #{pluralize(v.abs, 'fewer transfer')}"
                           -elsif v == 0.0
                             .well.well-sm.good
                               %h4
@@ -67,7 +67,7 @@
                           -else
                             .well.well-sm.bad 
                               %h4  
-                                ="OTP route has #{(v.abs)} more transfers"
+                                ="OTP route has #{pluralize(v.abs, 'more transfer')}"
                     -else
                       .row
                         .col-md-1
