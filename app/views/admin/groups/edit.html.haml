@@ -15,6 +15,7 @@
             %tr
               %th Number
               %th Time
+              %th Trips Tested
               %th Summary
               %th 
               
@@ -24,6 +25,8 @@
                 =test.id
               %td
                 =test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
+              %td
+                =test.results.count
               %td
                 ="#{(test.get_percent_matched*100).round(2)}% Matching"
               %td.text-right

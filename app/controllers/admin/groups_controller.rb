@@ -24,7 +24,7 @@ module Admin
 
     def run_test
       @group = Group.find(params[:id])
-      @group.run_test
+      RunTestsJob.perform_later(@group.id)
       redirect_to edit_admin_group_path(@group)
     end
 
