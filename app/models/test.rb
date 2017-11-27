@@ -9,7 +9,8 @@ class Test < ApplicationRecord
     missing_percents = self.results.where(percent_matched: nil)
     missing_percents.each { |result| result.get_percent_matched }
     matching_array = self.results.map{ |result| result.percent_matched }
-
+    matching_array.delete_if {|x| x == nil }
+    
     return matching_array.sum.to_f/matching_array.count 
 
   end
