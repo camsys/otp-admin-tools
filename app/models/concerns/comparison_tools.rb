@@ -72,8 +72,23 @@ module ComparisonTools
 
     return self.percent_matched if self.percent_matched
 
+
     otp_routes = (self.otp_summary.map{ |i| i[:route_ids] }).uniq
     atis_routes = (self.atis_summary.map{ |i| i[:route_ids] }).uniq
+
+    # If ATIS returned routes, but OTP did not
+    if not atis_routes.empty? and otp_routes.empty?
+      self.percent_matched = 0
+      self.save
+      return self.percent_matched
+    end
+
+    if atis_routes.empty? and otp_routes.empty?
+      self.percent_matched = nil
+      self.save
+      return self.percent_matched
+    end
+
 
     #Convert the ATIS Route IDs to GTFS Ids
     mapping = Config.atis_otp_mapping
@@ -81,7 +96,7 @@ module ComparisonTools
     otp_routes.each do |itinerary|
       this_itin = []
       itinerary.each do |route|
-         this_itin << mapping[route.to_sym][:atis_id]
+         this_itin << (mapping[route.to_sym].nil? ? 'MAP MISSING' : mapping[route.to_sym][:atis_id])
       end
       mapped_otp_routes << this_itin
     end

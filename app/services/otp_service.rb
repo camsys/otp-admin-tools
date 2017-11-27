@@ -29,6 +29,7 @@ class OtpService
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
     url_options += "&showNextFromDeparture=true"
+    url_options += "&transferPenalty=20"
 
     if banned_routes
       url_options += "&bannedRoutes=" + banned_routes
