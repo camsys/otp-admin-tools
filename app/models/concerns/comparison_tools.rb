@@ -81,7 +81,7 @@ module ComparisonTools
     otp_routes.each do |itinerary|
       this_itin = []
       itinerary.each do |route|
-         this_itin << mapping[route.to_sym][:atis_id]
+         this_itin << (mapping[route.to_sym].nil? ? 'MAP MISSING' : mapping[route.to_sym][:atis_id])
       end
       mapped_otp_routes << this_itin
     end
