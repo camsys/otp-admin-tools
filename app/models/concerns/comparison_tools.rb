@@ -24,7 +24,8 @@ module ComparisonTools
                     walk_distance: itin["walkDistance"],
                     transfers: itin["transfers"],
                     routes: routes,
-                    route_ids: route_ids}
+                    route_ids: route_ids,
+                    legs: itin["legs"]}
       end
     end
 

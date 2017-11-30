@@ -15,6 +15,8 @@
         %div.panel.panel-default
           %div.panel-heading.text-center
             %h4
+              =  link_to admin_result_path(result), target: :_blank do
+                ="#{result.id}"
               ="From "
               = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
                 =result.trip.origin
@@ -95,6 +97,9 @@
                   -else
                     %h4
                       ="Unable to Compare ATIS & OTP Results"
+          %div.panel-footer.text-center
+            =link_to admin_result_path(result), target: :_blank do
+              ="View Full Details"
 
 
 
