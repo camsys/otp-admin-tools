@@ -1,0 +1,53 @@
+-itins.each_with_index do |itin, index|
+  .div
+    .row
+      -itin.each do |i|
+        .col-md-6
+          .col-md-12.text-center
+            .h4
+              =image_tag("/assets/ped.svg", size: "18x18")
+              ="#{(i[:walk_time]/60.0).round} | "
+              %i.fa.fa-times
+              ="#{i[:transfers]} | "
+              %i.fa.fa-clock-o
+              ="#{(i[:duration]/60.0).round}"
+            .h4
+              -i[:routes].each do |route|
+                =route
+
+    .row 
+      //Show OTP Legs
+      .col-md-6
+        -itin.first[:legs].each_with_index do |leg, index|
+          .div.text-center
+            -unless index == 0
+              .row
+                .col-md-3
+                .col-md-6
+                  %hr 
+            .row.detail
+              ="#{Time.at(leg['startTime'].to_i/1000).in_time_zone.strftime('%I:%M %p')} to #{Time.at(leg['endTime'].to_i/1000).in_time_zone.strftime('%I:%M %p') }"
+            .row
+              -if not leg['route'].blank?
+                ="#{leg['mode']} #{leg['route']} (#{leg['headsign']}) to #{leg['to']['name']}"
+              -else
+                ="#{leg['mode']} to #{leg['to']['name']}"
+      //Show ATIS 
+      .col-md-6
+        -itin.first[:legs].each_with_index do |leg, index|
+          .div.text-center
+            -unless index == 0
+              .row
+                .col-md-3
+                .col-md-6
+                  %hr 
+            .row.detail
+              ="#{Time.at(leg['startTime'].to_i/1000).in_time_zone.strftime('%I:%M %p')} to #{Time.at(leg['endTime'].to_i/1000).in_time_zone.strftime('%I:%M %p') }"
+            .row
+              -if not leg['route'].blank?
+                ="#{leg['mode']} #{leg['route']} (#{leg['headsign']}) to #{leg['to']['name']}"
+              -else
+                ="#{leg['mode']} to #{leg['to']['name']}"
+  
+  -unless index == (itins.count - 1)
+    %hr  
