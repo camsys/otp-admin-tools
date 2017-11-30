@@ -1,53 +1,90 @@
+.row 
+  .col-md-6.text-center
+    %h3
+      = link_to @result.otp_viewable_request, target: :_blank do
+        OTP Results
+  .col-md-6.text-center
+    %h3
+      ATIS Results
+
 -itins.each_with_index do |itin, index|
   .div
     .row
       -itin.each do |i|
-        .col-md-6
-          .col-md-12.text-center
-            .h4
-              =image_tag("/assets/ped.svg", size: "18x18")
-              ="#{(i[:walk_time]/60.0).round} | "
-              %i.fa.fa-times
-              ="#{i[:transfers]} | "
-              %i.fa.fa-clock-o
-              ="#{(i[:duration]/60.0).round}"
-            .h4
-              -i[:routes].each do |route|
-                =route
+        -unless i.nil?
+          .col-md-6
+            .col-md-12.text-center
+              .h4
+                =image_tag("/assets/ped.svg", size: "18x18")
+                ="#{(i[:walk_time]/60.0).round} | "
+                %i.fa.fa-times
+                ="#{i[:transfers]} | "
+                %i.fa.fa-clock-o
+                ="#{(i[:duration]/60.0).round}"
+              .h4
+                -i[:routes].each do |route|
+                  =route
 
     .row 
+
       //Show OTP Legs
-      .col-md-6
-        -itin.first[:legs].each_with_index do |leg, index|
-          .div.text-center
-            -unless index == 0
+      -unless itin.first.nil?
+        
+        .col-md-6.text-center
+          .row.detail
+            ="Depart: #{Time.at(itin.first[:start_time].to_i/1000).in_time_zone.strftime('%I:%M %p')}"
+          .row
+            .col-md-3
+            .col-md-6
+              %hr 
+          -itin.first[:legs].each_with_index do |leg, index|
+            -unless leg['mode'] == 'WALK'
+              .div.text-center
+                .row.detail
+                  ="#{Time.at(leg['startTime'].to_i/1000).in_time_zone.strftime('%I:%M %p')} to #{Time.at(leg['endTime'].to_i/1000).in_time_zone.strftime('%I:%M %p') }"
+                .row
+                  ="Route: #{leg['route']} #{leg['headsign']}"
+                .row
+                  ="From #{leg['from']['name']} to #{leg['to']['name']}" 
               .row
                 .col-md-3
                 .col-md-6
                   %hr 
-            .row.detail
-              ="#{Time.at(leg['startTime'].to_i/1000).in_time_zone.strftime('%I:%M %p')} to #{Time.at(leg['endTime'].to_i/1000).in_time_zone.strftime('%I:%M %p') }"
-            .row
-              -if not leg['route'].blank?
-                ="#{leg['mode']} #{leg['route']} (#{leg['headsign']}) to #{leg['to']['name']}"
-              -else
-                ="#{leg['mode']} to #{leg['to']['name']}"
+
+          .row.detail
+            ="Arrive: #{Time.at(itin.first[:end_time].to_i/1000).in_time_zone.strftime('%I:%M %p')}"
+
+
       //Show ATIS 
-      .col-md-6
-        -itin.first[:legs].each_with_index do |leg, index|
-          .div.text-center
-            -unless index == 0
+      -unless itin.last.nil?
+        .col-md-6.text-center
+          .row.detail
+            ="Depart: #{itin.last[:start_time]}"
+          .row
+            .col-md-3
+            .col-md-6
+              %hr 
+
+          -itin.last[:legs].each_with_index do |leg, index|
+            .div.text-center
+              .row.detail
+                ="#{leg['Ontime']} to #{leg['Offtime']}"
               .row
-                .col-md-3
-                .col-md-6
-                  %hr 
-            .row.detail
-              ="#{Time.at(leg['startTime'].to_i/1000).in_time_zone.strftime('%I:%M %p')} to #{Time.at(leg['endTime'].to_i/1000).in_time_zone.strftime('%I:%M %p') }"
+                ="Route: #{leg['Service']['Route']} #{leg['Service']['Sign']}"
+              .row
+                ="From #{leg['Onstop']} to #{leg['Offstop']}"
+
             .row
-              -if not leg['route'].blank?
-                ="#{leg['mode']} #{leg['route']} (#{leg['headsign']}) to #{leg['to']['name']}"
-              -else
-                ="#{leg['mode']} to #{leg['to']['name']}"
+              .col-md-3
+              .col-md-6
+                %hr 
+          .row.detail
+            ="Arrive: #{itin.last[:start_time]}"
+      
+
+
   
   -unless index == (itins.count - 1)
-    %hr  
+    %hr
+%br
+%br  

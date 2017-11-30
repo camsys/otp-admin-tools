@@ -61,7 +61,8 @@ module ComparisonTools
                     walk_distance: nil,
                     transfers: [routes.count - 1, 0].max,
                     routes: routes,
-                    route_ids: route_ids}
+                    route_ids: route_ids,
+                    legs: legs}
       end
     end
 
