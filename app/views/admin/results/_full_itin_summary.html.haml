@@ -59,7 +59,7 @@
       -unless itin.last.nil?
         .col-md-6.text-center
           .row.detail
-            ="Depart: #{itin.last[:start_time]}"
+            ="Depart: #{atis_time_str(itin.last[:start_time])}"
           .row
             .col-md-3
             .col-md-6
@@ -79,7 +79,7 @@
               .col-md-6
                 %hr 
           .row.detail
-            ="Arrive: #{itin.last[:start_time]}"
+            ="Arrive: #{atis_time_str(itin.last[:end_time])}"
       
 
 
