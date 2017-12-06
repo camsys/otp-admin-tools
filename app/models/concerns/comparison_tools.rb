@@ -24,7 +24,8 @@ module ComparisonTools
                     walk_distance: itin["walkDistance"],
                     transfers: itin["transfers"],
                     routes: routes,
-                    route_ids: route_ids}
+                    route_ids: route_ids,
+                    legs: itin["legs"]}
       end
     end
 
@@ -52,20 +53,41 @@ module ComparisonTools
         end
 
         summary << {duration: itin["Totaltime"].to_f*60, 
-                    start_time: nil, 
-                    end_time: nil,
+                    start_time: atis_start_time(itin), 
+                    end_time: atis_end_time(itin),
                     walk_time: itin["Walktime"].to_f*60, 
                     transit_time: itin["Transittime"].to_f*60, 
                     waiting_time: nil,
                     walk_distance: nil,
                     transfers: [routes.count - 1, 0].max,
                     routes: routes,
-                    route_ids: route_ids}
+                    route_ids: route_ids,
+                    legs: legs}
       end
     end
 
     return summary 
 
+  end
+
+  def atis_start_time itin 
+    #Atis doesn't give a start time or end time
+    #You have to find it by adding walk times to the first/last legs
+    legs = arrayify itin["Legs"]["Leg"]
+    board_time = legs.first["Ontime"].dup # Will be in this format HHMM as a string
+    walk_time = legs.first["Onwalktime"] # Will be an integer representing minutes
+    departure_time = board_time.insert(2, ':').to_time - walk_time.to_i.minutes #Get a time of boarding.  The date will be ignored
+    departure_time.strftime('%H%M') # Return the departure time in the ATIS HHMM format.
+  end
+
+  def atis_end_time itin 
+    #Atis doesn't give a start time or end time
+    #You have to find it by adding walk times to the first/last legs
+    legs = arrayify itin["Legs"]["Leg"]
+    alight_time = legs.last["Offtime"].dup # Will be in this format HHMM as a string
+    walk_time = itin["Finalwalktime"] # Will be an integer representing minutes
+    arrive_time = alight_time.insert(2, ':').to_time + walk_time.to_i.minutes #Get a time of boarding.  The date will be ignored
+    arrive_time.strftime('%H%M') # Return the departure time in the ATIS HHMM format.
   end
 
   def get_percent_matched
@@ -111,7 +133,6 @@ module ComparisonTools
     return self.percent_matched
 
   end
-
 
   def compare_summary
     

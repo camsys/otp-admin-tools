@@ -1,0 +1,93 @@
+.row 
+  .col-md-6.text-center
+    %h3
+      = link_to @result.otp_viewable_request, target: :_blank do
+        OTP Results
+  .col-md-6.text-center
+    %h3
+      ATIS Results
+
+-itins.each_with_index do |itin, index|
+  .div
+    .row
+      -itin.each do |i|
+        -unless i.nil?
+          .col-md-6
+            .col-md-12.text-center
+              .h4
+                =image_tag("/assets/ped.svg", size: "18x18")
+                ="#{(i[:walk_time]/60.0).round} | "
+                %i.fa.fa-times
+                ="#{i[:transfers]} | "
+                %i.fa.fa-clock-o
+                ="#{(i[:duration]/60.0).round}"
+              .h4
+                -i[:routes].each do |route|
+                  =route
+
+    .row 
+
+      //Show OTP Legs
+      -unless itin.first.nil?
+        
+        .col-md-6.text-center
+          .row.detail
+            ="Depart: #{otp_time_str(itin.first[:start_time])}"
+          .row
+            .col-md-3
+            .col-md-6
+              %hr 
+          -itin.first[:legs].each_with_index do |leg, index|
+            -unless leg['mode'] == 'WALK'
+              .div.text-center
+                .row.detail
+                  ="#{otp_time_str(leg['startTime'])} to #{otp_time_str(leg['endTime'])}"
+                .row
+                  ="Route: #{leg['route']} #{leg['headsign']}"
+                .row
+                  ="From #{leg['from']['name']} to #{leg['to']['name']}" 
+              .row
+                .col-md-3
+                .col-md-6
+                  %hr 
+
+          .row.detail
+            ="Arrive: #{otp_time_str(itin.first[:end_time])}"
+
+
+      //Show ATIS 
+      -unless itin.last.nil?
+        .col-md-6.text-center
+          .row.detail
+            ="Depart: #{atis_time_str(itin.last[:start_time])}"
+          .row
+            .col-md-3
+            .col-md-6
+              %hr 
+
+          -itin.last[:legs].each_with_index do |leg, index|
+            .div.text-center
+              .row.detail
+                ="#{atis_time_str(leg['Ontime'])} to #{atis_time_str(leg['Offtime'])}"
+              .row
+                ="Route: #{leg['Service']['Route']} #{leg['Service']['Sign']}"
+              .row
+                ="From #{leg['Onstop']} to #{leg['Offstop']}"
+
+            .row
+              .col-md-3
+              .col-md-6
+                %hr 
+          .row.detail
+            ="Arrive: #{atis_time_str(itin.last[:end_time])}"
+      
+
+
+  
+  -unless index == (itins.count - 1)
+    .col-md-1
+    .col-md-10
+      %hr{:style => "height:1px;border:none;color:#333;background-color:#333;"}
+
+%br
+%br  

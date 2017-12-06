@@ -1,0 +1,15 @@
+%h3.text-center
+  ="From "
+  = link_to "https://www.google.com/maps/?q=#{@result.trip.origin_lat},#{@result.trip.origin_lng}", target: :_blank do
+    =@result.trip.origin
+  =" to "
+  = link_to "https://www.google.com/maps/?q=#{@result.trip.destination_lat},#{@result.trip.destination_lng}", target: :_blank do
+    =@result.trip.destination
+%h4.text-center
+  =@result.trip.arrive_by ? "Arriving by #{@result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : "Departing at #{@result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+
+.row
+  =render partial: "full_itin_summary", locals: {itins: @full_summary}
+
+
+
