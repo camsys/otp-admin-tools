@@ -32,7 +32,7 @@
         
         .col-md-6.text-center
           .row.detail
-            ="Depart: #{Time.at(itin.first[:start_time].to_i/1000).in_time_zone.strftime('%I:%M %p')}"
+            ="Depart: #{otp_time_str(itin.first[:start_time])}"
           .row
             .col-md-3
             .col-md-6
@@ -41,7 +41,7 @@
             -unless leg['mode'] == 'WALK'
               .div.text-center
                 .row.detail
-                  ="#{Time.at(leg['startTime'].to_i/1000).in_time_zone.strftime('%I:%M %p')} to #{Time.at(leg['endTime'].to_i/1000).in_time_zone.strftime('%I:%M %p') }"
+                  ="#{otp_time_str(leg['startTime'])} to #{otp_time_str(leg['endTime'])}"
                 .row
                   ="Route: #{leg['route']} #{leg['headsign']}"
                 .row
@@ -52,7 +52,7 @@
                   %hr 
 
           .row.detail
-            ="Arrive: #{Time.at(itin.first[:end_time].to_i/1000).in_time_zone.strftime('%I:%M %p')}"
+            ="Arrive: #{otp_time_str(itin.first[:end_time])}"
 
 
       //Show ATIS 
@@ -68,7 +68,7 @@
           -itin.last[:legs].each_with_index do |leg, index|
             .div.text-center
               .row.detail
-                ="#{leg['Ontime']} to #{leg['Offtime']}"
+                ="#{atis_time_str(leg['Ontime'])} to #{atis_time_str(leg['Offtime'])}"
               .row
                 ="Route: #{leg['Service']['Route']} #{leg['Service']['Sign']}"
               .row
