@@ -60,6 +60,7 @@
           %th Lat,Lng
           %th Time
           %th Arrive By?
+          %th
 
           
       -@group.trips.each do |trip|
@@ -78,6 +79,11 @@
             =trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
           %td
             =trip.arrive_by
+          %td.text-right
+            =link_to "Delete", admin_trip_path(trip), 
+              method: :delete, 
+              class: "btn btn-sm btn-danger", 
+              data: {confirm: "Are you sure?  This action cannot be undone!"}
 
 .row
   .col-md-4

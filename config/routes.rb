@@ -15,6 +15,9 @@ Rails.application.routes.draw do
       end
     end
 
+    # Trips
+    resources :trips, :only => [:destroy]
+
     # Results
     resources :results, :only => [:show]
 

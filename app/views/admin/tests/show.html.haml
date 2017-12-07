@@ -11,95 +11,96 @@
   .col-md-1
   .col-md-10
     -@test.results.each do |result|
-      .row
-        %div.panel.panel-default
-          %div.panel-heading.text-center
-            %h4
-              =  link_to admin_result_path(result), target: :_blank do
-                ="#{result.id}"
-              ="From "
-              = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
-                =result.trip.origin
-              =" to "
-              = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
-                =result.trip.destination
-              =result.trip.arrive_by ? " arriving by #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+      -unless result.trip.nil?
+        .row
+          %div.panel.panel-default
+            %div.panel-heading.text-center
+              %h4
+                =  link_to admin_result_path(result), target: :_blank do
+                  ="#{result.id}"
+                ="From "
+                = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
+                  =result.trip.origin
+                =" to "
+                = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
+                  =result.trip.destination
+                =result.trip.arrive_by ? " arriving by #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
-          %div.panel-body
-            .row 
-              .col-md-4
-                .row.text-center
-                  %h3
-                    = link_to result.otp_viewable_request, target: :_blank do
-                      OTP Results
-                .row
-                  =render partial: "itin_summary", locals: {itins: result.otp_summary}
+            %div.panel-body
+              .row 
+                .col-md-4
+                  .row.text-center
+                    %h3
+                      = link_to result.otp_viewable_request, target: :_blank do
+                        OTP Results
+                  .row
+                    =render partial: "itin_summary", locals: {itins: result.otp_summary}
 
-              .col-md-4.text-center
-                .row.text-center
-                  %h3
-                    ATIS Results
-                .row
-                  =render partial: "itin_summary", locals: {itins: result.atis_summary}
-                          
-              .col-md-4.text-center
-                .row
-                  %h3
-                    -if result.get_percent_matched != nil
-                      ="Percent of Matching Results: #{(result.get_percent_matched*100).round(2)}%"
-                    -else
-                      ="Percent of Matching Results: N/A"
-                .row
-                  .col-md-1
-                  .col-md-10
-                    %hr
-                .row
-                  -if result.get_percent_matched != nil
-                    %h4
-                      Comparing the top result from OTP and ATIS
-                    -result.compare_summary.each do |k, v|
-                      -if k == :transfer
-                        .row
-                          .col-md-1
-                          .col-md-10
-                            -if v < 0.0
-                              .well.well-sm.good
-                                %h4
-                                  ="OTP route has #{pluralize(v.abs, 'fewer transfer')}"
-                            -elsif v == 0.0
-                              .well.well-sm.good
-                                %h4
-                                  ="OTP & ATIS transfers are equal"
-                            -else
-                              .well.well-sm.bad 
-                                %h4  
-                                  ="OTP route has #{pluralize(v.abs, 'more transfer')}"
+                .col-md-4.text-center
+                  .row.text-center
+                    %h3
+                      ATIS Results
+                  .row
+                    =render partial: "itin_summary", locals: {itins: result.atis_summary}
+                            
+                .col-md-4.text-center
+                  .row
+                    %h3
+                      -if result.get_percent_matched != nil
+                        ="Percent of Matching Results: #{(result.get_percent_matched*100).round(2)}%"
                       -else
-                        .row
-                          .col-md-1
-                          .col-md-10
-                            -if v < 0.0
-                              .well.well-sm.good
-                                %h4
-                                  ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% less"
-                            -elsif v == 0.0
-                              .well.well-sm.good
-                                %h4
-                                  ="OTP & ATIS #{k.to_s.humanize.downcase} are equal"
-                            -elsif v < 0.15
-                              .well.well-sm.ok
-                                %h4
-                                  ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
-                            -else
-                              .well.well-sm.bad 
-                                %h4  
-                                  ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
-                  -else
-                    %h4
-                      ="Unable to Compare ATIS & OTP Results"
-          %div.panel-footer.text-center
-            =link_to admin_result_path(result), target: :_blank do
-              ="View Full Details"
+                        ="Percent of Matching Results: N/A"
+                  .row
+                    .col-md-1
+                    .col-md-10
+                      %hr
+                  .row
+                    -if result.get_percent_matched != nil
+                      %h4
+                        Comparing the top result from OTP and ATIS
+                      -result.compare_summary.each do |k, v|
+                        -if k == :transfer
+                          .row
+                            .col-md-1
+                            .col-md-10
+                              -if v < 0.0
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP route has #{pluralize(v.abs, 'fewer transfer')}"
+                              -elsif v == 0.0
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP & ATIS transfers are equal"
+                              -else
+                                .well.well-sm.bad 
+                                  %h4  
+                                    ="OTP route has #{pluralize(v.abs, 'more transfer')}"
+                        -else
+                          .row
+                            .col-md-1
+                            .col-md-10
+                              -if v < 0.0
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% less"
+                              -elsif v == 0.0
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP & ATIS #{k.to_s.humanize.downcase} are equal"
+                              -elsif v < 0.15
+                                .well.well-sm.ok
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
+                              -else
+                                .well.well-sm.bad 
+                                  %h4  
+                                    ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
+                    -else
+                      %h4
+                        ="Unable to Compare ATIS & OTP Results"
+            %div.panel-footer.text-center
+              =link_to admin_result_path(result), target: :_blank do
+                ="View Full Details"
 
 
 
