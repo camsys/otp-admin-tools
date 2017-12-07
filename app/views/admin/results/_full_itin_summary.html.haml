@@ -15,7 +15,7 @@
           .col-md-6
             .col-md-12.text-center
               .h4
-                =image_tag("/assets/ped.svg", size: "18x18")
+                =image_tag(image_url("ped.svg"), size: "18x18")
                 ="#{(i[:walk_time]/60.0).round} | "
                 %i.fa.fa-times
                 ="#{i[:transfers]} | "
