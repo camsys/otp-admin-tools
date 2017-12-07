@@ -13,16 +13,14 @@ class MailService
 
   def retrieve_urls
     match_string = "http://otp-mta-demo"
+    match_subject = "OTP Test Harness Feedback"
     urls = []
     Mail.all.each do |message|
-      if "OTP Test Harness Feedback".in? message.subject 
-        puts message.body.ai
-        
-         # Iterate over every messaage part
+      if match_subject.in? message.subject 
+        # Iterate over every messaage part
         message.parts.each do |part|
           #Iterate over every string in the message
           part.body.decoded.split(' ').each do |str|
-            puts "this is teh string #{str}"
             #Check to see if the str is a URL
             if str[0..(match_string.length - 1)] == match_string and not "</a>".in? str
               urls << str
@@ -36,5 +34,48 @@ class MailService
     end #Mail.all
     urls
   end #Retrieve
+
+  def create_trips
+    
+    # Get the the email group or create one
+    group = Group.where(name: "Emailed Trips").first_or_create do |g|
+      g.comment = "Trips created from emailed trips."
+      g.save
+    end
+
+    urls = retrieve_urls.uniq 
+    urls.each do |url|
+      params = CGI::parse(url.split('?').last)
+
+      # If all 4 params are present, make a trip
+      if params["fromPlace"] and params["toPlace"] and params["date"] and params["time"]
+
+        puts params.ai 
+
+        origin =  params["fromPlace"].first 
+        destination = params["toPlace"].first
+        if params["arriveBy"] and params["arriveBy"].first == "true"
+          arrive_by = true
+        else
+          arrive_by = false
+        end
+
+        Trip.where(
+            group: group,
+            origin: "ORIGIN",
+            destination: "DESTINATION",
+            origin_lat: origin.split(',').first,
+            origin_lng: origin.split(',').last,
+            destination_lat: destination.split(',').first,
+            destination_lng: destination.split(',').last,
+            arrive_by: arrive_by,
+            time: Time.zone.strptime("#{params['date'].first} #{params['time'].first}", "%m/%d/%Y %k:%M") ).first_or_create!
+
+      end
+
+    end
+
+  end
+
 
 end #MailService
