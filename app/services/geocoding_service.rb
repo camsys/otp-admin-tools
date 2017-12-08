@@ -25,7 +25,9 @@ class GeocodingService
       return false, nil
     end
     begin
-      res = Geocoder.search(raw_address, sensor: false, components: 'country:US', bounds: [[39.496227, -105.338796], [39.998374, -104.688062]])
+      #40.346137, -74.558922, 41.973298, -71.601343
+
+      res = Geocoder.search(raw_address, sensor: false, components: 'country:US', bounds: [[40.346137, -74.558922], [ 41.973298, -71.601343]])
       Rails.logger.info "# results from geocode: #{res.size}"
       Rails.logger.info "# results from geocode: #{res.ai}"
       results = process_results(res)
