@@ -1,0 +1,12 @@
+=content_for :header do
+  ="Create a New Trip"
+=content_for :body do
+  = f.input :origin, required:true, :as => :string
+  = f.input :origin_lat, required:false, :as => :string
+  = f.input :origin_lng, required:false, :as => :string
+  = f.input :destination, required:true, :as => :string
+  = f.input :destination_lat, required:false, :as => :string
+  = f.input :destination_lng, required:false, :as => :string
+  = f.input :time, required:true, :as => :datetime 
+  = f.input :arrive_by, required:true, :as => :boolean
+  = f.input :group_id, :as => :hidden, input_html: {value: @group.id}

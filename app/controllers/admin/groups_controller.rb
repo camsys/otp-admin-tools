@@ -13,6 +13,7 @@ module Admin
 
     def edit
       @group = Group.find(params[:id]) 
+      @new_trip = Trip.new
     end
 
 

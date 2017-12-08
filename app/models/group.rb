@@ -53,7 +53,7 @@ class Group < ApplicationRecord
     # Iterate through CSV.
     failed = false
     message = ""
-    self.trips.delete_all
+    #self.trips.delete_all
     line = 2 #Line 1 is the header, start with line 2 in the count
     begin
       CSV.foreach(trips_file, {:col_sep => ",", :headers => true}) do |row|
