@@ -35,10 +35,10 @@
                   class: "btn btn-sm btn-danger", 
                   data: {confirm: "Are you sure?  This action cannot be undone!"}
 .row
-  .col-md-12.text-center
-    %h4
-      = link_to run_test_admin_group_path(@group) do
-        ="Run Test"
+  .col-md-3
+  .col-md-6
+    = simple_form_for @group, url: run_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+      =render partial: 'run_test', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row
   .col-md-1

@@ -9,6 +9,20 @@
 
 .row
   .col-md-1
+  .col-md-2
+    .well
+      %h4 OTP Settings
+      ="Walk Speed: #{@test.otp_walk_speed}"
+      %br
+      ="Max Walk Distance: #{@test.otp_max_walk_distance}"
+      %br
+      ="Walk Reluctance: #{@test.otp_walk_reluctance}"
+      %br
+      ="Transfer Penalty: #{@test.otp_transfer_penalty}"
+
+
+.row
+  .col-md-1
   .col-md-10
     -@test.results.each do |result|
       -unless result.trip.nil?

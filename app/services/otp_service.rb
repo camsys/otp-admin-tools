@@ -9,14 +9,23 @@ class OtpService
       @base_url = base_url
   end
 
-  def plan(from,
-      to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
-      max_walk_distance=2, max_bicycle_distance=5, optimize='QUICK', num_itineraries=3,
-      min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
+  def plan(
+        from, to, trip_datetime,
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60)
+
+    # Hardcoded Defaults
+    mode="TRANSIT,WALK"
+    max_bicycle_distance=5
+    optimize='QUICK'
+    num_itineraries=3
+    wheelchair="false"
+    min_transfer_time=nil
+    max_transfer_time=nil
+    banned_routes=nil
+    preferred_routes=nil
 
     #walk_speed is defined in MPH and converted to m/s before going to OTP
     #max_walk_distance is defined in miles and converted to meters before going to OTP
-
     #Parameters
     time = trip_datetime.strftime("%-I:%M%p")
     date = trip_datetime.strftime("%Y-%m-%d")
@@ -27,7 +36,7 @@ class OtpService
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair.to_s
     url_options += "&arriveBy=" + arriveBy.to_s
-    url_options += "&walkSpeed=" + (0.44704*walk_speed).to_s
+    url_options += "&walkSpeed=" + walk_speed.to_s
     url_options += "&showNextFromDeparture=true"
     url_options += "&transferPenalty=20"
 
@@ -52,22 +61,17 @@ class OtpService
     if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
       url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
     else
-      url_options += "&maxWalkDistance=" + (1609.34*max_walk_distance).to_s
+      url_options += "&maxWalkDistance=" + max_walk_distance.to_s
     end
 
     url_options += "&numItineraries=" + num_itineraries.to_s
-
-    #Unless the optimiziton = QUICK (which is the default), set additional parameters
-    case optimize.downcase
-      when 'walking'
-        url_options += "&walkReluctance=" + 20
-      when 'transfers'
-        url_options += "&transferPenalty=" + 1800
-    end
+    
+    url_options += "&walkReluctance=" + walk_reluctance.to_s
+    url_options += "&transferPenalty=" + transfer_penalty.to_s
 
     url = base_url + url_options
 
-    Rails.logger.info url
+    puts url
 
     begin
       resp = Net::HTTP.get_response(URI.parse(url))

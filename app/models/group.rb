@@ -9,10 +9,25 @@ class Group < ApplicationRecord
     otp = OtpService.new(Config.otp_url)
     atis = AtisService.new(Config.atis_url, Config.atis_app_id)
     test = Test.create(group: self)
+
+    # Copy params for archiving
+    test.otp_walk_speed = self.otp_walk_speed
+    test.otp_max_walk_distance = self.otp_max_walk_distance
+    test.otp_walk_reluctance = self.otp_walk_reluctance
+    test.otp_transfer_penalty = self.otp_transfer_penalty
+
     test.comment = test.id 
     test.save 
     test.trips.each do |trip|
-      otp_request, otp_response = otp.plan([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
+      otp_request, otp_response =   otp.plan(
+          [trip.origin_lat, trip.origin_lng], 
+          [trip.destination_lat, trip.destination_lng], 
+          trip.time, arriveBy=trip.arrive_by,
+          walk_speed=self.otp_walk_speed, 
+          max_walk_distance=self.otp_max_walk_distance,
+          walk_reluctance=self.otp_walk_reluctance,
+          tranfser_penalty=self.otp_transfer_penalty)
+
       atis_request, atis_response = atis.plan_trip(trip.params)
       viewable = otp.viewable_url([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
       Result.create(trip: trip, test: test, 

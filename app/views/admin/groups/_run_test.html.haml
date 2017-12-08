@@ -1,0 +1,10 @@
+=content_for :header do
+  ="Run a New Test"
+=content_for :body do
+  .col-md-6
+    = f.input :otp_walk_speed, :as => :integer
+    = f.input :otp_max_walk_distance, :as => :integer
+    = f.input :otp_walk_reluctance, :as => :integer
+    = f.input :otp_transfer_penalty, :as => :integer
+  .col-md-6
+    Atis Controls Here

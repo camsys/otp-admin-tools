@@ -24,7 +24,9 @@ module Admin
     end
 
     def run_test
+      puts params.ai 
       @group = Group.find(params[:id])
+      @group.update_attributes(group_params)
       RunTestsJob.perform_later(@group.id)
       redirect_to edit_admin_group_path(@group)
     end
@@ -69,7 +71,7 @@ module Admin
     private
 
     def group_params
-      params.require(:group).permit(:name, :comment)
+      params.require(:group).permit(:name, :comment, :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty)
     end
   end
 end

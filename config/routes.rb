@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resources :groups, :only => [:index, :destroy, :create, :edit, :update]
     resources :groups do
       member do
-        get 'run_test'
+        post 'run_test'
         get 'geocode'
       end
     end

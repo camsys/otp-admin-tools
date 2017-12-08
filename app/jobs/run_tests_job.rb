@@ -2,9 +2,7 @@ class RunTestsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    puts args.ai 
-    puts 'hello'
-    
+
     # No args passed, run all the groups
     if args.empty?
       Group.all.each do |group|
