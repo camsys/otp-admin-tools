@@ -86,8 +86,8 @@
               data: {confirm: "Are you sure?  This action cannot be undone!"}
 
 .row
-  .col-md-2
-  .col-md-8
+  .col-md-3
+  .col-md-6
     = simple_form_for @new_trip, url: admin_trips_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
       =render partial: '/admin/tests/new_test', layout: '/layouts/new_record_panel', locals: {f: f}
 
