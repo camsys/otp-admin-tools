@@ -5,28 +5,49 @@
     %h3
       ="Percent Matched: #{(@test.get_percent_matched*100).round(2)}%"
   .row
-    ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+    ="Tested at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
 .row
   .col-md-4
-  .col-md-2
+  .col-md-4
     .well
-      %h4 OTP Settings
-      ="Walk Speed: #{@test.otp_walk_speed}"
-      %br
-      ="Max Walk Distance: #{@test.otp_max_walk_distance}"
-      %br
-      ="Walk Reluctance: #{@test.otp_walk_reluctance}"
-      %br
-      ="Transfer Penalty: #{@test.otp_transfer_penalty}"
-  .col-md-2
-    .well
-      %h4 ATIS Settings
-      ="Walk Speed: #{@test.atis_walk_speed}"
-      %br
-      ="Walk Distance: #{@test.atis_walk_dist}"
-      %br
-      ="Minimize: #{@test.atis_minimize}"
+      .row
+        .col-md-6
+          %h4 OTP Settings
+          %table
+            %tr
+              %td.detail Walk Speed
+              %td 
+                ="#{@test.otp_walk_speed} m/s"
+            %tr
+              %td.detail Max Walk Distance
+              %td  
+                ="#{@test.otp_max_walk_distance} m"
+            %tr
+              %td.detail Walk Reluctance
+              %td 
+                ="#{@test.otp_walk_reluctance}X"
+            %tr
+              %td.detail Transfer Penalty
+              %td 
+                ="#{@test.otp_transfer_penalty.to_i} s"
+
+        .col-md-6
+          %h4 ATIS Settings
+          %table
+            %tr
+              %td.detail Walk Speed
+              %td
+                ="#{@test.atis_walk_speed} m/s"
+            %tr
+              %td.detail Max Walk Distance
+              %td
+                ="#{@test.atis_walk_dist} m"
+            %tr
+              %td.detail Minimize
+              %td
+                ="#{@test.atis_minimize}"
+  .col-md-4            
 
 
 .row
