@@ -1,12 +1,50 @@
 =content_for :header do
   ="Create a New Trip"
 =content_for :body do
-  = f.input :origin, required:true, :as => :string
-  = f.input :origin_lat, required:false, :as => :string
-  = f.input :origin_lng, required:false, :as => :string
-  = f.input :destination, required:true, :as => :string
-  = f.input :destination_lat, required:false, :as => :string
-  = f.input :destination_lng, required:false, :as => :string
-  = f.input :time, required:true, :as => :datetime 
-  = f.input :arrive_by, required:true, :as => :boolean
+  .row
+    .col-md-6
+      .row
+        .col-md-5.detail.text-right
+          Origin Name
+        .col-md-7
+          = f.input :origin, required:true, :as => :string, label: false
+      .row
+        .col-md-5.detail.text-right
+          Origin Lat
+        .col-md-7
+          = f.input :origin_lat, required:false, :as => :string, label: false
+      .row
+        .col-md-5.detail.text-right
+          Origin Lng
+        .col-md-7
+          = f.input :origin_lng, required:false, :as => :string, label: false
+    .col-md-6
+      .row
+        .col-md-5.detail.text-right
+          Destination Name
+        .col-md-7
+          = f.input :destination, required:true, :as => :string, label: false
+    .col-md-6
+      .row
+        .col-md-5.detail.text-right
+          Destination Lat
+        .col-md-7
+          = f.input :destination_lat, required:false, :as => :string, label: false
+    .col-md-6
+      .row
+        .col-md-5.detail.text-right
+          Destination Lng
+        .col-md-7
+          = f.input :destination_lng, required:false, :as => :string, label: false
+  .row
+    .col-md-3.detail.text-right
+      Trip Time
+    .col-md-9
+      = f.input :time, required:true, :as => :datetime, label: false
+  .row
+    .col-md-5.detail.text-right
+      Arrive By?
+    .col-md-4
+      = f.input :arrive_by, collection: [true, false], label: false, include_blank: false
+  
   = f.input :group_id, :as => :hidden, input_html: {value: @group.id}

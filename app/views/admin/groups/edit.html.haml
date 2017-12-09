@@ -92,12 +92,13 @@
       =render partial: '/admin/tests/new_test', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row
+  %h3.text-center
+    ="Upload Trips"
   .col-md-4
   .col-md-4.text-center
     .well
       =simple_form_for @group, url: admin_group_path(@group), html: {class: 'form-vertical', multipart: true, method: :patch }, authenticity_token: true do |f|
-        %h3
-          ="Upload Trips"
+
         = f.input "file", required:true, label: "Upload CSV", :as => :file
         %br
         %br
