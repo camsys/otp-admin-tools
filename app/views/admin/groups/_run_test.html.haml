@@ -2,11 +2,43 @@
   ="Run a New Test"
 =content_for :body do
   .col-md-6
-    = f.input :otp_walk_speed, :as => :integer
-    = f.input :otp_max_walk_distance, :as => :integer
-    = f.input :otp_walk_reluctance, :as => :integer
-    = f.input :otp_transfer_penalty, :as => :integer
+    %h4.text-center
+      OTP Settings
+    .row
+      .col-md-6.detail.text-right
+        Walk Speed (m/s)
+      .col-md-6.text-left
+        = f.input :otp_walk_speed, label: false, :as => :integer
+    .row
+      .col-md-6.detail.text-right
+        Max Walk Distance (m)
+      .col-md-6.text-left
+        = f.input :otp_max_walk_distance, label: false, :as => :integer
+    .row
+      .col-md-6.detail.text-right
+        Walk Reluctance (Multiplier)
+      .col-md-6.text-left
+        = f.input :otp_walk_reluctance, label: false, :as => :integer
+    .row
+      .col-md-6.detail.text-right
+        Transfer Penablty (s)
+      .col-md-6.text-left
+        = f.input :otp_transfer_penalty, label: false, :as => :integer
   .col-md-6
-    = f.input :atis_minimize, :as => :string
-    = f.input :atis_walk_dist, :as => :integer
-    = f.input :atis_walk_speed, :as => :integer
+    %h4.text-center
+      ATIS Settings
+    .row
+      .col-md-6.detail.text-right
+        Walk Speed (m/s)
+      .col-md-6.text-left
+        = f.input :atis_walk_speed, label: false, :as => :integer
+    .row
+      .col-md-6.detail.text-right
+        Max Walk Distance (m)
+      .col-md-6.text-left
+        = f.input :atis_walk_dist, label: false, :as => :integer
+    .row
+      .col-md-6.detail.text-right
+        Minimize
+      .col-md-6.text-left
+        = f.input :atis_minimize, label: false, collection: ['X', 'T', 'W'], include_blank: false
