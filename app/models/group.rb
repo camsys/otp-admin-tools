@@ -35,7 +35,15 @@ class Group < ApplicationRecord
           tranfser_penalty=self.otp_transfer_penalty)
 
       atis_request, atis_response = atis.plan_trip(trip.params)
-      viewable = otp.viewable_url([trip.origin_lat, trip.origin_lng], [trip.destination_lat, trip.destination_lng], trip.time, arriveBy=trip.arrive_by, mode="TRANSIT,WALK")
+      viewable = otp.viewable_url(
+          [trip.origin_lat, trip.origin_lng], 
+          [trip.destination_lat, trip.destination_lng], 
+          trip.time, arriveBy=trip.arrive_by,
+          walk_speed=self.otp_walk_speed, 
+          max_walk_distance=self.otp_max_walk_distance,
+          walk_reluctance=self.otp_walk_reluctance,
+          tranfser_penalty=self.otp_transfer_penalty)
+      
       Result.create(trip: trip, test: test, 
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
                     atis_request: atis_request, atis_response: atis_response)
