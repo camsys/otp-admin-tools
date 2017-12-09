@@ -8,7 +8,7 @@
     ="Run at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
 .row
-  .col-md-1
+  .col-md-4
   .col-md-2
     .well
       %h4 OTP Settings
@@ -19,6 +19,16 @@
       ="Walk Reluctance: #{@test.otp_walk_reluctance}"
       %br
       ="Transfer Penalty: #{@test.otp_transfer_penalty}"
+  .col-md-2
+    .well
+      %h4 ATIS Settings
+      ="Walk Speed: #{@test.atis_walk_speed}"
+      %br
+      ="Walk Distance: #{@test.atis_walk_dist}"
+      %br
+      ="Walk Increase: #{@test.atis_walk_increase}"
+      %br
+      ="Minimize: #{@test.atis_minimize}"
 
 
 .row

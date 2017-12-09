@@ -45,6 +45,7 @@ class AtisService
   end
 
   def plan_body trip_params 
+
     "<?xml version='1.0' encoding='UTF-8'?>
     <SOAP-ENV:Envelope xmlns:xsi='http://www.w3.org/1999/XMLSchema-instance' xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsd='http://www.w3.org/1999/XMLSchema' SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'>
     <SOAP-ENV:Body>
@@ -58,12 +59,12 @@ class AtisService
       <Destinationtext>Destination Name</Destinationtext>
       <Time>#{trip_params[:time].strftime("%H%M")}</Time>
       <Date>#{trip_params[:time].strftime("%D")}</Date>
-      <Minimize>X</Minimize>
+      <Minimize>#{trip_params[:atis_minimize] || 'T'}</Minimize>
       <Accessible>N</Accessible>
       <Arrdep>#{trip_params[:arrive_by] ? 'A' : 'D'}</Arrdep>
-      <Walkdist>1</Walkdist>
-      <Walkspeed>3</Walkspeed>
-      <Walkincrease>Y</Walkincrease>
+      <Walkdist>#{((trip_params[:atis_walk_dist] || 1609.34)/1609.34).round(2)}</Walkdist>
+      <Walkspeed>#{((trip_params[:atis_walk_speed] || 1.34112)*2.23694).round(2)}</Walkspeed>
+      <Walkincrease>N</Walkincrease>
       <Maxanswers>3</Maxanswers>
       <Maxtransfers>3</Maxtransfers>
       <Debug>1</Debug>

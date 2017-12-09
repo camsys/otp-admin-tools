@@ -10,11 +10,17 @@ class Group < ApplicationRecord
     atis = AtisService.new(Config.atis_url, Config.atis_app_id)
     test = Test.create(group: self)
 
-    # Copy params for archiving
+    # Copy params for archiving.  
+    # The group params may change in the future, but we shuld remember the params this particular
+    # test was run with.
     test.otp_walk_speed = self.otp_walk_speed
     test.otp_max_walk_distance = self.otp_max_walk_distance
     test.otp_walk_reluctance = self.otp_walk_reluctance
     test.otp_transfer_penalty = self.otp_transfer_penalty
+    test.atis_minimize = self.atis_minimize
+    test.atis_walk_dist = self.atis_walk_dist
+    test.atis_walk_speed = self.atis_walk_speed
+    test.atis_walk_increase = self.atis_walk_increase
 
     test.comment = test.id 
     test.save 

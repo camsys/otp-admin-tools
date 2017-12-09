@@ -50,8 +50,6 @@ class MailService
       # If all 4 params are present, make a trip
       if params["fromPlace"] and params["toPlace"] and params["date"] and params["time"]
 
-        puts params.ai 
-
         origin =  params["fromPlace"].first 
         destination = params["toPlace"].first
         if params["arriveBy"] and params["arriveBy"].first == "true"
