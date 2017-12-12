@@ -48,7 +48,9 @@ class MailService
       params = CGI::parse(url.split('?').last)
 
       # If all 4 params are present, make a trip
-      if params["fromPlace"] and params["toPlace"] and params["date"] and params["time"]
+      if not params["fromPlace"].blank? and not params["toPlace"].blank? and not params["date"].blank? and not params["time"].blank?
+
+        puts params.ai 
 
         origin =  params["fromPlace"].first 
         destination = params["toPlace"].first
