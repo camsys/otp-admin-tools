@@ -11,6 +11,8 @@ module TripCompare
     config.action_controller.permit_all_parameters = true
     config.time_zone = 'Eastern Time (US & Canada)'
 
+    ENV['GOOGLE_PLACES_API_KEY'] = 'test'
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

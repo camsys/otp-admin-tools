@@ -111,6 +111,9 @@ module ComparisonTools
       return self.percent_matched
     end
 
+    if atis_routes.empty? and not otp_routes.empty?
+      return 1
+    end
 
     #Convert the ATIS Route IDs to GTFS Ids
     mapping = Config.atis_otp_mapping
