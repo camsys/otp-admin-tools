@@ -108,7 +108,7 @@ class OtpService
     time = trip_datetime.strftime("%I:%M %p")
     date = trip_datetime.strftime("%m-%d-%Y")
 
-    base_url = 'http://otp-mta-demo-ui.camsys-apps.com/#' + 'plan?'
+    base_url = 'http://otp-mta-demo.camsys-apps.com/#' + 'plan?'
     url_options = "&time=" + time
     url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
