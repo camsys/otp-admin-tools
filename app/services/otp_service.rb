@@ -11,14 +11,14 @@ class OtpService
 
   def plan(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60)
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false)
 
     # Hardcoded Defaults
     mode="TRANSIT,WALK"
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
-    wheelchair="false"
+    wheelchair=wheelchair.to_s
     min_transfer_time=nil
     max_transfer_time=nil
     banned_routes=nil
@@ -87,7 +87,7 @@ class OtpService
 
   def viewable_url(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60)
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false)
 
     #def viewable_url(from,
     #    to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
@@ -99,7 +99,7 @@ class OtpService
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
-    wheelchair="false"
+    wheelchair=wheelchair.to_s
     min_transfer_time=nil
     max_transfer_time=nil
     banned_routes=nil

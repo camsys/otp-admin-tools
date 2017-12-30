@@ -60,7 +60,7 @@ class AtisService
       <Time>#{trip_params[:time].strftime("%H%M")}</Time>
       <Date>#{trip_params[:time].strftime("%D")}</Date>
       <Minimize>#{trip_params[:atis_minimize] || 'T'}</Minimize>
-      <Accessible>N</Accessible>
+      <Accessible>#{trip_params[:atis_accessible] ? 'Y' : 'N'}</Accessible>
       <Arrdep>#{trip_params[:arrive_by] ? 'A' : 'D'}</Arrdep>
       <Walkdist>#{((trip_params[:atis_walk_dist] || 1609.34)/1609.34).round(2)}</Walkdist>
       <Walkspeed>#{((trip_params[:atis_walk_speed] || 1.34112)*2.23694).round(2)}</Walkspeed>

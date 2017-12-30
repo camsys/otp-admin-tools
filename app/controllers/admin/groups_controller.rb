@@ -72,7 +72,7 @@ module Admin
     def group_params
       params.require(:group).permit(:name, :comment, 
         :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty,
-        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase)
+        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible)
     end
   end
 end

@@ -11,7 +11,8 @@ class Trip < ApplicationRecord
       arrive_by: self.arrive_by,
       atis_minimize: self.group.atis_minimize || "T",
       atis_walk_dist: self.group.atis_walk_dist || 1609.34,
-      atis_walk_speed: self.group.atis_walk_speed || 1.34112
+      atis_walk_speed: self.group.atis_walk_speed || 1.34112,
+      atis_accessible: self.group.atis_accessible || false
     }
   end
 

@@ -24,6 +24,11 @@
         Transfer Penalty (s)
       .col-md-6.text-left
         = f.input :otp_transfer_penalty, label: false, :as => :integer
+    .row
+      .col-md-6.detail.text-right
+        Accessible?
+      .col-md-6.text-left
+        = f.input :otp_accessible, collection: [false, true], label: false, include_blank: false
   .col-md-6
     %h4.text-center
       ATIS Settings
@@ -42,3 +47,8 @@
         Minimize
       .col-md-6.text-left
         = f.input :atis_minimize, label: false, collection: ['X', 'T', 'W'], include_blank: false
+    .row
+      .col-md-6.detail.text-right
+        Accessible?
+      .col-md-6.text-left
+        = f.input :atis_accessible, collection: [false, true], label: false, include_blank: false

@@ -21,6 +21,8 @@ class Group < ApplicationRecord
     test.atis_walk_dist = self.atis_walk_dist
     test.atis_walk_speed = self.atis_walk_speed
     test.atis_walk_increase = self.atis_walk_increase
+    test.otp_accessible = self.otp_accessible
+    test.atis_accessible = self.atis_accessible
 
     test.comment = test.id 
     test.save 
@@ -32,7 +34,8 @@ class Group < ApplicationRecord
           walk_speed=self.otp_walk_speed, 
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
-          tranfser_penalty=self.otp_transfer_penalty)
+          tranfser_penalty=self.otp_transfer_penalty,
+          wheelchair=self.otp_accessible)
 
       atis_request, atis_response = atis.plan_trip(trip.params)
       viewable = otp.viewable_url(
@@ -42,7 +45,8 @@ class Group < ApplicationRecord
           walk_speed=self.otp_walk_speed, 
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
-          tranfser_penalty=self.otp_transfer_penalty)
+          tranfser_penalty=self.otp_transfer_penalty,
+          wheelchair=self.otp_accessible)
       
       Result.create(trip: trip, test: test, 
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,

@@ -31,6 +31,11 @@
               %td.detail Transfer Penalty
               %td 
                 ="#{@test.otp_transfer_penalty.to_i} s"
+            %tr
+              %td.detail Accessible?
+              %td 
+                ="#{@test.otp_accessible}"
+
 
         .col-md-6
           %h4 ATIS Settings
@@ -47,6 +52,10 @@
               %td.detail Minimize
               %td
                 ="#{@test.atis_minimize}"
+            %tr
+              %td.detail Accessible?
+              %td 
+                ="#{@test.atis_accessible}"
   .col-md-4            
 
 
