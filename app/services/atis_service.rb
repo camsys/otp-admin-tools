@@ -40,7 +40,7 @@ class AtisService
     http.use_ssl = 's'.in? url[0..4]
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     resp = http.start {|http| http.request(req)}
-    return req.body, Hash.from_xml(resp.body)["Envelope"]["Body"]["PlantripResponse"]
+    return req.body, resp.body
 
   end
 
