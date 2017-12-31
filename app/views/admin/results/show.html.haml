@@ -11,5 +11,38 @@
 .row
   =render partial: "full_itin_summary", locals: {itins: @full_summary}
 
+%hr
+.h2.text-center
+  Debugging Info
+
+.row
+  .col-md-6
+    %h4.text-center
+      Raw OTP Request
+    %pre
+      %code
+        =@result.otp_request
+  .col-md-6
+    %h4.text-center
+      Raw ATIS Request
+    %pre
+      %code
+        =@result.atis_request
+
+.row
+  .col-md-6
+    %h4.text-center
+      Raw OTP Response
+    %pre
+      %code
+        =@result.otp_response
+  .col-md-6
+    %h4.text-center
+      Raw ATIS Response
+    %pre
+      %code
+        =@result.atis_response
+
+
 
 
