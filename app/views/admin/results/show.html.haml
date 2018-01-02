@@ -35,7 +35,7 @@
       Raw OTP Response
     %pre
       %code
-        =@result.otp_response
+        =JSON.pretty_generate(@result.otp_response)
   .col-md-6
     %h4.text-center
       Raw ATIS Response
