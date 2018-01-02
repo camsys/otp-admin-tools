@@ -6,7 +6,7 @@ class Group < ApplicationRecord
   #### METHODS ####
   
   def run_test
-    otp = OtpService.new(Config.otp_url)
+    otp = OtpService.new(Config.otp_url, Config.otp_api_key)
     atis = AtisService.new(Config.atis_url, Config.atis_app_id)
     test = Test.create(group: self)
 
