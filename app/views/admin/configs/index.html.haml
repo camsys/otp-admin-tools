@@ -20,6 +20,10 @@
             label: "URL of the Open Trip Planner Server",
             input_html: {value: @configs.find_by(key: :otp_url).try(:value)},
             as: :string
+          = f.input :otp_api_key, required: false,
+            label: "API Key for Open Trip Planner Server",
+            input_html: {value: @configs.find_by(key: :otp_api_key).try(:value)},
+            as: :string
         .panel-footer.panel-primary.text-center
           = f.button :submit, "OK", class: 'btn action-button btn-primary', role: 'button'
 
@@ -74,13 +78,13 @@
               -(Config.atis_otp_mapping || {}).each do |key, value|
                 %tr
                   %td
-                    =value[:atis_id]
+                    =value.map{ |x| x[:atis_id] }
                   %td
                     =key
                   %td
-                    =value[:gtfs_short_name]
+                    =value.map{ |x| x[:gtfs_short_name] }
                   %td
-                    =value[:gtfs_long_name]
+                    =value.map{ |x| x[:gtfs_long_name] }
 
 
           = f.input "atis_otp_mapping", required:true, label: "Upload CSV", :as => :file

@@ -29,7 +29,8 @@ class Config < ApplicationRecord
     mapping_file = open(file)
     mapping = {}
     CSV.foreach(mapping_file, {:col_sep => ",", :headers => true}) do |row|
-      mapping[row[1].to_sym] = {atis_id: row[0], gtfs_short_name: row[2], gtfs_long_name: row[3]}
+      mapping[row[1].to_sym] ||= [] 
+      mapping[row[1].to_sym] << {atis_id: row[0], gtfs_short_name: row[2], gtfs_long_name: row[3]}
     end
     self.set_config_variable("atis_otp_mapping", mapping)
     return

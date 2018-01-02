@@ -121,16 +121,16 @@ module ComparisonTools
     otp_routes.each do |itinerary|
       this_itin = []
       itinerary.each do |route|
-         this_itin << (mapping[route.to_sym].nil? ? 'MAP MISSING' : mapping[route.to_sym][:atis_id])
+         this_itin << (mapping[route.to_sym].nil? ? 'MAP MISSING' : mapping[route.to_sym].map{ |x| x[:atis_id]})
       end
       mapped_otp_routes << this_itin
     end
 
     match = 0.0
-    atis_routes.each do |route|
-      match += 1 if route.in? mapped_otp_routes 
-    end
 
+    atis_routes.each do |route|
+      match += 1 if match? route, mapped_otp_routes
+    end
     self.percent_matched = match.to_f/atis_routes.count 
     self.save
     return self.percent_matched
@@ -143,6 +143,10 @@ module ComparisonTools
       return {walk_time: 0, transit_time: 0, transfer: 0}
     end
 
+    if self.otp_response["plan"].nil?
+      return {walk_time: 0, transit_time: 0, transfers: 0}
+    end
+
     atis = arrayify(self.parsed_atis_response["Itin"]).first 
     otp = self.otp_response["plan"]["itineraries"].first 
     walk_time_ratio = (otp["walkTime"].to_f/(atis["Walktime"].to_f*60)) - 1
@@ -150,5 +154,33 @@ module ComparisonTools
     transfers_ratio = otp["transfers"] - self.atis_summary.first[:transfers]
 
     return {walk_time: walk_time_ratio, total_time: total_time_ratio, transfer: transfers_ratio}
+  end
+
+  def match? atis_route, mapped_otp_routes
+
+    mapped_otp_routes.each do |otp_route|
+      matched = true
+      
+      #Check for Length
+      if otp_route.count != atis_route.count
+        next
+      end
+
+      # Check for all matching legs 
+      # Some OTP Routes have multiple options, 
+      # which is why we have to check each leg individually 
+      otp_route.each_with_index do |leg, i|
+        unless atis_route[i].in? leg
+          matched = false 
+          break
+        end
+      end
+      if matched 
+        return true
+      end
+    end
+
+    return false
+
   end
 end

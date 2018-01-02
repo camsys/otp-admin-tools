@@ -3,10 +3,11 @@ require 'net/http'
 
 class OtpService
 
-  attr_accessor :base_url
+  attr_accessor :base_url, :api_key
 
-  def initialize(base_url)
+  def initialize(base_url, api_key)
       @base_url = base_url
+      @api_key = api_key
   end
 
   def plan(
@@ -67,6 +68,11 @@ class OtpService
     
     url_options += "&walkReluctance=" + walk_reluctance.to_s
     url_options += "&transferPenalty=" + transfer_penalty.to_i.to_s
+
+    #APIKEY
+    unless @api_key.blank? 
+      url_options += "&apikey=#{@api_key}"
+    end
 
     url = base_url + url_options
 
@@ -145,6 +151,11 @@ class OtpService
 
     url_options += "&walkReluctance=" + walk_reluctance.to_s
     url_options += "&transferPenalty=" + transfer_penalty.to_i.to_s
+
+    #APIKEY
+    unless @api_key.blank? 
+      url_options += "&apikey=#{@api_key}"
+    end
 
     url = base_url + url_options
 
