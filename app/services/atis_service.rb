@@ -68,7 +68,7 @@ class AtisService
       <Maxanswers>3</Maxanswers>
       <Maxtransfers>3</Maxtransfers>
       <Debug>1</Debug>
-      <Xmode>BCXTFRSLK123</Xmode>
+      <Xmode>#{trip_params[:atis_mode] || 'BCXTFRSLK123'}</Xmode>
     </namesp1:Plantrip>
     </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>"

@@ -23,6 +23,8 @@ class Group < ApplicationRecord
     test.atis_walk_increase = self.atis_walk_increase
     test.otp_accessible = self.otp_accessible
     test.atis_accessible = self.atis_accessible
+    test.otp_mode = self.otp_mode
+    test.atis_mode = self.atis_mode
 
     test.comment = test.id 
     test.save 
@@ -35,7 +37,7 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible)
+          wheelchair=self.otp_accessible, mode=self.otp_mode)
 
       atis_request, atis_response = atis.plan_trip(trip.params)
       viewable = otp.viewable_url(
@@ -46,7 +48,7 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible)
+          wheelchair=self.otp_accessible, mode=self.otp_mode)
       
       Result.create(trip: trip, test: test, 
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
@@ -128,5 +130,13 @@ class Group < ApplicationRecord
     end
 
   end #Update
+
+  OtpModes = {
+      "TRANSIT,WALK" => "Transit",
+      "SUBWAY" => "Subway",
+      "BUS" => "Bus",
+      "RAIL" => "Rail",
+      "WALK" => "Walk"
+  }
 
 end

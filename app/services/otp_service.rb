@@ -12,10 +12,10 @@ class OtpService
 
   def plan(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false)
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false, mode_param="TRANSIT,WALK")
 
     # Hardcoded Defaults
-    mode="TRANSIT,WALK"
+    mode=mode_param.to_s
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
@@ -93,7 +93,7 @@ class OtpService
 
   def viewable_url(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false)
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false, mode_param="TRANSIT,WALK")
 
     #def viewable_url(from,
     #    to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
@@ -101,7 +101,7 @@ class OtpService
     #    min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
 
     # Hardcoded Defaults
-    mode="TRANSIT,WALK"
+    mode=mode_param.to_s
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
@@ -198,16 +198,16 @@ class OtpService
   end
 
   def get_otp_mode trip_type
-    hash = {'mode_transit': 'TRANSIT,WALK',
-    'mode_bicycle_transit': 'TRANSIT,BICYCLE',
-    'mode_park_transit':'CAR_PARK,WALK,TRANSIT',
-    'mode_car_transit':'CAR,WALK,TRANSIT',
-    'mode_bike_park_transit':'BICYCLE_PARK,WALK,TRANSIT',
-    'mode_rail':'TRAINISH,WALK',
-    'mode_bus':'BUSISH,WALK',
-    'mode_walk':'WALK',
-    'mode_car':'CAR',
-    'mode_bicycle':'MODE_BICYCLE'}
+    hash = {'mode_transit' => 'TRANSIT,WALK',
+    'mode_bicycle_transit'=> 'TRANSIT,BICYCLE',
+    'mode_park_transit'=>'CAR_PARK,WALK,TRANSIT',
+    'mode_car_transit'=>'CAR,WALK,TRANSIT',
+    'mode_bike_park_transit'=>:'BICYCLE_PARK,WALK,TRANSIT',
+    'mode_rail'=>'TRAINISH,WALK',
+    'mode_bus'=>'BUSISH,WALK',
+    'mode_walk'=>'WALK',
+    'mode_car'=>'CAR',
+    'mode_bicycle'=>'MODE_BICYCLE'}
     hash[trip_type.to_sym]
   end
 

@@ -29,6 +29,11 @@
         Accessible?
       .col-md-6.text-left
         = f.input :otp_accessible, collection: [false, true], label: false, include_blank: false
+    .row
+      .col-md-6.detail.text-right
+        Mode
+      .col-md-6.text-left
+        = f.input :otp_mode, :collection => Group::OtpModes.map {|k,v| [v,k]} , label: false, include_blank: false
   .col-md-6
     %h4.text-center
       ATIS Settings
@@ -52,3 +57,8 @@
         Accessible?
       .col-md-6.text-left
         = f.input :atis_accessible, collection: [false, true], label: false, include_blank: false
+    .row
+      .col-md-6.detail.text-right
+        Mode
+      .col-md-6.text-left
+        = f.input :atis_mode, label: false, include_blank: false, input_html: { value: f.object.atis_mode || 'BCXTFRSLK123' }
