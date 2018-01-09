@@ -70,7 +70,7 @@
 .row
   .col-md-1
   .col-md-10
-    -@test.results.each do |result|
+    -@test.results.order(:id).each do |result|
       -unless result.trip.nil?
         .row
           %div.panel.panel-default
