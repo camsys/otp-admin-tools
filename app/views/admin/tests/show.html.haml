@@ -123,7 +123,15 @@
                           .row
                             .col-md-1
                             .col-md-10
-                              -if v < 0.0
+                              -if v == 'atis_nil'
+                                .well.well-sm.good
+                                  %h4
+                                    ="ATIS transfers are n/a"
+                              -elsif v == 'otp_nil'
+                                .well.well-sm.bad
+                                  %h4
+                                    ="OTP transfers are n/a"
+                              -elsif v < 0.0
                                 .well.well-sm.good
                                   %h4
                                     ="OTP route has #{pluralize(v.abs, 'fewer transfer')}"
@@ -139,7 +147,15 @@
                           .row
                             .col-md-1
                             .col-md-10
-                              -if v < 0.0
+                              -if v == 'atis_nil'
+                                .well.well-sm.good
+                                  %h4
+                                    ="ATIS transfers are n/a"
+                              -elsif v == 'otp_nil'
+                                .well.well-sm.bad
+                                  %h4
+                                    ="OTP transfers are n/a"
+                              -elsif v < 0.0
                                 .well.well-sm.good
                                   %h4
                                     ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% less"

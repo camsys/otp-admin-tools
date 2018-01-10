@@ -98,8 +98,8 @@ module ComparisonTools
     otp_routes = (self.otp_summary.map{ |i| i[:route_ids] }).uniq
     atis_routes = (self.atis_summary.map{ |i| i[:route_ids] }).uniq
 
-    # If ATIS returned routes, but OTP did not
-    if not atis_routes.empty? and otp_routes.empty?
+    # If ATIS or OTP return empty routes
+    if atis_routes.empty? || otp_routes.empty?
       self.percent_matched = 0
       self.save
       return self.percent_matched
@@ -109,10 +109,6 @@ module ComparisonTools
       self.percent_matched = nil
       self.save
       return self.percent_matched
-    end
-
-    if atis_routes.empty? and not otp_routes.empty?
-      return 1
     end
 
     #Convert the ATIS Route IDs to GTFS Ids
@@ -139,16 +135,24 @@ module ComparisonTools
 
   def compare_summary
     
-    if self.parsed_atis_response.nil? 
-      return {walk_time: 0, transit_time: 0, transfer: 0}
+    if self.parsed_atis_response.nil?
+      return {walk_time: 'atis_nil', transit_time: 'atis_nil', transfer: 'atis_nil'}
     end
 
     if self.otp_response["plan"].nil?
-      return {walk_time: 0, transit_time: 0, transfers: 0}
+      return {walk_time: 'otp_nil', transit_time: 'otp_nil', transfers: 'otp_nil'}
     end
 
     atis = arrayify(self.parsed_atis_response["Itin"]).first 
-    otp = self.otp_response["plan"]["itineraries"].first 
+    otp = self.otp_response["plan"]["itineraries"].first
+
+    #puts "otp walktime #{otp["walkTime"]}"
+    #puts "atis walktime #{atis["Walktime"]}"
+    puts "ID #{self.id}"
+    if self.id == 15
+      #puts "otp walktime #{otp.inspect}"
+      puts "atis walktime #{atis.inspect}"
+    end
     walk_time_ratio = (otp["walkTime"].to_f/(atis["Walktime"].to_f*60)) - 1
     total_time_ratio = (otp["duration"].to_f/(atis["Totaltime"].to_f*60)) - 1
     transfers_ratio = otp["transfers"] - self.atis_summary.first[:transfers]
