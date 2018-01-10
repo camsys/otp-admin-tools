@@ -11,8 +11,8 @@
   .div
     .row
       -itin.each do |i|
-        -unless i.nil?
-          .col-md-6
+        .col-md-6
+          -unless i.nil?
             .col-md-12.text-center
               .h4
                 =image_tag(image_url("ped.svg"), size: "18x18")
@@ -28,9 +28,8 @@
     .row 
 
       //Show OTP Legs
-      -unless itin.first.nil?
-        
-        .col-md-6.text-center
+      .col-md-6.text-center
+        -unless itin.first.nil?
           .row.detail
             ="Depart: #{otp_time_str(itin.first[:start_time])}"
           .row
@@ -55,9 +54,9 @@
             ="Arrive: #{otp_time_str(itin.first[:end_time])}"
 
 
-      //Show ATIS 
-      -unless itin.last.nil?
-        .col-md-6.text-center
+      //Show ATIS
+      .col-md-6.text-center
+        -unless itin.last.nil?
           .row.detail
             ="Depart: #{atis_time_str(itin.last[:start_time])}"
           .row
