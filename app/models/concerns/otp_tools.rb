@@ -2,6 +2,8 @@ module OtpTools
 
   def otp_modes_from_atis atis_mode
 
+    atis_mode ||= "BCXTFRSLK123"
+
     mode_types = {
         "B" => "MTABC,MTA NYCT",
         "R" => "MTASBWY",
@@ -9,7 +11,6 @@ module OtpTools
         "F" => "NYC DOT,NYCWF",
         "X" => "702"
     }
-
     unassigned_modes = "NJT,NJB,path-nj-us,LIBUS"
 
     banned_agencies_param = nil
