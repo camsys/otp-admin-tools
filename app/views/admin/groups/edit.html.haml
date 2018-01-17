@@ -61,6 +61,7 @@
           %th Time
           %th Arrive By?
           %th Atis Mode
+          %th Accessible
           %th
 
           
@@ -82,6 +83,8 @@
             =trip.arrive_by
           %td
             =trip.atis_mode
+          %td
+            =trip.atis_accessible
           %td.text-right
             =link_to "Delete", admin_trip_path(trip), 
               method: :delete, 

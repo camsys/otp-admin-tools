@@ -8,6 +8,7 @@ class Group < ApplicationRecord
   #### METHODS ####
   
   def run_test
+
     otp = OtpService.new(Config.otp_url, Config.otp_api_key)
     atis = AtisService.new(Config.atis_url, Config.atis_app_id)
     test = Test.create(group: self)
@@ -23,11 +24,12 @@ class Group < ApplicationRecord
     test.atis_walk_dist = self.atis_walk_dist
     test.atis_walk_speed = self.atis_walk_speed
     test.atis_walk_increase = self.atis_walk_increase
-    test.otp_accessible = self.otp_accessible
-    test.atis_accessible = self.atis_accessible
+    #test.otp_accessible = self.otp_accessible
+    #test.atis_accessible = self.atis_accessible
 
-    test.comment = test.id 
-    test.save 
+    test.comment = test.id
+    test.save
+
     test.trips.each do |trip|
 
       trip_time =  trip.time
@@ -41,7 +43,7 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible, banned_agencies=otp_banned_agencies,
+          wheelchair=trip.atis_accessible, banned_agencies=otp_banned_agencies,
           banned_route_types=otp_banned_route_types)
 
       atis_request, atis_response = atis.plan_trip(trip.params)
@@ -53,7 +55,7 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible, banned_agencies=otp_banned_agencies,
+          wheelchair=trip.atis_accessible, banned_agencies=otp_banned_agencies,
           banned_route_types=otp_banned_route_types)
       
       Result.create(trip: trip, test: test, 
@@ -110,6 +112,7 @@ class Group < ApplicationRecord
                time: DateTime.strptime("#{row[6]} #{row[7]} -0500", "%m/%e/%y %l:%M %p %z"),
                arrive_by: row[8],
                atis_mode: row[9] || "BCXTFRSLK123",
+               atis_accessible: row[10] || false,
                group: self
            })
 
