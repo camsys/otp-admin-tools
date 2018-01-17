@@ -76,7 +76,7 @@
                 =" to "
                 = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
                   =result.trip.destination
-                =result.trip.arrive_by ? " arriving by #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{result.trip.time.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+                =result.trip.arrive_by ? " arriving by #{(result.trip_time||result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{(result.trip_time || result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
 
             %div.panel-body
               .row 
