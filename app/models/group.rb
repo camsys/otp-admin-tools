@@ -24,10 +24,12 @@ class Group < ApplicationRecord
     test.atis_walk_dist = self.atis_walk_dist
     test.atis_walk_speed = self.atis_walk_speed
     test.atis_walk_increase = self.atis_walk_increase
-    test.otp_accessible = self.otp_accessible
-    test.atis_accessible = self.atis_accessible
-    test.comment = test.id 
-    test.save 
+    #test.otp_accessible = self.otp_accessible
+    #test.atis_accessible = self.atis_accessible
+
+    test.comment = test.id
+    test.save
+
     test.trips.each do |trip|
 
       trip_day_index = trip.time.wday
@@ -47,7 +49,7 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible, banned_agencies=otp_banned_agencies,
+          wheelchair=trip.atis_accessible, banned_agencies=otp_banned_agencies,
           banned_route_types=otp_banned_route_types)
 
       atis_request, atis_response = atis.plan_trip(trip.params trip_time)
@@ -60,7 +62,7 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible, banned_agencies=otp_banned_agencies,
+          wheelchair=trip.atis_accessible, banned_agencies=otp_banned_agencies,
           banned_route_types=otp_banned_route_types)
       
       Result.create(trip: trip, test: test, 
