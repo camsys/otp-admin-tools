@@ -19,7 +19,6 @@ class AtisService
 
   ## Send the Requests
   def plan_trip trip_params
-    
     type = 'post'
     url = @base_url
     uri = URI.parse(url)
@@ -39,7 +38,12 @@ class AtisService
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = 's'.in? url[0..4]
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    resp = http.start {|http| http.request(req)}
+    begin
+      resp = http.start {|http| http.request(req)}
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+        Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+        resp.body = nil
+    end
     return req.body, resp.body
 
   end
