@@ -8,21 +8,22 @@ class OtpService
   def initialize(base_url, api_key)
       @base_url = base_url
       @api_key = api_key
+
   end
 
   def plan(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false, mode_param="TRANSIT,WALK")
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60,
+        wheelchair=false, banned_agencies=nil, banned_route_types=nil)
 
     # Hardcoded Defaults
-    mode=mode_param.to_s
+    otp_mode = "TRANSIT,WALK"
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
     wheelchair=wheelchair.to_s
     min_transfer_time=nil
     max_transfer_time=nil
-    banned_routes=nil
     preferred_routes=nil
 
     #walk_speed is defined in MPH and converted to m/s before going to OTP
@@ -33,15 +34,19 @@ class OtpService
 
     base_url = @base_url.to_s + '/plan?'
     url_options = "&time=" + time
-    url_options += "&mode=" + mode + "&date=" + date
+    url_options += "&mode=" + otp_mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair.to_s
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + walk_speed.to_s
     url_options += "&showNextFromDeparture=true"
 
-    if banned_routes
-      url_options += "&bannedRoutes=" + banned_routes
+    if banned_agencies
+      url_options += "&bannedAgencies=" + banned_agencies
+    end
+
+    if banned_route_types
+      url_options += "&bannedRouteTypes=" + banned_route_types
     end
 
     if preferred_routes
@@ -58,7 +63,7 @@ class OtpService
     end
 
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
-    if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
+    if otp_mode == "TRANSIT,BICYCLE" or otp_mode == "BICYCLE"
       url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
     else
       url_options += "&maxWalkDistance=" + max_walk_distance.to_s
@@ -93,7 +98,8 @@ class OtpService
 
   def viewable_url(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60, wheelchair=false, mode_param="TRANSIT,WALK")
+        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60,
+        wheelchair=false, banned_agencies=nil, banned_route_types=nil)
 
     #def viewable_url(from,
     #    to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
@@ -101,7 +107,7 @@ class OtpService
     #    min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
 
     # Hardcoded Defaults
-    mode=mode_param.to_s
+    otp_mode = "TRANSIT,WALK"
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
@@ -116,15 +122,19 @@ class OtpService
 
     base_url = 'http://otp-mta-demo.camsys-apps.com/#' + 'plan?'
     url_options = "&time=" + time
-    url_options += "&mode=" + mode + "&date=" + date
+    url_options += "&mode=" + otp_mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair.to_s
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + walk_speed.to_s
     url_options += "&showNextFromDeparture=true"
 
-    if banned_routes
-      url_options += "&bannedRoutes=" + banned_routes
+    if banned_agencies
+      url_options += "&bannedAgencies=" + banned_agencies
+    end
+
+    if banned_route_types
+      url_options += "&bannedRouteTypes=" + banned_route_types
     end
 
     if preferred_routes
@@ -141,7 +151,7 @@ class OtpService
     end
 
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
-    if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
+    if otp_mode == "TRANSIT,BICYCLE" or otp_mode == "BICYCLE"
       url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
     else
       url_options += "&maxWalkDistance=" + max_walk_distance.to_s

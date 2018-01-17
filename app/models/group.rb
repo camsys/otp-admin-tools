@@ -1,5 +1,8 @@
 class Group < ApplicationRecord
 
+  include DateTools
+  include OtpTools
+
   has_many :trips
   has_many :tests
 
@@ -10,7 +13,7 @@ class Group < ApplicationRecord
     atis = AtisService.new(Config.atis_url, Config.atis_app_id)
     test = Test.create(group: self)
 
-    # Copy params for archiving.  
+    # Copy params for archiving.
     # The group params may change in the future, but we shuld remember the params this particular
     # test was run with.
     test.otp_walk_speed = self.otp_walk_speed
@@ -23,21 +26,24 @@ class Group < ApplicationRecord
     test.atis_walk_increase = self.atis_walk_increase
     test.otp_accessible = self.otp_accessible
     test.atis_accessible = self.atis_accessible
-    test.otp_mode = self.otp_mode
-    test.atis_mode = self.atis_mode
 
     test.comment = test.id 
     test.save 
     test.trips.each do |trip|
+
+      trip_time =  trip.time
+      otp_banned_agencies, otp_banned_route_types = otp_modes_from_atis(trip.atis_mode)
+
       otp_request, otp_response =   otp.plan(
           [trip.origin_lat, trip.origin_lng], 
           [trip.destination_lat, trip.destination_lng], 
-          trip.time, arriveBy=trip.arrive_by,
+          trip_time, arriveBy=trip.arrive_by,
           walk_speed=self.otp_walk_speed, 
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible, mode=self.otp_mode)
+          wheelchair=self.otp_accessible, banned_agencies=otp_banned_agencies,
+          banned_route_types=otp_banned_route_types)
 
       atis_request, atis_response = atis.plan_trip(trip.params)
       viewable = otp.viewable_url(
@@ -48,7 +54,8 @@ class Group < ApplicationRecord
           max_walk_distance=self.otp_max_walk_distance,
           walk_reluctance=self.otp_walk_reluctance,
           tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=self.otp_accessible, mode=self.otp_mode)
+          wheelchair=self.otp_accessible, banned_agencies=otp_banned_agencies,
+          banned_route_types=otp_banned_route_types)
       
       Result.create(trip: trip, test: test, 
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
@@ -95,16 +102,18 @@ class Group < ApplicationRecord
 
         begin
           Trip.create!({
-            origin: row[0],
-            origin_lat: row[1],
-            origin_lng: row[2],
-            destination: row[3],
-            destination_lat: row[4],
-            destination_lng: row[5],
-            time: DateTime.strptime("#{row[6]} #{row[7]} -0500", "%m/%e/%y %l:%M %p %z"),
-            arrive_by: row[8],
-            group: self
-          })
+               origin: row[0],
+               origin_lat: row[1],
+               origin_lng: row[2],
+               destination: row[3],
+               destination_lat: row[4],
+               destination_lng: row[5],
+               time: DateTime.strptime("#{row[6]} #{row[7]} -0500", "%m/%e/%y %l:%M %p %z"),
+               arrive_by: row[8],
+               atis_mode: row[9] || "BCXTFRSLK123",
+               group: self
+           })
+
         rescue
           #Found an error, back out all changes and restore previous POIs
           message = 'Error found on line: ' + line.to_s
@@ -130,13 +139,5 @@ class Group < ApplicationRecord
     end
 
   end #Update
-
-  OtpModes = {
-      "TRANSIT,WALK" => "Transit",
-      "SUBWAY" => "Subway",
-      "BUS" => "Bus",
-      "RAIL" => "Rail",
-      "WALK" => "Walk"
-  }
 
 end
