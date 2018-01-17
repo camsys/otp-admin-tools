@@ -38,6 +38,10 @@ class Group < ApplicationRecord
       raw_trip_date_time = "#{raw_trip_date} #{raw_trip_time}"
 
       trip_time =  DateTime.strptime(raw_trip_date_time, "%Y-%m-%d %l:%M %p %z")
+      
+      if trip_time < DateTime.now
+      	trip_time += 7.days
+      end
 
       otp_banned_agencies, otp_banned_route_types = otp_modes_from_atis(trip.atis_mode)
 
@@ -119,6 +123,7 @@ class Group < ApplicationRecord
                time: DateTime.strptime("#{row[6]} #{row[7]} -0500", "%m/%e/%y %l:%M %p %z"),
                arrive_by: row[8],
                atis_mode: row[9] || "BCXTFRSLK123",
+               atis_accessible: row[10] || false,
                group: self
            })
 
