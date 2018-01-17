@@ -1,6 +1,5 @@
 class Group < ApplicationRecord
 
-  include DateTools
   include OtpTools
 
   has_many :trips
