@@ -24,18 +24,31 @@
           Destination Name
         .col-md-7
           = f.input :destination, required:true, :as => :string, label: false
-    .col-md-6
       .row
         .col-md-5.detail.text-right
           Destination Lat
         .col-md-7
           = f.input :destination_lat, required:false, :as => :string, label: false
-    .col-md-6
       .row
         .col-md-5.detail.text-right
           Destination Lng
         .col-md-7
           = f.input :destination_lng, required:false, :as => :string, label: false
+
+  .row
+    .col-md-6
+      .row
+        .col-md-5.detail.text-right
+          Atis Mode
+        .col-md-7
+          = f.input :atis_mode, required:false, input_html: { value: f.object.atis_mode || 'BCXTFRSLK123' }, :as => :string, label: false
+    .col-md-6
+      .row
+        .col-md-5.detail.text-right
+          Accessible
+        .col-md-7
+          = f.input :atis_accessible, collection: [false, true], required:false,  include_blank: false, label: false
+
   .row
     .col-md-12
       .row
@@ -50,6 +63,6 @@
         .col-md-4.detail.text-right
           Arrive By?
         .col-md-8
-          = f.input :arrive_by, collection: [true, false], label: false, include_blank: false
+          = f.input :arrive_by, collection: [false, true], label: false, include_blank: false
   
   = f.input :group_id, :as => :hidden, input_html: {value: @group.id}

@@ -17,7 +17,7 @@ module Admin
     private
 
     def trip_params
-      params.require(:trip).permit(:origin, :origin_lat, :origin_lng, :destination, :destination_lat, :destination_lng, :time, :arrive_by, :atis_mode, :group_id)
+      params.require(:trip).permit(:origin, :origin_lat, :origin_lng, :destination, :destination_lat, :destination_lng, :time, :arrive_by, :atis_mode, :atis_accessible, :group_id)
     end
 
   end
