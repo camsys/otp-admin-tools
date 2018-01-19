@@ -31,10 +31,6 @@
               %td.detail Transfer Penalty
               %td 
                 ="#{@test.otp_transfer_penalty.to_i} s"
-            %tr
-              %td.detail Accessible?
-              %td 
-                ="#{@test.otp_accessible}"
 
 
         .col-md-6
@@ -52,10 +48,7 @@
               %td.detail Minimize
               %td
                 ="#{@test.atis_minimize}"
-            %tr
-              %td.detail Accessible?
-              %td 
-                ="#{@test.atis_accessible}"
+
   .col-md-4            
 
 
@@ -77,6 +70,13 @@
                 = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
                   =result.trip.destination
                 =result.trip.arrive_by ? " arriving by #{(result.trip_time||result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{(result.trip_time || result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+              %h5
+                %b MODE:
+                =result.trip.atis_mode
+                %span.bar
+                  = "|"
+                %b ACCESSIBLE:
+                =result.trip.atis_accessible
 
             %div.panel-body
               .row 
