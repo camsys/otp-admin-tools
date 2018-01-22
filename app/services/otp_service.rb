@@ -1,6 +1,6 @@
 require 'json'
 require 'net/http'
-
+require 'logger'
 class OtpService
 
   attr_accessor :base_url, :api_key
@@ -8,7 +8,6 @@ class OtpService
   def initialize(base_url, api_key)
       @base_url = base_url
       @api_key = api_key
-
   end
 
   def plan(
@@ -21,7 +20,7 @@ class OtpService
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
-    wheelchair=wheelchair.to_s
+    wheelchair=wheelchair.to_s.strip.empty? ? "false" : wheelchair.to_s
     min_transfer_time=nil
     max_transfer_time=nil
     preferred_routes=nil
@@ -62,6 +61,8 @@ class OtpService
       url_options += "&maxTransferTime=" + max_transfer_time.to_s
     end
 
+
+
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
     if otp_mode == "TRANSIT,BICYCLE" or otp_mode == "BICYCLE"
       url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
@@ -80,7 +81,6 @@ class OtpService
     end
 
     url = base_url + url_options
-
     puts url
 
     begin
@@ -91,8 +91,6 @@ class OtpService
     end
 
     return url, {'id'=>500, 'msg'=>'Error'}
-
-    
 
   end
 
@@ -111,7 +109,7 @@ class OtpService
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
-    wheelchair=wheelchair.to_s
+    wheelchair=wheelchair.to_s.strip.empty? ? "false" : wheelchair.to_s
     min_transfer_time=nil
     max_transfer_time=nil
     banned_routes=nil
