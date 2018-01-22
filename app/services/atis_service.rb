@@ -1,4 +1,5 @@
 require "net/http"
+require 'logger'
 
 class AtisService
 
@@ -32,7 +33,7 @@ class AtisService
         req = Net::HTTP::Get.new(uri)
     end
 
-    puts req.body 
+    puts req.body
     req.add_field 'Content-Type', 'text/xml'
 
     http = Net::HTTP.new(uri.host, uri.port)
@@ -48,8 +49,8 @@ class AtisService
 
   end
 
-  def plan_body trip_params 
-
+  def plan_body trip_params
+    xmode = trip_params[:atis_mode].empty? ? "BCXTFRSLK123" : trip_params[:atis_mode]
     "<?xml version='1.0' encoding='UTF-8'?>
     <SOAP-ENV:Envelope xmlns:xsi='http://www.w3.org/1999/XMLSchema-instance' xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/' xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsd='http://www.w3.org/1999/XMLSchema' SOAP-ENV:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'>
     <SOAP-ENV:Body>
@@ -72,7 +73,7 @@ class AtisService
       <Maxanswers>3</Maxanswers>
       <Maxtransfers>3</Maxtransfers>
       <Debug>1</Debug>
-      <Xmode>#{trip_params[:atis_mode] || 'BCXTFRSLK123'}</Xmode>
+      <Xmode>#{xmode}</Xmode>
     </namesp1:Plantrip>
     </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>"
