@@ -12,7 +12,7 @@ module TripCompare
     config.time_zone = 'Eastern Time (US & Canada)'
 
     ENV['GOOGLE_PLACES_API_KEY'] = 'test'
-    ENV['VERSION'] = `git --git-dir="#{Rails.root.join(".git")}" --work-tree="#{Rails.root}" log -1 --date=short --format="%ad-%h"|sed 's/-/./g'`
+    ENV['GIT_VERSION'] = `git --git-dir="#{Rails.root.join(".git")}" --work-tree="#{Rails.root}" log -1 --date=short --format="%ad-%h"|sed 's/-/./g'`
 
 
     # Settings in config/environments/* take precedence over those specified here.
