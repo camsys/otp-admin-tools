@@ -5,6 +5,8 @@ class Admin::ConfigsController < Admin::AdminController
   PERMITTED_CONFIGS = [
     :otp_url,
     :otp_api_key,
+    :otp2_url,
+    :otp2_api_key,
     :atis_app_id,
     :atis_url,
     :atis_otp_mapping

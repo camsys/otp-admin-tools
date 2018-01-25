@@ -57,6 +57,32 @@
   .col-md-2
   .col-md-8
     =simple_form_for Config,
+      url: admin_configs_path,
+      html: { class: 'form-horizontal',
+              id: 'otp2',
+              multipart: true,
+              method: 'patch' },
+      authenticity_token: true do |f|
+      .panel.panel-primary
+        .panel-heading
+          %h4
+            = "Secondary Open Trip Planner Configs"
+        .panel-body.panel-primary
+          = f.input :otp2_url, required: true,
+            label: "URL of the Open Trip Planner Server",
+            input_html: {value: @configs.find_by(key: :otp2_url).try(:value)},
+            as: :string
+          = f.input :otp2_api_key, required: false,
+            label: "API Key for Open Trip Planner Server",
+            input_html: {value: @configs.find_by(key: :otp2_api_key).try(:value)},
+            as: :string
+        .panel-footer.panel-primary.text-center
+          = f.button :submit, "OK", class: 'btn action-button btn-primary', role: 'button'
+
+.row
+  .col-md-2
+  .col-md-8
+    =simple_form_for Config,
       url: admin_config_atis_otp_mapping_path,
       html: { class: 'form-horizontal', 
               id: 'atis_otp', 

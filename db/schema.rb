@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117070931) do
+ActiveRecord::Schema.define(version: 20180125151942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20180117070931) do
     t.string   "atis_walk_increase"
     t.boolean  "otp_accessible"
     t.boolean  "atis_accessible"
+    t.string   "compare_type"
   end
 
   create_table "results", force: :cascade do |t|

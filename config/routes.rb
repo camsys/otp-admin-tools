@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :groups do
       member do
         post 'run_test'
+        post 'run_otp_test'
         get 'geocode'
       end
     end

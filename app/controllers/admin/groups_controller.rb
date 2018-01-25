@@ -31,6 +31,13 @@ module Admin
       redirect_to edit_admin_group_path(@group)
     end
 
+    def run_otp_test
+      @group = Group.find(params[:id])
+      @group.update_attributes(group_params)
+      RunOtpTestsJob.perform_later(@group.id)
+      #redirect_to edit_admin_group_path(@group)
+    end
+
     def geocode
       @group = Group.find(params[:id])
       @group.geocode_trips
@@ -71,7 +78,13 @@ module Admin
 
     def group_params
       params.require(:group).permit(:name, :comment, 
-        :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty,
+        :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty, :compare_type,
+        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible)
+    end
+
+    def group_params_otp
+      params.require(:group).permit(:name, :comment,
+        :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty, :compare_type,
         :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible)
     end
   end

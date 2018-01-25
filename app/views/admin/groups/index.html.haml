@@ -8,6 +8,7 @@
       %thead.thead-default
         %tr
           %th Name
+          %th Compare Type
           %th Comment
           %th Trips
           %th Created
@@ -17,6 +18,8 @@
         %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
           %td
             =group.name
+          %td
+            =group.formatted_type
           %td
             =group.comment
           %td

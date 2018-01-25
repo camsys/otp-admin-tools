@@ -2,4 +2,5 @@
   ="Create a New Group"
 =content_for :body do
   = f.input :name, required:true, :as => :string
+  = f.input :compare_type,  collection: Group::GROUP_TYPES.map {|k,v| [v,k]}, include_blank: false
   = f.input :comment, required:false, :as => :text
