@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180125151942) do
+ActiveRecord::Schema.define(version: 20180130050020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,10 +48,11 @@ ActiveRecord::Schema.define(version: 20180125151942) do
     t.integer  "trip_id"
     t.text     "otp_viewable_request"
     t.integer  "test_id"
-    t.text     "atis_request"
-    t.text     "atis_response"
+    t.text     "compare_request"
+    t.text     "compare_response"
     t.decimal  "percent_matched"
     t.datetime "trip_time"
+    t.string   "compare_type"
     t.index ["test_id"], name: "index_results_on_test_id", using: :btree
     t.index ["trip_id"], name: "index_results_on_trip_id", using: :btree
   end

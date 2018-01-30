@@ -4,13 +4,16 @@ module Admin
     def show
       @result = Result.find(params[:id])
       @otp_summary = @result.otp_summary
-      @atis_summary = @result.atis_summary
-
-      max_length = [@otp_summary.count, @atis_summary.count].max
+      if(@result.compare_type == 'atis')
+        @compare_summary = @result.atis_summary
+      else
+        @compare_summary = @result.otp2_summary
+      end
+      max_length = [@otp_summary.count, @compare_summary.count].max
       @otp_summary = @otp_summary + Array.new(max_length - @otp_summary.count)
-      @atis_summary = @atis_summary + Array.new(max_length - @atis_summary.count)
+      @compare_summary = @compare_summary + Array.new(max_length - @compare_summary.count)
 
-      @full_summary = @otp_summary.zip(@atis_summary)
+      @full_summary = @otp_summary.zip(@compare_summary)
 
     end
 

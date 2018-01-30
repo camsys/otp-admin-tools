@@ -7,8 +7,8 @@
     %table.table.table-hover#group-table
       %thead.thead-default
         %tr
-          %th Name
           %th Compare Type
+          %th Name
           %th Comment
           %th Trips
           %th Created
@@ -17,9 +17,9 @@
       -@groups.each do |group|
         %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
           %td
-            =group.name
-          %td
             =group.formatted_type
+          %td
+            =group.name
           %td
             =group.comment
           %td

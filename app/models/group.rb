@@ -76,7 +76,7 @@ class Group < ApplicationRecord
       
       Result.create(trip: trip, test: test, 
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
-                    atis_request: atis_request, atis_response: atis_response, trip_time: trip_time)
+                    compare_request: atis_request, compare_response: atis_response, trip_time: trip_time, compare_type: self.compare_type)
     end
   end
 
@@ -93,20 +93,19 @@ class Group < ApplicationRecord
     test.otp_walk_reluctance = self.otp_walk_reluctance
     test.otp_transfer_penalty = self.otp_transfer_penalty
 
-=begin
     test.atis_minimize = self.atis_minimize
     test.atis_walk_dist = self.atis_walk_dist
     test.atis_walk_speed = self.atis_walk_speed
     test.atis_walk_increase = self.atis_walk_increase
-=end
+
     #test.otp_accessible = self.otp_accessible
     #test.atis_accessible = self.atis_accessible
 
     test.comment = test.id
+
     test.save
 
     test.trips.each do |trip|
-
       trip_day_index = trip.time.wday
       raw_trip_date = get_non_holiday_date get_date_for_day(trip_day_index)
       raw_trip_time = trip.time.strftime("%l:%M %p %z")
@@ -119,7 +118,6 @@ class Group < ApplicationRecord
       end
 
       otp_banned_agencies, otp_banned_route_types = otp_modes_from_atis(trip.atis_mode)
-
       otp_request, otp_response =   otp.plan(
           [trip.origin_lat, trip.origin_lng],
           [trip.destination_lat, trip.destination_lng],
@@ -153,20 +151,9 @@ class Group < ApplicationRecord
           wheelchair=trip.atis_accessible, banned_agencies=otp_banned_agencies,
           banned_route_types=otp_banned_route_types)
 
-      viewable2 = otp2.viewable_url(
-          [trip.origin_lat, trip.origin_lng],
-          [trip.destination_lat, trip.destination_lng],
-          trip_time, arriveBy=trip.arrive_by,
-          walk_speed=self.otp_walk_speed,
-          max_walk_distance=self.otp_max_walk_distance,
-          walk_reluctance=self.otp_walk_reluctance,
-          tranfser_penalty=self.otp_transfer_penalty,
-          wheelchair=trip.atis_accessible, banned_agencies=otp_banned_agencies,
-          banned_route_types=otp_banned_route_types)
-
-      Result.create(trip: trip, test: test,
+      result = Result.create(trip: trip, test: test,
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
-                    atis_request: otp2_request, atis_response: otp2_response, trip_time: trip_time)
+                    compare_request: otp2_request, compare_response: otp2_response, trip_time: trip_time, compare_type: self.compare_type)
     end
   end
 

@@ -5,7 +5,12 @@
         OTP Results
   .col-md-6.text-center
     %h3
-      ATIS Results
+      -if @result.compare_type == 'otp'
+        = link_to @result.get_viewable_url(@result.compare_request), target: :_blank do
+          OTP2 Results
+      -else
+        ATIS Results
+
 
 -itins.each_with_index do |itin, index|
   .div
@@ -55,34 +60,59 @@
 
 
       //Show ATIS
-      .col-md-6.text-center
-        -unless itin.last.nil?
-          .row.detail
-            ="Depart: #{atis_time_str(itin.last[:start_time])}"
-          .row
-            .col-md-3
-            .col-md-6
-              %hr 
-
-          -itin.last[:legs].each_with_index do |leg, index|
-            .div.text-center
-              .row.detail
-                ="#{atis_time_str(leg['Ontime'])} to #{atis_time_str(leg['Offtime'])}"
-              .row
-                ="Route: #{leg['Service']['Route']} #{leg['Service']['Sign']}"
-              .row
-                ="From #{leg['Onstop']} to #{leg['Offstop']}"
-
+      -if @result.compare_type == 'atis'
+        .col-md-6.text-center
+          -unless itin.last.nil?
+            .row.detail
+              ="Depart: #{atis_time_str(itin.last[:start_time])}"
             .row
               .col-md-3
               .col-md-6
-                %hr 
-          .row.detail
-            ="Arrive: #{atis_time_str(itin.last[:end_time])}"
-      
+                %hr
+
+            -itin.last[:legs].each_with_index do |leg, index|
+              .div.text-center
+                .row.detail
+                  ="#{atis_time_str(leg['Ontime'])} to #{atis_time_str(leg['Offtime'])}"
+                .row
+                  ="Route: #{leg['Service']['Route']} #{leg['Service']['Sign']}"
+                .row
+                  ="From #{leg['Onstop']} to #{leg['Offstop']}"
+
+              .row
+                .col-md-3
+                .col-md-6
+                  %hr
+            .row.detail
+              ="Arrive: #{atis_time_str(itin.last[:end_time])}"
+      - else
+        //Show OTP Legs
+        .col-md-6.text-center
+          -unless itin.last.nil?
+            .row.detail
+              ="Depart: #{otp_time_str(itin.last[:start_time])}"
+            .row
+              .col-md-3
+              .col-md-6
+                %hr
+            -itin.last[:legs].each_with_index do |leg, index|
+              -unless leg['mode'] == 'WALK'
+                .div.text-center
+                  .row.detail
+                    ="#{otp_time_str(leg['startTime'])} to #{otp_time_str(leg['endTime'])}"
+                  .row
+                    ="Route: #{leg['route']} #{leg['headsign']}"
+                  .row
+                    ="From #{leg['from']['name']} to #{leg['to']['name']}"
+                .row
+                  .col-md-3
+                  .col-md-6
+                    %hr
+
+            .row.detail
+              ="Arrive: #{otp_time_str(itin.last[:end_time])}"
 
 
-  
   -unless index == (itins.count - 1)
     .col-md-1
     .col-md-10

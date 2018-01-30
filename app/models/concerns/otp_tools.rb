@@ -1,3 +1,4 @@
+require 'uri'
 module OtpTools
 
   def otp_modes_from_atis atis_mode
@@ -53,6 +54,21 @@ module OtpTools
 
     end
     return banned_agencies_param, banned_route_types_param
+  end
+
+  def get_viewable_url otp_request
+
+    uri = URI.parse(otp_request)
+    query = Rack::Utils.parse_query(uri.query)
+
+    date = Date.parse(query['date'])
+    query['date'] = date.strftime("%m-%d-%Y")
+
+    uri.query = Rack::Utils.build_query(query)
+    base =  "#{uri.scheme}://#{uri.host}/#plan?"
+    url_options = uri.query
+
+    return base + url_options
   end
 
 end

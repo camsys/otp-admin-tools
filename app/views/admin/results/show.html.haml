@@ -24,10 +24,10 @@
         =@result.otp_request
   .col-md-6
     %h4.text-center
-      Raw ATIS Request
+      = "Raw #{@result.comparison_service_name} Request"
     %pre
       %code
-        =@result.atis_request
+        =@result.compare_request
 
 .row
   .col-md-6
@@ -38,10 +38,13 @@
         =JSON.pretty_generate(@result.otp_response)
   .col-md-6
     %h4.text-center
-      Raw ATIS Response
+      = "Raw #{@result.comparison_service_name} Response"
     %pre
       %code
-        =@result.atis_response
+        -if @result.compare_type == 'atis'
+          =@result.compare_response
+        -else
+          =JSON.pretty_generate(@result.compare_response)
 
 
 
