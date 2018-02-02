@@ -74,6 +74,11 @@ module Admin
       end
     end
 
+    def export_trips
+      @group = Group.find(params[:id])
+      send_data @group.export_trips, filename: "trips_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+    end
+
     private
 
     def group_params
@@ -87,5 +92,7 @@ module Admin
         :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty, :compare_type,
         :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible)
     end
+
+
   end
 end

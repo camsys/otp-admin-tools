@@ -96,6 +96,13 @@
               class: "btn btn-sm btn-danger", 
               data: {confirm: "Are you sure?  This action cannot be undone!"}
 
+      -if @group.trips.length > 0
+        .row
+          .col-md-12.text-center
+            %h4
+              =link_to export_trips_admin_group_path(@group), :method=> :post do
+                ="Export Trips"
+
 .row
   .col-md-3
   .col-md-6

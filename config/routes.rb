@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         post 'run_test'
         post 'run_otp_test'
         get 'geocode'
+        post 'export_trips'
       end
     end
 

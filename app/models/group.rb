@@ -1,3 +1,4 @@
+require 'csv'
 class Group < ApplicationRecord
 
   include DateTools
@@ -234,6 +235,27 @@ class Group < ApplicationRecord
     end
 
   end #Update
+
+  def export_trips
+    attributes = %w{origin origin_lat origin_lng destination destination_lat destination_lng trip_date trip_time arrive_by atis_mode atis_accessible} #customize columns here
+    trips = Trip.where(group_id: self.id)
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      trips.each do |trip|
+        csv << attributes.map{ |attr|
+          if attr == 'trip_date'
+            trip.time.strftime("%D")
+          elsif attr == 'trip_time'
+            trip.time.strftime("%I:%M %p")
+          else
+            trip.send(attr)
+          end
+        }
+      end
+    end
+  end
 
   def formatted_type
     GROUP_TYPES[self.compare_type]
