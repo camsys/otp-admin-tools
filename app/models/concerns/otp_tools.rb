@@ -6,7 +6,7 @@ module OtpTools
     atis_mode = atis_mode.empty? ? "BCXTFRSLK123" : atis_mode
 
     mode_types = {
-        "B" => "MTABC,MTA NYCT",
+        "B" => "3",
         "R" => "MTASBWY",
         "C" => "LI,MNR",
         "F" => "NYC DOT,NYCWF",
@@ -29,10 +29,12 @@ module OtpTools
         banned_modes.each_with_index do |char|
           mode_key = char.upcase
           if mode_types.has_key?(mode_key)
-            if(mode_key != 'X')
-              banned_agencies.push(mode_types[mode_key])
-            else
+            if(mode_key == 'B')
               banned_routes.push(mode_types[mode_key])
+            elsif(mode_key == 'X')
+              banned_routes.push(mode_types[mode_key])
+            else
+              banned_agencies.push(mode_types[mode_key])
             end
           end
         end
@@ -46,8 +48,12 @@ module OtpTools
           end
         end
 
-        banned_routes.each do |banned_route|
-          banned_route_types_param = "#{banned_route}"
+        banned_routes.each_with_index do |banned_route, index|
+          if(index == 0)
+            banned_route_types_param = "#{banned_route}"
+          else
+            banned_route_types_param += ",#{banned_route}"
+          end
         end
 
       end
