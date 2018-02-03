@@ -35,7 +35,7 @@ module Admin
       @group = Group.find(params[:id])
       @group.update_attributes(group_params)
       RunOtpTestsJob.perform_later(@group.id)
-      #redirect_to edit_admin_group_path(@group)
+      redirect_to edit_admin_group_path(@group)
     end
 
     def geocode
@@ -76,7 +76,7 @@ module Admin
 
     def export_trips
       @group = Group.find(params[:id])
-      send_data @group.export_trips, filename: "trips_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+      send_data @group.export_trips, filename: "trips-#{@group.name}_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
     end
 
     private
