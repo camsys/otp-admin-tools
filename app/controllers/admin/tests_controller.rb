@@ -3,6 +3,7 @@ module Admin
 
     def show
       @test = Test.find(params[:id])
+      @test_results =  @test.results.page(params[:page]).per(50)
     end
 
     def destroy

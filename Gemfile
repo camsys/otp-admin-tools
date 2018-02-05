@@ -24,6 +24,9 @@ gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 
+### Pagination #######################
+gem 'kaminari', '~> 0.16.1'
+
 ### Geocding ##########################
 gem 'geocoder', '~> 1.4', '>= 1.4.4'
 gem 'Indirizzo'
