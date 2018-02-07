@@ -8,8 +8,9 @@
       -if @result.compare_type == 'otp'
         = link_to @result.get_viewable_url(@result.compare_request), target: :_blank do
           OTP2 Results
-      -else
+      -elsif @result.compare_type == 'atis'
         ATIS Results
+
 
 
 -itins.each_with_index do |itin, index|
@@ -85,7 +86,7 @@
                   %hr
             .row.detail
               ="Arrive: #{atis_time_str(itin.last[:end_time])}"
-      - else
+      - elsif @result.compare_type == 'otp'
         //Show OTP Legs
         .col-md-6.text-center
           -unless itin.last.nil?

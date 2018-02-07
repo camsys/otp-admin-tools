@@ -12,7 +12,8 @@ Rails.application.routes.draw do
       member do
         post 'run_test'
         post 'run_otp_test'
-        get 'geocode'
+        post 'run_baseline_test'
+        get  'geocode'
         post 'export_trips'
       end
     end

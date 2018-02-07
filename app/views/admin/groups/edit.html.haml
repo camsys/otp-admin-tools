@@ -41,9 +41,12 @@
     -if @group.compare_type == 'atis'
       = simple_form_for @group, url: run_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
         =render partial: 'run_test', layout: '/layouts/new_record_panel', locals: {f: f}
-    -else
+    -elsif @group.compare_type == 'otp'
       = simple_form_for @group, url: run_otp_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
         =render partial: 'run_test_otp', layout: '/layouts/new_record_panel', locals: {f: f}
+    -else
+      = simple_form_for @group, url: run_baseline_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+        =render partial: 'run_test_baseline', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row
   .col-md-1
