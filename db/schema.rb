@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180130050020) do
+ActiveRecord::Schema.define(version: 20180207145628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,8 +81,8 @@ ActiveRecord::Schema.define(version: 20180130050020) do
     t.datetime "time"
     t.boolean  "arrive_by"
     t.string   "request_url"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "group_id"
     t.decimal  "origin_lat"
     t.decimal  "origin_lng"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20180130050020) do
     t.decimal  "destination_lng"
     t.string   "atis_mode"
     t.boolean  "atis_accessible"
+    t.string   "expected_route_pattern"
     t.index ["group_id"], name: "index_trips_on_group_id", using: :btree
   end
 

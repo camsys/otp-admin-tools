@@ -9,7 +9,8 @@ class Group < ApplicationRecord
 
   GROUP_TYPES = {
       'atis' => 'OTP <-> Atis',
-      'otp' => 'OTP <-> OTP'
+      'otp' => 'OTP <-> OTP',
+      'baseline' => 'OTP <-> BASELINE'
   }
 
   #### METHODS ####
