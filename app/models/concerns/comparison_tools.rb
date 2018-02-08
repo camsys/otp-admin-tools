@@ -147,11 +147,11 @@ module ComparisonTools
     otp = self.otp_response["plan"]["itineraries"].first
 
 
-    walk_time_ratio = ((otp["walkTime"]/60.0).round.to_f/(atis["Walktime"]).to_f) - 1
+    walk_time = (otp["walkTime"]/60.0).round.to_f - (atis["Walktime"]).to_f
     total_time_ratio = ((otp["duration"]/60.0).round.to_f/(atis["Totaltime"]).to_f) - 1
     transfers_ratio = otp["transfers"] - self.atis_summary.first[:transfers]
 
-    return {walk_time: walk_time_ratio, total_time: total_time_ratio, transfer: transfers_ratio}
+    return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio}
   end
 
   def match? atis_route, mapped_otp_routes
@@ -181,4 +181,13 @@ module ComparisonTools
     return false
 
   end
+
+  def getQuantityText value
+    if value < 0
+      return "less"
+    else
+      return "more"
+    end
+  end
+
 end

@@ -135,6 +135,34 @@
                                 .well.well-sm.bad 
                                   %h4  
                                     ="OTP route has #{pluralize(v.abs, 'more transfer')}"
+                        -elsif k == :walk_time
+                          .row
+                            .col-md-1
+                            .col-md-10
+                              -if v == 'atis_nil'
+                                .well.well-sm.good
+                                  %h4
+                                    ="ATIS #{k.to_s.humanize.downcase} is n/a"
+                              -elsif v == 'otp_nil'
+                                .well.well-sm.bad
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is n/a"
+                              -elsif v.abs == 0
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP & ATIS #{k.to_s.humanize.downcase} are equal"
+                              -elsif v.abs <=5
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                              -elsif v.abs <= 10
+                                .well.well-sm.ok
+                                  %h4
+                                    ="OTP & ATIS #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                              -else
+                                .well.well-sm.bad
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
                         -else
                           .row
                             .col-md-1
@@ -142,11 +170,11 @@
                               -if v == 'atis_nil'
                                 .well.well-sm.good
                                   %h4
-                                    ="ATIS transfers are n/a"
+                                    ="ATIS #{k.to_s.humanize.downcase} is n/a"
                               -elsif v == 'otp_nil'
                                 .well.well-sm.bad
                                   %h4
-                                    ="OTP transfers are n/a"
+                                    ="OTP #{k.to_s.humanize.downcase} is n/a"
                               -elsif v < 0.0
                                 .well.well-sm.good
                                   %h4
