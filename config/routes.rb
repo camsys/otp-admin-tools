@@ -35,4 +35,22 @@ Rails.application.routes.draw do
     patch 'configs' => 'configs#update'
     patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
   end
+
+  ### JSON API ###
+  namespace :api do
+
+    ### API V1 (LEGACY) ###
+    namespace :v1 do
+
+      # Groups
+      resources :groups, :only => [:show]
+      resources :groups do 
+        member do 
+          post 'run'
+        end
+      end
+
+    end
+  end
+
 end
