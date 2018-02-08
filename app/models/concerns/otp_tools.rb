@@ -3,7 +3,7 @@ module OtpTools
 
   def otp_modes_from_atis atis_mode
 
-    atis_mode = atis_mode.empty? ? "BCXTFRSLK123" : atis_mode
+    atis_mode = atis_mode.blank? ? "BCXTFRSLK123" : atis_mode
 
     mode_types = {
         "B" => "3",
