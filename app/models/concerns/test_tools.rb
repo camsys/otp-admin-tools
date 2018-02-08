@@ -1,7 +1,17 @@
 module TestTools
-  
 
   def run_test
+    case self.compare_type
+    when 'atis'
+      return run_atis_test
+    when 'otp'
+      return run_otp_test
+    when 'baseline'
+      return run_baseline_test
+    end
+  end
+  
+  def run_atis_test
     otp = OtpService.new(Config.otp_url, Config.otp_api_key)
     atis = AtisService.new(Config.atis_url, Config.atis_app_id)
     test = Test.create(group: self)
@@ -64,7 +74,7 @@ module TestTools
       
       Result.create(trip: trip, test: test, 
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
-                    compare_request: atis_request, compare_response: atis_response, trip_time: trip_time, compare_type: self.compare_type)
+                    compare_request: atis_request, compare_response: atis_response, trip_time: trip_time)
     end
   end
 
@@ -141,7 +151,7 @@ module TestTools
 
       result = Result.create(trip: trip, test: test,
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
-                    compare_request: otp2_request, compare_response: otp2_response, trip_time: trip_time, compare_type: self.compare_type)
+                    compare_request: otp2_request, compare_response: otp2_response, trip_time: trip_time)
     end
   end
 
@@ -197,7 +207,7 @@ module TestTools
 
       result = Result.create(trip: trip, test: test,
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
-                    trip_time: trip_time, compare_type: self.compare_type)
+                    trip_time: trip_time)
     end
   end
 

@@ -28,7 +28,7 @@ module Admin
     def run
       @group = Group.find(params[:id])
       @group.update_attributes(group_params)
-      RunOtpTestsJob.perform_later(@group.id)
+      RunTestsJob.perform_later(@group.id)
       redirect_to edit_admin_group_path(@group)
     end
 
