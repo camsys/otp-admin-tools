@@ -14,6 +14,17 @@ module Admin
       redirect_to edit_admin_group_path(@group)
     end
 
+    def edit
+      @trip = Trip.find(params[:id])
+    end
+
+    def update
+      @trip = Trip.find(params[:id])
+      @trip.update_attributes(trip_params)
+      @trip.group.geocode_trips
+      redirect_to edit_admin_group_path(@trip.group) 
+    end
+
     private
 
     def trip_params

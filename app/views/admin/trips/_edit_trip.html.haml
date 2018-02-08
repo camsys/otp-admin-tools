@@ -1,5 +1,5 @@
 =content_for :header do
-  ="Create a New Trip"
+  ="Edit Trip"
 =content_for :body do
   .row
     .col-md-6
@@ -37,7 +37,7 @@
 
   .row
     .col-md-6
-      -if @group.compare_type == 'atis'
+      -if trip.group.compare_type == 'atis'
         .row
           .col-md-5.detail.text-right
             Atis Mode
@@ -66,7 +66,7 @@
         .col-md-8
           = f.input :arrive_by, collection: [false, true], label: false, include_blank: false
 
-  -if @group.compare_type == 'baseline'
+  -if trip.group.compare_type == 'baseline'
     .row
       .col-md-12
         .row
@@ -76,4 +76,4 @@
             = f.input :expected_route_pattern, required:true, :as => :string, label: false, placeholder: 'A B 1'
 
   
-  = f.input :group_id, :as => :hidden, input_html: {value: @group.id}
+  = f.input :group_id, :as => :hidden, input_html: {value: trip.group.id}
