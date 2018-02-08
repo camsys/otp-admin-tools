@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207145628) do
+ActiveRecord::Schema.define(version: 20180208223614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 20180207145628) do
     t.text     "compare_response"
     t.decimal  "percent_matched"
     t.datetime "trip_time"
-    t.string   "compare_type"
     t.index ["test_id"], name: "index_results_on_test_id", using: :btree
     t.index ["trip_id"], name: "index_results_on_trip_id", using: :btree
   end
