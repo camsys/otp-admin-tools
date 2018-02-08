@@ -41,9 +41,12 @@
     -if @group.compare_type == 'atis'
       = simple_form_for @group, url: run_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
         =render partial: 'run_test', layout: '/layouts/new_record_panel', locals: {f: f}
-    -else
+    -elsif @group.compare_type == 'otp'
       = simple_form_for @group, url: run_otp_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
         =render partial: 'run_test_otp', layout: '/layouts/new_record_panel', locals: {f: f}
+    -else
+      = simple_form_for @group, url: run_baseline_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+        =render partial: 'run_test_baseline', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row
   .col-md-1
@@ -65,8 +68,11 @@
           %th Lat,Lng
           %th Time
           %th Arrive By?
-          %th Atis Mode
+          -if @group.compare_type == 'atis'
+            %th Atis Mode
           %th Accessible
+          -if @group.compare_type == 'baseline'
+            %th ERP
           %th
 
           
@@ -86,10 +92,16 @@
             =trip.time.in_time_zone.strftime('%A %l:%M %p %Z')
           %td
             =trip.arrive_by
-          %td
-            =trip.atis_mode
+          -if @group.compare_type == 'atis'
+            %td
+              =trip.atis_mode
           %td
             =trip.atis_accessible
+
+          -if @group.compare_type == 'baseline'
+            %td
+              =trip.expected_route_pattern
+            
           %td.text-right
             =link_to "Delete", admin_trip_path(trip), 
               method: :delete, 

@@ -3,6 +3,8 @@ class Trip < ApplicationRecord
   belongs_to :group
   has_many   :results
 
+  before_save :clean_expected_route_pattern
+
   def params trip_time=self.time
     {
       origin: {lat: self.origin_lat, lng: self.origin_lng},
@@ -15,6 +17,13 @@ class Trip < ApplicationRecord
       atis_accessible: self.atis_accessible || false,
       atis_mode: self.atis_mode || "BCXTFRSLK123"
     }
+  end
+
+  # Remove Spaces from ERP
+  def clean_expected_route_pattern
+    unless self.expected_route_pattern.nil? 
+      self.expected_route_pattern = self.expected_route_pattern.gsub(' ', '')
+    end
   end
 
 end

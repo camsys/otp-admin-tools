@@ -103,11 +103,15 @@ module ComparisonTools
 
     return self.percent_matched if self.percent_matched
 
+    if self.compare_type == 'baseline'
+      return get_baseline_percent_matched 
+    end
+
     otp_routes = (self.otp_summary.map{ |i| i[:route_ids] }).uniq
 
     if(self.compare_type == 'atis')
       compare_routes = (self.atis_summary.map{ |i| i[:route_ids] }).uniq
-    else
+    elsif self.compare_type == 'otp'
       compare_routes = (self.otp2_summary.map{ |i| i[:route_ids] }).uniq
     end
 
@@ -154,8 +158,10 @@ module ComparisonTools
   def compare_summary
     if self.compare_type == 'atis'
       compare_atis_summary
-    else
+    elsif self.compare_type == 'otp'
       compare_otp_summary
+    else
+      {}
     end
   end
 
@@ -198,6 +204,17 @@ module ComparisonTools
     transfers_ratio = otp["transfers"] - otp2["transfers"]
 
     return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio}
+  end
+
+  def get_baseline_percent_matched #DEREK
+    otp_routes = (self.otp_summary.map{ |i| i[:routes] }).uniq
+    if self.trip.expected_route_pattern.split(',').in? otp_routes 
+      self.percent_matched = 1
+    else 
+      self.percent_matched = 0
+    end
+    self.save 
+    return self.percent_matched
   end
 
   def match? compare_route, mapped_otp_routes

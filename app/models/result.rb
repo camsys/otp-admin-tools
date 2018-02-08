@@ -20,8 +20,10 @@ class Result < ApplicationRecord
   def comparison_service_name
     if self.compare_type == 'atis'
       return "ATIS"
-    else
+    elsif self.compare_type == 'otp'
       return "OTP2"
+    else
+      return "the Baseline"
     end
   end
 

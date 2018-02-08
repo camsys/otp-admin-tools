@@ -38,6 +38,13 @@ module Admin
       redirect_to edit_admin_group_path(@group)
     end
 
+    def run_baseline_test
+      @group = Group.find(params[:id])
+      @group.update_attributes(group_params)
+      RunBaselineTestsJob.perform_later(@group.id)
+      redirect_to edit_admin_group_path(@group)
+    end
+
     def geocode
       @group = Group.find(params[:id])
       @group.geocode_trips

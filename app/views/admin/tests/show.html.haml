@@ -1,5 +1,6 @@
 =content_for :title do
   =@test.comment
+
 %h5.text-center
   .row
     %h3
@@ -100,13 +101,25 @@
                         ATIS Results
                     .row
                       =render partial: "itin_summary", locals: {itins: result.atis_summary}
-                  -else
+                  -elsif result.compare_type == 'otp'
                     .row.text-center
                       %h3
                         = link_to result.get_viewable_url(result.compare_request), target: :_blank do
                           OTP2 Results
                     .row
                       =render partial: "itin_summary", locals: {itins: result.otp2_summary}
+                  -elsif result.compare_type == 'baseline'
+                    .row.text-center
+                      %h3
+                        Expected Results
+                    .row
+                      .col-md-1
+                      .col-md-10
+                        %h4
+                          .row 
+                            Route Pattern
+                          .row 
+                            =result.trip.expected_route_pattern.gsub(",", " ")
                             
                 .col-md-4.text-center
                   .row
@@ -120,7 +133,7 @@
                     .col-md-10
                       %hr
                   .row
-                    -if result.get_percent_matched != nil
+                    -if result.get_percent_matched != nil and result.compare_summary.count > 0
                       %h4
                         ="Comparing the top result from OTP and #{result.comparison_service_name}"
                       -result.compare_summary.each do |k, v|
@@ -204,9 +217,7 @@
                                 .well.well-sm.bad 
                                   %h4  
                                     ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
-                    -else
-                      %h4
-                        ="Unable to Compare #{result.comparison_service_name} & OTP Results"
+
             %div.panel-footer.text-center
               =link_to admin_result_path(result), target: :_blank do
                 ="View Full Details"

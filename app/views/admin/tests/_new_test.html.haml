@@ -37,11 +37,12 @@
 
   .row
     .col-md-6
-      .row
-        .col-md-5.detail.text-right
-          Atis Mode
-        .col-md-7
-          = f.input :atis_mode, required:false, input_html: { value: f.object.atis_mode || 'BCXTFRSLK123' }, :as => :string, label: false
+      -if @group.compare_type == 'atis'
+        .row
+          .col-md-5.detail.text-right
+            Atis Mode
+          .col-md-7
+            = f.input :atis_mode, required:false, input_html: { value: f.object.atis_mode || 'BCXTFRSLK123' }, :as => :string, label: false
     .col-md-6
       .row
         .col-md-5.detail.text-right
@@ -64,5 +65,15 @@
           Arrive By?
         .col-md-8
           = f.input :arrive_by, collection: [false, true], label: false, include_blank: false
+
+  -if @group.compare_type == 'baseline'
+    .row
+      .col-md-12
+        .row
+          .col-md-4.detail.text-right
+            Expected Route Pattern
+          .col-md-8
+            = f.input :expected_route_pattern, required:true, :as => :string, label: false, placeholder: 'A, B, 1'
+
   
   = f.input :group_id, :as => :hidden, input_html: {value: @group.id}

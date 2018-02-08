@@ -14,4 +14,4 @@ class Test < ApplicationRecord
     return matching_array.sum.to_f/matching_array.count 
 
   end
-end
+end 
