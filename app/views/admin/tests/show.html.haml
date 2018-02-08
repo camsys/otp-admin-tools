@@ -148,6 +148,34 @@
                                 .well.well-sm.bad 
                                   %h4  
                                     ="OTP route has #{pluralize(v.abs, 'more transfer')}"
+                        -elsif k == :walk_time
+                          .row
+                            .col-md-1
+                            .col-md-10
+                              -if v == 'atis_nil' || v == 'otp2_nil'
+                                .well.well-sm.good
+                                  %h4
+                                    ="#{result.comparison_service_name} walk time is n/a"
+                              -elsif v == 'otp_nil'
+                                .well.well-sm.bad
+                                  %h4
+                                    ="OTP walk time is n/a"
+                              -elsif v == 0
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP & #{result.comparison_service_name} #{k.to_s.humanize.downcase} are equal"
+                              -elsif v.abs <= 5
+                                .well.well-sm.good
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                              -elsif v.abs <= 10
+                                .well.well-sm.ok
+                                  %h4
+                                    ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                              -else
+                                .well.well-sm.bad
+                                  %h4
+                                    ="OOTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
                         -else
                           .row
                             .col-md-1
@@ -155,11 +183,11 @@
                               -if v == 'atis_nil' || v == 'otp2_nil'
                                 .well.well-sm.good
                                   %h4
-                                    ="#{result.comparison_service_name} transfers are n/a"
+                                    ="#{result.comparison_service_name} total time is n/a"
                               -elsif v == 'otp_nil'
                                 .well.well-sm.bad
                                   %h4
-                                    ="OTP transfers are n/a"
+                                    ="OTP total time is n/a"
                               -elsif v < 0.0
                                 .well.well-sm.good
                                   %h4
