@@ -25,24 +25,10 @@ module Admin
       redirect_to admin_groups_path
     end
 
-    def run_test
-      @group = Group.find(params[:id])
-      @group.update_attributes(group_params)
-      RunTestsJob.perform_later(@group.id)
-      redirect_to edit_admin_group_path(@group)
-    end
-
-    def run_otp_test
+    def run
       @group = Group.find(params[:id])
       @group.update_attributes(group_params)
       RunOtpTestsJob.perform_later(@group.id)
-      redirect_to edit_admin_group_path(@group)
-    end
-
-    def run_baseline_test
-      @group = Group.find(params[:id])
-      @group.update_attributes(group_params)
-      RunBaselineTestsJob.perform_later(@group.id)
       redirect_to edit_admin_group_path(@group)
     end
 
