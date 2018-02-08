@@ -158,7 +158,7 @@
                               -elsif v.abs <= 10
                                 .well.well-sm.ok
                                   %h4
-                                    ="OTP & ATIS #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                                    ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
                               -else
                                 .well.well-sm.bad
                                   %h4
