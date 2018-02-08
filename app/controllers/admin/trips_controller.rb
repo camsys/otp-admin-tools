@@ -2,10 +2,6 @@ module Admin
   class TripsController < Admin::AdminController
 
     def create
-
-      puts params.ai 
-      puts '-----------------'
-      puts trip_params.ai 
       @trip = Trip.create(trip_params)
       @trip.group.geocode_trips
       redirect_to edit_admin_group_path(@trip.group) 

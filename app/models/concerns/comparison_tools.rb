@@ -208,7 +208,7 @@ module ComparisonTools
 
   def get_baseline_percent_matched #DEREK
     otp_routes = (self.otp_summary.map{ |i| i[:routes] }).uniq
-    if self.trip.expected_route_pattern.split(',').in? otp_routes 
+    if self.trip.expected_route_pattern.split(' ').in? otp_routes 
       self.percent_matched = 1
     else 
       self.percent_matched = 0
