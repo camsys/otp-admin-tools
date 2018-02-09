@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208223614) do
+ActiveRecord::Schema.define(version: 20180208234048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,10 @@ ActiveRecord::Schema.define(version: 20180208223614) do
     t.string   "atis_mode"
     t.boolean  "atis_accessible"
     t.string   "expected_route_pattern"
+    t.integer  "max_walk_seconds"
+    t.integer  "min_walk_seconds"
+    t.integer  "max_total_seconds"
+    t.integer  "min_total_seconds"
     t.index ["group_id"], name: "index_trips_on_group_id", using: :btree
   end
 

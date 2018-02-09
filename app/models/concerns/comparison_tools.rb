@@ -206,17 +206,6 @@ module ComparisonTools
     return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio}
   end
 
-  def get_baseline_percent_matched #DEREK
-    otp_routes = (self.otp_summary.map{ |i| i[:routes] }).uniq
-    if self.trip.expected_route_pattern.split(' ').in? otp_routes 
-      self.percent_matched = 1
-    else 
-      self.percent_matched = 0
-    end
-    self.save 
-    return self.percent_matched
-  end
-
   def match? compare_route, mapped_otp_routes
 
     mapped_otp_routes.each do |otp_route|
@@ -261,5 +250,62 @@ module ComparisonTools
       return "more"
     end
 
+  end
+
+
+  #BASELINE STUFF
+  def get_baseline_percent_matched 
+    # WE ONLY CARE ABOUT THE FIRST ITINERARY
+    total_tests = 0.0
+    passing_tests = 0.0
+    summary = self.otp_summary.first  
+
+    trip = self.trip 
+
+    # ERP Test
+    unless trip.expected_route_pattern.blank?
+      total_tests += 1.0
+      otp_routes = summary[:routes]
+      if self.trip.expected_route_pattern.split(' ') == otp_routes 
+         passing_tests += 1.0
+      end 
+    end
+
+    # Max Walk Test
+    unless trip.max_walk_seconds.blank?
+      total_tests += 1.0
+      if summary[:walk_time] <= trip.max_walk_seconds
+        passing_tests += 1.0
+      end
+    end 
+
+    # Min Walk Test
+    unless trip.min_walk_seconds.blank?
+      total_tests += 1.0
+      if summary[:walk_time] >= trip.min_walk_seconds
+        passing_tests += 1.0
+      end
+    end 
+
+    # Max Duration Test
+    unless trip.max_total_seconds.blank?
+      total_tests += 1.0
+      if summary[:duration] <= trip.max_total_seconds
+        passing_tests += 1.0
+      end
+    end 
+
+    # Min Duration Test
+    unless trip.min_total_seconds.blank?
+      total_tests += 1.0
+      if summary[:duration] >= trip.min_total_seconds
+        passing_tests += 1.0
+      end
+    end 
+
+
+    total_tests > 0 ? self.percent_matched = passing_tests/total_tests : self.percent_matched = 1
+    self.save 
+    return self.percent_matched
   end
 end
