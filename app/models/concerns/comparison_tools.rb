@@ -161,7 +161,7 @@ module ComparisonTools
     elsif self.compare_type == 'otp'
       compare_otp_summary
     else
-      {}
+      compare_baseline_summary
     end
   end
 
@@ -253,11 +253,23 @@ module ComparisonTools
   end
 
 
-  #BASELINE STUFF
-  def get_baseline_percent_matched 
+  def get_baseline_percent_matched
+    if self.percent_matched
+      return self.percent_matched
+    end
+    return get_baseline_stats.first 
+  end
+
+  def compare_baseline_summary
+    return get_baseline_stats.last 
+  end
+
+  #BASELINE Tests
+  def get_baseline_stats
     # WE ONLY CARE ABOUT THE FIRST ITINERARY
     total_tests = 0.0
     passing_tests = 0.0
+    summary_hash = {}
     summary = self.otp_summary.first  
 
     trip = self.trip 
@@ -268,7 +280,10 @@ module ComparisonTools
       otp_routes = summary[:routes]
       if self.trip.expected_route_pattern.split(' ') == otp_routes 
          passing_tests += 1.0
-      end 
+         summary_hash[:erp] = true
+      else
+         summary_hash[:erp] = false
+      end
     end
 
     # Max Walk Test
@@ -276,6 +291,9 @@ module ComparisonTools
       total_tests += 1.0
       if summary[:walk_time] <= trip.max_walk_seconds
         passing_tests += 1.0
+        summary_hash[:max_walk_seconds] = true
+      else
+         summary_hash[:max_walk_seconds] = false
       end
     end 
 
@@ -284,6 +302,9 @@ module ComparisonTools
       total_tests += 1.0
       if summary[:walk_time] >= trip.min_walk_seconds
         passing_tests += 1.0
+        summary_hash[:min_walk_seconds] = true
+      else
+         summary_hash[:min_walk_seconds] = false
       end
     end 
 
@@ -292,6 +313,9 @@ module ComparisonTools
       total_tests += 1.0
       if summary[:duration] <= trip.max_total_seconds
         passing_tests += 1.0
+        summary_hash[:max_total_seconds] = true
+      else
+         summary_hash[:max_total_seconds] = false
       end
     end 
 
@@ -300,12 +324,15 @@ module ComparisonTools
       total_tests += 1.0
       if summary[:duration] >= trip.min_total_seconds
         passing_tests += 1.0
+        summary_hash[:min_total_seconds] = true
+      else
+         summary_hash[:min_total_seconds] = false
       end
     end 
 
-
     total_tests > 0 ? self.percent_matched = passing_tests/total_tests : self.percent_matched = 1
     self.save 
-    return self.percent_matched
+    return self.percent_matched, summary_hash
   end
+
 end
