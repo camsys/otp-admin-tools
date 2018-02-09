@@ -27,4 +27,8 @@ class Result < ApplicationRecord
     end
   end
 
+  def compare_type
+    self.test.group.compare_type
+  end
+
 end

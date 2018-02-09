@@ -1,0 +1,6 @@
+%row
+  .col-md-2
+  .col-md-8
+    = simple_form_for @trip, url: admin_trip_path(@trip), html: {class: 'form-horizontal', multipart: true, method: :patch }, authenticity_token: true do |f|
+      =render partial: '/admin/trips/edit_trip', layout: '/layouts/new_record_panel', locals: {f: f, trip: @trip}
+

@@ -1,5 +1,5 @@
 =content_for :header do
-  ="Create a New Trip"
+  ="Trip"
 =content_for :body do
   .row
     .col-md-6
@@ -37,7 +37,7 @@
 
   .row
     .col-md-6
-      -if @group.compare_type == 'atis'
+      -if trip.group.atis?
         .row
           .col-md-5.detail.text-right
             Atis Mode
@@ -66,14 +66,42 @@
         .col-md-8
           = f.input :arrive_by, collection: [false, true], label: false, include_blank: false
 
-  -if @group.compare_type == 'baseline'
+  -if trip.group.baseline?
+    %hr
+    .row.text-center
+      %h4
+        Baseline Rules
+
     .row
       .col-md-12
         .row
           .col-md-4.detail.text-right
             Expected Route Pattern
           .col-md-8
-            = f.input :expected_route_pattern, required:true, :as => :string, label: false, placeholder: 'A, B, 1'
+            = f.input :expected_route_pattern, required:true, :as => :string, label: false, placeholder: 'A B 1'
+    .row
+      .col-md-6
+        .row
+          .col-md-4.detail.text-right
+            Max Walk Seconds
+          .col-md-8
+            = f.input :max_walk_seconds, required:true, :as => :integer, label: false
+        .row
+          .col-md-4.detail.text-right
+            Min Walk Seconds
+          .col-md-8
+            = f.input :min_walk_seconds, required:true, :as => :integer, label: false
+      .col-md-6
+        .row
+          .col-md-4.detail.text-right
+            Max Total Seconds
+          .col-md-8
+            = f.input :max_total_seconds, required:true, :as => :integer, label: false
+        .row
+          .col-md-4.detail.text-right
+            Min Total Seconds
+          .col-md-8
+            = f.input :min_total_seconds, required:true, :as => :integer, label: false
 
   
-  = f.input :group_id, :as => :hidden, input_html: {value: @group.id}
+  = f.input :group_id, :as => :hidden, input_html: {value: trip.group.id}

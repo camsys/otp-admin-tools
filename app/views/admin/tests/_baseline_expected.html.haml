@@ -1,0 +1,61 @@
+.row.text-center
+  %h3
+    Expected Results
+.row
+  .col-md-1
+  .col-md-10
+    %h4
+      -unless result.trip.expected_route_pattern.blank?      
+        .row
+          Route Pattern
+        .row 
+          -if summary[:erp]
+            %i.fa.fa-check.good-font
+          -else 
+            %i.fa.fa-times.bad-font
+          =result.trip.expected_route_pattern.gsub(",", " ")
+        %hr
+
+      -unless result.trip.max_walk_seconds.blank?      
+        .row 
+          Maximum Walk Seconds
+        .row 
+          -if summary[:max_walk_seconds]
+            %i.fa.fa-check.good-font
+          -else 
+            %i.fa.fa-times.bad-font
+          =result.trip.max_walk_seconds
+        %hr
+
+      -unless result.trip.min_walk_seconds.blank?      
+        .row 
+          Minimum Walk Seconds
+        .row 
+          -if summary[:min_walk_seconds]
+            %i.fa.fa-check.good-font
+          -else 
+            %i.fa.fa-times.bad-font
+          =result.trip.min_walk_seconds
+        %hr
+
+      -unless result.trip.max_total_seconds.blank?      
+        .row 
+          Maximum Total Seconds
+        .row
+          -if summary[:max_total_seconds]
+            %i.fa.fa-check.good-font
+          -else 
+            %i.fa.fa-times.bad-font 
+          =result.trip.max_total_seconds
+        %hr
+
+      -unless result.trip.min_total_seconds.blank?      
+        .row 
+          Minimum Total Seconds
+        .row 
+          -if summary[:min_total_seconds]
+            %i.fa.fa-check.good-font
+          -else 
+            %i.fa.fa-times.bad-font
+          =result.trip.min_total_seconds
+        %hr

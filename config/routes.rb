@@ -10,16 +10,14 @@ Rails.application.routes.draw do
     resources :groups, :only => [:index, :destroy, :create, :edit, :update]
     resources :groups do
       member do
-        post 'run_test'
-        post 'run_otp_test'
-        post 'run_baseline_test'
+        post 'run'
         get  'geocode'
         post 'export_trips'
       end
     end
 
     # Trips
-    resources :trips, :only => [:destroy, :create]
+    resources :trips, :only => [:destroy, :create, :edit, :update]
 
     # Results
     resources :results, :only => [:show]

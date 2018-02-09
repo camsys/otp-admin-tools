@@ -39,14 +39,11 @@
   .col-md-3
   .col-md-6
     -if @group.compare_type == 'atis'
-      = simple_form_for @group, url: run_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-        =render partial: 'run_test', layout: '/layouts/new_record_panel', locals: {f: f}
-    -elsif @group.compare_type == 'otp'
-      = simple_form_for @group, url: run_otp_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-        =render partial: 'run_test_otp', layout: '/layouts/new_record_panel', locals: {f: f}
+      = simple_form_for @group, url: run_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+        =render partial: 'run_test_otp_atis', layout: '/layouts/new_record_panel', locals: {f: f}
     -else
-      = simple_form_for @group, url: run_baseline_test_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-        =render partial: 'run_test_baseline', layout: '/layouts/new_record_panel', locals: {f: f}
+      = simple_form_for @group, url: run_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+        =render partial: 'run_test_otp', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row
   .col-md-1
@@ -62,6 +59,7 @@
     %table.table.table-hover#trip-table
       %thead.thead-default
         %tr
+          %th 
           %th Origin
           %th Lat,Lng
           %th Destination
@@ -74,10 +72,12 @@
           -if @group.compare_type == 'baseline'
             %th ERP
           %th
-
           
       -@group.trips.each do |trip|
         %tr
+          %td
+            =link_to edit_admin_trip_path(trip) do 
+              %i.fa.fa-edit
           %td
             =trip.origin
           %td
@@ -119,7 +119,7 @@
   .col-md-3
   .col-md-6
     = simple_form_for @new_trip, url: admin_trips_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-      =render partial: '/admin/tests/new_test', layout: '/layouts/new_record_panel', locals: {f: f}
+      =render partial: '/admin/trips/edit_trip', layout: '/layouts/new_record_panel', locals: {f: f, trip: @new_trip}
 
 .row
   %h3.text-center

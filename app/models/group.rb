@@ -16,6 +16,18 @@ class Group < ApplicationRecord
 
   #### METHODS ####
 
+  def baseline?
+    self.compare_type == 'baseline'
+  end
+
+  def otp?
+    self.compare_type == 'otp'
+  end
+
+  def atis?
+    self.compare_type == 'atis'
+  end
+
   def geocode_trips
     geocoder = GeocodingService.new
     self.trips.each do |trip|
