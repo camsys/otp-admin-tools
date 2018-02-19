@@ -77,6 +77,11 @@ class Group < ApplicationRecord
                arrive_by: row[8],
                atis_mode: row[9] || "BCXTFRSLK123",
                atis_accessible: row[10] || false,
+               expected_route_pattern: row[11],
+               min_walk_seconds: row[12],
+               max_walk_seconds: row[13],
+               min_total_seconds: row[14],
+               max_total_seconds: row[15],
                group: self
            })
 
@@ -107,7 +112,10 @@ class Group < ApplicationRecord
   end #Update
 
   def export_trips
-    attributes = %w{origin origin_lat origin_lng destination destination_lat destination_lng trip_date trip_time arrive_by atis_mode atis_accessible} #customize columns here
+    attributes = %w{origin origin_lat origin_lng destination destination_lat 
+                    destination_lng trip_date trip_time arrive_by atis_mode 
+                    atis_accessible expected_route_pattern min_walk_seconds 
+                    max_walk_seconds min_total_seconds max_total_seconds} #customize columns here
     trips = Trip.where(group_id: self.id)
 
     CSV.generate(headers: true) do |csv|
