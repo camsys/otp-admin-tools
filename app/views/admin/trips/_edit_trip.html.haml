@@ -83,25 +83,25 @@
       .col-md-6
         .row
           .col-md-4.detail.text-right
-            Max Walk Seconds
-          .col-md-8
-            = f.input :max_walk_seconds, required:true, :as => :integer, label: false
-        .row
-          .col-md-4.detail.text-right
             Min Walk Seconds
           .col-md-8
             = f.input :min_walk_seconds, required:true, :as => :integer, label: false
-      .col-md-6
         .row
           .col-md-4.detail.text-right
-            Max Total Seconds
+            Max Walk Seconds
           .col-md-8
-            = f.input :max_total_seconds, required:true, :as => :integer, label: false
+            = f.input :max_walk_seconds, required:true, :as => :integer, label: false
+      .col-md-6
         .row
           .col-md-4.detail.text-right
             Min Total Seconds
           .col-md-8
             = f.input :min_total_seconds, required:true, :as => :integer, label: false
+        .row
+          .col-md-4.detail.text-right
+            Max Total Seconds
+          .col-md-8
+            = f.input :max_total_seconds, required:true, :as => :integer, label: false
 
   
   = f.input :group_id, :as => :hidden, input_html: {value: trip.group.id}
