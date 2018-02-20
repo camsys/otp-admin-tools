@@ -77,7 +77,7 @@ class Group < ApplicationRecord
                arrive_by: row[8],
                atis_mode: row[9] || "BCXTFRSLK123",
                atis_accessible: row[10] || false,
-               expected_route_pattern: row[11],
+               expected_route_pattern: self.route_decoder(row[11]),
                min_walk_seconds: row[12],
                max_walk_seconds: row[13],
                min_total_seconds: row[14],
@@ -110,6 +110,16 @@ class Group < ApplicationRecord
     end
 
   end #Update
+
+  #Routes are uploadted in the following format "<agency>:<route_id> <agency>:<route_id>"
+  #This converts that string to "route_id route_id".
+  def route_decoder routes
+    new_string = ""
+    routes.split(' ').each do |route|
+      new_string << "#{route.split(':').last} "
+    end
+    new_string.strip 
+  end 
 
   def export_trips
     attributes = %w{origin origin_lat origin_lng destination destination_lat 
