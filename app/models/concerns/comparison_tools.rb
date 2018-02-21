@@ -277,56 +277,83 @@ module ComparisonTools
     # ERP Test
     unless trip.expected_route_pattern.blank?
       total_tests += 1.0
-      otp_routes = summary[:routes]
-      if self.trip.expected_route_pattern.split(' ') == otp_routes 
-         passing_tests += 1.0
-         summary_hash[:erp] = true
+
+      #Confirm that we have at least 1 itinerary
+      if summary.nil? 
+        summary_hash[:erp] =  false
       else
-         summary_hash[:erp] = false
+        otp_routes = summary[:routes]
+        if self.trip.expected_route_pattern.split(' ') == otp_routes 
+           passing_tests += 1.0
+           summary_hash[:erp] = true
+        else
+           summary_hash[:erp] = false
+        end
       end
+
     end
 
     # Max Walk Test
     unless trip.max_walk_seconds.blank?
       total_tests += 1.0
-      if summary[:walk_time] <= trip.max_walk_seconds
-        passing_tests += 1.0
-        summary_hash[:max_walk_seconds] = true
+      #Confirm that we have at least 1 itinerary
+      if summary.nil? 
+        summary_hash[:max_walk_seconds] =  false
       else
-         summary_hash[:max_walk_seconds] = false
+        if summary[:walk_time] <= trip.max_walk_seconds
+          passing_tests += 1.0
+          summary_hash[:max_walk_seconds] = true
+        else
+           summary_hash[:max_walk_seconds] = false
+        end
       end
     end 
 
     # Min Walk Test
     unless trip.min_walk_seconds.blank?
       total_tests += 1.0
-      if summary[:walk_time] >= trip.min_walk_seconds
-        passing_tests += 1.0
-        summary_hash[:min_walk_seconds] = true
+      #Confirm that we have at least 1 itinerary
+      if summary.nil? 
+        summary_hash[:min_walk_seconds] =  false
       else
-         summary_hash[:min_walk_seconds] = false
+        if summary[:walk_time] >= trip.min_walk_seconds
+          passing_tests += 1.0
+          summary_hash[:min_walk_seconds] = true
+        else
+           summary_hash[:min_walk_seconds] = false
+        end
       end
     end 
 
     # Max Duration Test
     unless trip.max_total_seconds.blank?
       total_tests += 1.0
-      if summary[:duration] <= trip.max_total_seconds
-        passing_tests += 1.0
-        summary_hash[:max_total_seconds] = true
+      #Confirm that we have at least 1 itinerary
+      if summary.nil? 
+        summary_hash[:max_total_seconds] =  false
       else
-         summary_hash[:max_total_seconds] = false
+        if summary[:duration] <= trip.max_total_seconds
+          passing_tests += 1.0
+          summary_hash[:max_total_seconds] = true
+        else
+           summary_hash[:max_total_seconds] = false
+        end
       end
     end 
 
     # Min Duration Test
     unless trip.min_total_seconds.blank?
       total_tests += 1.0
-      if summary[:duration] >= trip.min_total_seconds
-        passing_tests += 1.0
-        summary_hash[:min_total_seconds] = true
+      #Confirm that we have at least 1 itinerary
+      if summary.nil? 
+        summary_hash[:min_total_seconds] =  false
       else
-         summary_hash[:min_total_seconds] = false
+        if summary[:duration] >= trip.min_total_seconds
+          passing_tests += 1.0
+          summary_hash[:min_total_seconds] = true
+        else
+           summary_hash[:min_total_seconds] = false
+        end
       end
     end 
 
