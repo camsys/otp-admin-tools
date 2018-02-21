@@ -282,7 +282,7 @@ module ComparisonTools
       if summary.nil? 
         summary_hash[:erp] =  false
       else
-        otp_routes = summary[:routes]
+        otp_routes = summary[:route_ids]
         if self.trip.expected_route_pattern.split(' ') == otp_routes 
            passing_tests += 1.0
            summary_hash[:erp] = true

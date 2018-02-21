@@ -13,6 +13,12 @@
         .h4
           -itin[:routes].each do |route|
             =route
+        %div.small-detail
+          (
+          -itin[:route_ids].each do |route|
+            =route
+          )
+
 
     -unless index == (itins.count - 1)
       %hr      
