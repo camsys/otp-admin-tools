@@ -78,15 +78,18 @@ module Admin
     def group_params
       params.require(:group).permit(:name, :comment, 
         :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty, :compare_type,
-        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible)
+        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible,
+        :otp_transfer_slack, :otp_allow_unknown_transfers, :otp_use_unpreferred_routes_penalty, :otp_use_unpreferred_start_end_penalty,
+        :otp_other_than_preferred_routes_penalty, :otp_car_reluctance, :otp_path_comparator, :otp_max_walk_distance_heuristic)
     end
 
     def group_params_otp
       params.require(:group).permit(:name, :comment,
         :otp_walk_speed, :otp_max_walk_distance, :otp_walk_reluctance, :otp_transfer_penalty, :compare_type,
-        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible)
+        :atis_minimize, :atis_walk_dist, :atis_walk_speed, :atis_walk_increase, :otp_accessible, :atis_accessible, 
+        :otp_transfer_slack, :otp_allow_unknown_transfers, :otp_use_unpreferred_routes_penalty, :otp_use_unpreferred_start_end_penalty,
+        :otp_other_than_preferred_routes_penalty, :otp_car_reluctance, :otp_path_comparator, :otp_max_walk_distance_heuristic)
     end
-
 
   end
 end

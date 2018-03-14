@@ -1,0 +1,62 @@
+%h4.text-center
+  OTP Settings
+.row
+  .col-md-6.detail.text-right
+    Walk Speed (m/s)
+  .col-md-6.text-left
+    = f.input :otp_walk_speed, label: false, :as => :integer, input_html: {value: f.object.otp_walk_speed || 1.3} 
+.row
+  .col-md-6.detail.text-right
+    Max Walk Distance (m)
+  .col-md-6.text-left
+    = f.input :otp_max_walk_distance, label: false, :as => :integer, input_html: {value: f.object.otp_max_walk_distance || 8046.72} 
+.row
+  .col-md-6.detail.text-right
+    Walk Reluctance (Multiplier)
+  .col-md-6.text-left
+    = f.input :otp_walk_reluctance, label: false, :as => :integer, input_html: {value: f.object.otp_walk_reluctance || 4} 
+.row
+  .col-md-6.detail.text-right
+    Transfer Penalty (s)
+  .col-md-6.text-left
+    = f.input :otp_transfer_penalty, label: false, :as => :integer, input_html: {value: f.object.otp_transfer_penalty || 600} 
+.row
+  .col-md-6.detail.text-right
+    Transfer Slack (s)
+  .col-md-6.text-left
+    = f.input :otp_transfer_slack, label: false, :as => :integer, input_html: {value: f.object.otp_transfer_slack || 120} 
+.row
+  .col-md-6.detail.text-right
+    Allow Unknown Transfer (T/F)
+  .col-md-6.text-left
+    = f.input :otp_allow_unknown_transfers, label: false, collection: [true, false], include_blank: false, input_html: {value: f.object.otp_allow_unknown_transfers || false} 
+.row
+  .col-md-6.detail.text-right
+    Use Unpreferred Routes Peantly (s)
+  .col-md-6.text-left
+    = f.input :otp_use_unpreferred_routes_penalty, label: false, :as => :integer, input_html: {value: f.object.otp_use_unpreferred_routes_penalty || 1200} 
+.row
+  .col-md-6.detail.text-right
+    Use Unpreferred Start/End Penalty (s)
+  .col-md-6.text-left
+    = f.input :otp_use_unpreferred_start_end_penalty, label: false, :as => :integer, input_html: {value: f.object.otp_use_unpreferred_start_end_penalty || 3600} 
+.row
+  .col-md-6.detail.text-right
+    Other Than Preferred Routes Penalty (s)
+  .col-md-6.text-left
+    = f.input :otp_other_than_preferred_routes_penalty, label: false, :as => :integer, input_html: {value: f.object.otp_other_than_preferred_routes_penalty || 10800} 
+.row
+  .col-md-6.detail.text-right
+    Car Reluctance (Multiplier)
+  .col-md-6.text-left
+    = f.input :otp_car_reluctance, label: false, :as => :decimal, input_html: {value: f.object.otp_car_reluctance || 4.0} 
+.row
+  .col-md-6.detail.text-right
+    Path Comparator
+  .col-md-6.text-left
+    = f.input :otp_path_comparator, label: false, :as => :string, input_html: {value: f.object.otp_path_comparator || 'mta'} 
+.row
+  .col-md-6.detail.text-right
+    Max Walk Resistance Heuristic (m)
+  .col-md-6.text-left
+    = f.input :otp_max_walk_distance_heuristic, label: false, :as => :integer, input_html: {value: f.object.otp_max_walk_distance_heuristic || 8047} 

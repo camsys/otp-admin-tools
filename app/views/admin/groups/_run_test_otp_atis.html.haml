@@ -2,28 +2,7 @@
   ="Run a New Test"
 =content_for :body do
   .col-md-6
-    %h4.text-center
-      OTP Settings
-    .row
-      .col-md-6.detail.text-right
-        Walk Speed (m/s)
-      .col-md-6.text-left
-        = f.input :otp_walk_speed, label: false, :as => :integer
-    .row
-      .col-md-6.detail.text-right
-        Max Walk Distance (m)
-      .col-md-6.text-left
-        = f.input :otp_max_walk_distance, label: false, :as => :integer
-    .row
-      .col-md-6.detail.text-right
-        Walk Reluctance (Multiplier)
-      .col-md-6.text-left
-        = f.input :otp_walk_reluctance, label: false, :as => :integer
-    .row
-      .col-md-6.detail.text-right
-        Transfer Penalty (s)
-      .col-md-6.text-left
-        = f.input :otp_transfer_penalty, label: false, :as => :integer
+    =render partial: "otp_form", locals: {f: f}
 
   .col-md-6
     %h4.text-center
