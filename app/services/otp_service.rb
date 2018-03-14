@@ -12,8 +12,10 @@ class OtpService
 
   def plan(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60,
-        wheelchair=false, banned_agencies=nil, banned_route_types=nil)
+        arriveBy=true, walk_speed=1.3, max_walk_distance=8046.72, walk_reluctance=4, transfer_penalty=600,
+        wheelchair=false, banned_agencies=nil, banned_route_types=nil,
+        transfer_slack=120, allow_unknown_transfers=false, use_unpreferred_routes_penalty=1200, use_unpreferred_start_end_penalty=3600, 
+        other_than_preferred_routes_penalty=10800, car_reluctance=4, path_comparator='mta', max_walk_distance_heuristic=8047)
 
     # Hardcoded Defaults
     otp_mode = "TRANSIT,WALK"
@@ -39,6 +41,15 @@ class OtpService
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + walk_speed.to_s
     url_options += "&showNextFromDeparture=true"
+
+    url_options += "&transferSlack=" + transfer_slack.to_s
+    url_options += "&allowUnknownTransfers=" + allow_unknown_transfers.to_s
+    url_options += "&useUnpreferredRoutesPenalty=" + use_unpreferred_routes_penalty.to_s
+    url_options += "&useUnpreferredStartEndPenalty=" + use_unpreferred_start_end_penalty.to_s
+    url_options += "&otherThanPreferredRoutesPenalty=" + other_than_preferred_routes_penalty.to_s
+    url_options += "&carReluctance=" + car_reluctance.to_s
+    url_options += "&pathComparator=" + path_comparator.to_s
+    url_options += "&maxWalkDistanceHeuristic=" + max_walk_distance_heuristic.to_s
 
     if banned_agencies
       url_options += "&bannedAgencies=" + banned_agencies
@@ -96,8 +107,9 @@ class OtpService
 
   def viewable_url(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.34112, max_walk_distance=1000, walk_reluctance=2, transfer_penalty=60,
-        wheelchair=false, banned_agencies=nil, banned_route_types=nil)
+        arriveBy=true, walk_speed=1.3, max_walk_distance=8046.72, walk_reluctance=4, transfer_penalty=600,
+        wheelchair=false, banned_agencies=nil, banned_route_types=nil, transfer_slack=120, allow_unknown_transfers=false, use_unpreferred_routes_penalty=1200, use_unpreferred_start_end_penalty=3600, 
+        other_than_preferred_routes_penalty=10800, car_reluctance=4, path_comparator='mta', max_walk_distance_heuristic=8047)
 
     #def viewable_url(from,
     #    to, trip_datetime, arriveBy=true, mode="TRANSIT,WALK", wheelchair="false", walk_speed=3.0,
@@ -126,6 +138,15 @@ class OtpService
     url_options += "&arriveBy=" + arriveBy.to_s
     url_options += "&walkSpeed=" + walk_speed.to_s
     url_options += "&showNextFromDeparture=true"
+
+    url_options += "&transferSlack=" + transfer_slack.to_s
+    url_options += "&allowUnknownTransfers=" + allow_unknown_transfers.to_s
+    url_options += "&useUnpreferredRoutesPenalty=" + use_unpreferred_routes_penalty.to_s
+    url_options += "&useUnpreferredStartEndPenalty=" + use_unpreferred_start_end_penalty.to_s
+    url_options += "&otherThanPreferredRoutesPenalty=" + other_than_preferred_routes_penalty.to_s
+    url_options += "&carReluctance=" + car_reluctance.to_s
+    url_options += "&pathComparator=" + path_comparator.to_s
+    url_options += "&maxWalkDistanceHeuristic=" + max_walk_distance_heuristic.to_s
 
     if banned_agencies
       url_options += "&bannedAgencies=" + banned_agencies

@@ -32,6 +32,42 @@
               %td.detail Transfer Penalty
               %td 
                 ="#{@test.otp_transfer_penalty.to_i} s"
+            %tr
+              %td.detail Transfer Slack
+              %td 
+                ="#{@test.otp_transfer_slack}"
+            %tr
+              %td.detail Allow Unknown Transfers
+              %td 
+                ="#{@test.otp_allow_unknown_transfers}"
+            %tr
+              %td.detail Use Unpreferred Routes Penalty
+              %td 
+                ="#{@test.otp_use_unpreferred_routes_penalty}"
+            %tr
+              %td.detail Use Unpreferred Start End Penalty
+              %td 
+                ="#{@test.otp_use_unpreferred_start_end_penalty}"
+            %tr
+              %td.detail Other Than Preferred Routes Penalty
+              %td 
+                ="#{@test.otp_other_than_preferred_routes_penalty}"
+            %tr
+              %td.detail Use Unpreferred Routes Penalty
+              %td 
+                ="#{@test.otp_use_unpreferred_routes_penalty}"
+            %tr
+              %td.detail Car Reluctance
+              %td 
+                ="#{@test.otp_car_reluctance}"
+            %tr
+              %td.detail Path Comparator
+              %td 
+                ="#{@test.otp_path_comparator}"
+            %tr
+              %td.detail Max Walk Distance Heuristic
+              %td 
+                ="#{@test.otp_max_walk_distance_heuristic}"
 
         -if @test.group.compare_type == 'atis'
           .col-md-6

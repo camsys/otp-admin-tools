@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208234048) do
+ActiveRecord::Schema.define(version: 20180314003701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,12 +25,12 @@ ActiveRecord::Schema.define(version: 20180208234048) do
   create_table "groups", force: :cascade do |t|
     t.text     "comment"
     t.string   "name"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.decimal  "otp_walk_speed"
-    t.decimal  "otp_max_walk_distance"
-    t.decimal  "otp_walk_reluctance"
-    t.decimal  "otp_transfer_penalty"
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
+    t.decimal  "otp_walk_speed",                          default: "1.3",     null: false
+    t.decimal  "otp_max_walk_distance",                   default: "8046.72", null: false
+    t.decimal  "otp_walk_reluctance",                     default: "4.0",     null: false
+    t.decimal  "otp_transfer_penalty",                    default: "600.0",   null: false
     t.string   "atis_minimize"
     t.decimal  "atis_walk_dist"
     t.decimal  "atis_walk_speed"
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(version: 20180208234048) do
     t.boolean  "otp_accessible"
     t.boolean  "atis_accessible"
     t.string   "compare_type"
+    t.integer  "otp_transfer_slack",                      default: 120,       null: false
+    t.boolean  "otp_allow_unknown_transfers",             default: false,     null: false
+    t.integer  "otp_use_unpreferred_routes_penalty",      default: 1200,      null: false
+    t.integer  "otp_use_unpreferred_start_end_penalty",   default: 3600,      null: false
+    t.integer  "otp_other_than_preferred_routes_penalty", default: 10800,     null: false
+    t.decimal  "otp_car_reluctance",                      default: "4.0",     null: false
+    t.string   "otp_path_comparator",                     default: "mta",     null: false
+    t.integer  "otp_max_walk_distance_heuristic",         default: 8047,      null: false
   end
 
   create_table "results", force: :cascade do |t|
@@ -58,8 +66,8 @@ ActiveRecord::Schema.define(version: 20180208234048) do
 
   create_table "tests", force: :cascade do |t|
     t.text     "comment"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "group_id"
     t.decimal  "otp_walk_speed"
     t.decimal  "otp_max_walk_distance"
@@ -71,6 +79,14 @@ ActiveRecord::Schema.define(version: 20180208234048) do
     t.string   "atis_walk_increase"
     t.boolean  "otp_accessible"
     t.boolean  "atis_accessible"
+    t.integer  "otp_transfer_slack",                      default: 120,   null: false
+    t.boolean  "otp_allow_unknown_transfers",             default: false, null: false
+    t.integer  "otp_use_unpreferred_routes_penalty",      default: 1200,  null: false
+    t.integer  "otp_use_unpreferred_start_end_penalty",   default: 3600,  null: false
+    t.integer  "otp_other_than_preferred_routes_penalty", default: 10800, null: false
+    t.decimal  "otp_car_reluctance",                      default: "4.0", null: false
+    t.string   "otp_path_comparator",                     default: "mta", null: false
+    t.integer  "otp_max_walk_distance_heuristic",         default: 8047,  null: false
     t.index ["group_id"], name: "index_tests_on_group_id", using: :btree
   end
 
