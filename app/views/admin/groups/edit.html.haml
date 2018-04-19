@@ -19,7 +19,7 @@
               %th Summary
               %th 
               
-          -@group.tests.order(:created_at).each do |test|
+          -@group_tests.order(:created_at).reverse_order.each do |test|
             %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
               %td
                 =test.id
@@ -34,6 +34,12 @@
                   method: :delete, 
                   class: "btn btn-sm btn-danger", 
                   data: {confirm: "Are you sure?  This action cannot be undone!"}
+.row
+  .col-md-3
+  .col-md-6.detail.text-right
+    =paginate @group_tests
+    =page_entries_info @group_tests
+%br
 
 .row
   .col-md-3
@@ -72,7 +78,7 @@
           -if @group.compare_type == 'baseline'
             %th ERP
           %th
-          
+
       -@group.trips.each do |trip|
         %tr
           %td

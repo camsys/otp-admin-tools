@@ -12,7 +12,8 @@ module Admin
     end
 
     def edit
-      @group = Group.find(params[:id]) 
+      @group = Group.find(params[:id])
+      @group_tests =  @group.tests.page(params[:page]).per(10)
       @new_trip = Trip.new
       @new_trip.group = @group
       @new_trip.time = Time.now 
