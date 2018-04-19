@@ -14,7 +14,7 @@
           %th Created
           %th
           
-      -@groups.each do |group|
+      -@groups.order(:created_at).reverse_order.each do |group|
         %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
           %td
             =group.formatted_type
