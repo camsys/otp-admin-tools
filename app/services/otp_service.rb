@@ -1,7 +1,10 @@
 require 'json'
 require 'net/http'
 require 'logger'
+require 'uri'
 class OtpService
+
+  include OtpTools
 
   attr_accessor :base_url, :api_key
 
@@ -129,8 +132,7 @@ class OtpService
 
     time = trip_datetime.strftime("%I:%M %p")
     date = trip_datetime.strftime("%m-%d-%Y")
-
-    base_url = 'http://otp-mta-demo.camsys-apps.com/#' + 'plan?'
+    base_url = get_base_url(@base_url.to_s) + '/#plan?'
     url_options = "&time=" + time
     url_options += "&mode=" + otp_mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
@@ -238,6 +240,12 @@ class OtpService
     'mode_car'=>'CAR',
     'mode_bicycle'=>'MODE_BICYCLE'}
     hash[trip_type.to_sym]
+  end
+
+  def get_base_url url
+    uri = URI.parse(url)
+    base =  "#{uri.scheme}://#{uri.host}"
+    return base
   end
 
 end
