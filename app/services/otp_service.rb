@@ -15,13 +15,12 @@ class OtpService
 
   def plan(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.3, max_walk_distance=8046.72, walk_reluctance=4, transfer_penalty=600,
+        mode="TRANSIT,WALK", arriveBy=true, walk_speed=1.3, max_walk_distance=8046.72, walk_reluctance=4, transfer_penalty=600,
         wheelchair=false, banned_agencies=nil, banned_route_types=nil,
         transfer_slack=120, allow_unknown_transfers=false, use_unpreferred_routes_penalty=1200, use_unpreferred_start_end_penalty=3600, 
         other_than_preferred_routes_penalty=10800, car_reluctance=4, path_comparator='mta', max_walk_distance_heuristic=8047)
 
     # Hardcoded Defaults
-    otp_mode = "TRANSIT,WALK"
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
@@ -38,7 +37,7 @@ class OtpService
 
     base_url = @base_url.to_s + '/plan?'
     url_options = "&time=" + time
-    url_options += "&mode=" + otp_mode + "&date=" + date
+    url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair.to_s
     url_options += "&arriveBy=" + arriveBy.to_s
@@ -78,7 +77,7 @@ class OtpService
 
 
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
-    if otp_mode == "TRANSIT,BICYCLE" or otp_mode == "BICYCLE"
+    if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
       url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
     else
       url_options += "&maxWalkDistance=" + max_walk_distance.to_s
@@ -110,7 +109,7 @@ class OtpService
 
   def viewable_url(
         from, to, trip_datetime,
-        arriveBy=true, walk_speed=1.3, max_walk_distance=8046.72, walk_reluctance=4, transfer_penalty=600,
+        mode="TRANSIT,WALK", arriveBy=true, walk_speed=1.3, max_walk_distance=8046.72, walk_reluctance=4, transfer_penalty=600,
         wheelchair=false, banned_agencies=nil, banned_route_types=nil, transfer_slack=120, allow_unknown_transfers=false, use_unpreferred_routes_penalty=1200, use_unpreferred_start_end_penalty=3600, 
         other_than_preferred_routes_penalty=10800, car_reluctance=4, path_comparator='mta', max_walk_distance_heuristic=8047)
 
@@ -120,7 +119,6 @@ class OtpService
     #    min_transfer_time=nil, max_transfer_time=nil, banned_routes=nil, preferred_routes=nil)
 
     # Hardcoded Defaults
-    otp_mode = "TRANSIT,WALK"
     max_bicycle_distance=5
     optimize='QUICK'
     num_itineraries=3
@@ -134,7 +132,7 @@ class OtpService
     date = trip_datetime.strftime("%m-%d-%Y")
     base_url = get_base_url(@base_url.to_s) + '/#plan?'
     url_options = "&time=" + time
-    url_options += "&mode=" + otp_mode + "&date=" + date
+    url_options += "&mode=" + mode + "&date=" + date
     url_options += "&toPlace=" + to[0].to_s + ',' + to[1].to_s + "&fromPlace=" + from[0].to_s + ',' + from[1].to_s
     url_options += "&wheelchair=" + wheelchair.to_s
     url_options += "&arriveBy=" + arriveBy.to_s
@@ -172,7 +170,7 @@ class OtpService
     end
 
     #If it's a bicycle trip, OTP uses walk distance as the bicycle distance
-    if otp_mode == "TRANSIT,BICYCLE" or otp_mode == "BICYCLE"
+    if mode == "TRANSIT,BICYCLE" or mode == "BICYCLE"
       url_options += "&maxWalkDistance=" + (1609.34*(max_bicycle_distance || 5.0)).to_s
     else
       url_options += "&maxWalkDistance=" + max_walk_distance.to_s

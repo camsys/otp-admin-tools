@@ -66,6 +66,14 @@
         .col-md-8
           = f.input :arrive_by, collection: [false, true], label: false, include_blank: false
 
+  .row
+    .col-md-12
+      .row
+        .col-md-4.detail.text-right
+          OTP Mode
+        .col-md-8
+          = f.input :otp_mode, as: :string, label: false, default: 'WALK,TRANSIT'
+
   -if trip.group.baseline?
     %hr
     .row.text-center

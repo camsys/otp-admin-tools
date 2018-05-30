@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180314003701) do
+ActiveRecord::Schema.define(version: 20180530150448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 20180314003701) do
     t.datetime "time"
     t.boolean  "arrive_by"
     t.string   "request_url"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.integer  "group_id"
     t.decimal  "origin_lat"
     t.decimal  "origin_lng"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20180314003701) do
     t.integer  "min_walk_seconds"
     t.integer  "max_total_seconds"
     t.integer  "min_total_seconds"
+    t.string   "otp_mode",               default: "WALK,TRANSIT", null: false
     t.index ["group_id"], name: "index_trips_on_group_id", using: :btree
   end
 

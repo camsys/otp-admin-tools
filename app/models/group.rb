@@ -53,6 +53,8 @@ class Group < ApplicationRecord
 
   # Load new Trips from CSV
   def update_trips file
+
+    Rails.logger.info "UPLOADING NEW TRIPS"
     require 'open-uri'
     require 'csv'
     trips_file = open(file)
@@ -64,8 +66,9 @@ class Group < ApplicationRecord
     line = 2 #Line 1 is the header, start with line 2 in the count
     begin
       CSV.foreach(trips_file, {:col_sep => ",", :headers => true}) do |row|
-
-        begin
+        Rails.logger.info "Adding Trip"
+        Rails.logger.info row
+        #begin
           Trip.create!({
                origin: row[0],
                origin_lat: row[1],
@@ -82,17 +85,18 @@ class Group < ApplicationRecord
                max_walk_seconds: row[13],
                min_total_seconds: row[14],
                max_total_seconds: row[15],
+               otp_mode: row[16] || "WALK,TRANSIT",
                group: self
            })
 
-        rescue
-          #Found an error, back out all changes and restore previous POIs
-          message = 'Error found on line: ' + line.to_s
-          Rails.logger.info message
-          self.trips.delete_all
-          failed = true
-          break
-        end
+        #rescue
+        #  #Found an error, back out all changes and restore previous POIs
+        #  message = 'Error found on line: ' + line.to_s
+        #  Rails.logger.info message
+        #  self.trips.delete_all
+        #  failed = true
+        #  break
+        #end
         line += 1
       end
     rescue
@@ -115,7 +119,7 @@ class Group < ApplicationRecord
     attributes = %w{origin origin_lat origin_lng destination destination_lat 
                     destination_lng trip_date trip_time arrive_by atis_mode 
                     atis_accessible expected_route_pattern min_walk_seconds 
-                    max_walk_seconds min_total_seconds max_total_seconds} #customize columns here
+                    max_walk_seconds min_total_seconds max_total_seconds otp_mode} #customize columns here
     trips = Trip.where(group_id: self.id)
 
     CSV.generate(headers: true) do |csv|
@@ -127,6 +131,8 @@ class Group < ApplicationRecord
             trip.time.strftime("%D")
           elsif attr == 'trip_time'
             trip.time.strftime("%I:%M %p")
+          elsif attr == 'otp_mode'
+            trip.otp_mode.gsub(',',';')
           else
             trip.send(attr)
           end

@@ -113,7 +113,11 @@
                   =result.trip.destination
                 =result.trip.arrive_by ? " arriving by #{(result.trip_time||result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{(result.trip_time || result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
               %h5
-                %b MODE:
+                %b OTP MODE:
+                =result.trip.otp_mode
+                %span.bar
+                  = "|"
+                %b ATIS MODE:
                 =result.trip.atis_mode
                 %span.bar
                   = "|"

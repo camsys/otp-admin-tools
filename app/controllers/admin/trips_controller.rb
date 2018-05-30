@@ -30,7 +30,7 @@ module Admin
     def trip_params
       params.require(:trip).permit(:origin, :origin_lat, :origin_lng, :destination, :destination_lat, :destination_lng, 
         :time, :arrive_by, :atis_mode, :atis_accessible, :group_id, 
-        :expected_route_pattern, :max_walk_seconds, :min_walk_seconds, :max_total_seconds, :min_total_seconds)
+        :expected_route_pattern, :max_walk_seconds, :min_walk_seconds, :max_total_seconds, :min_total_seconds, :otp_mode)
     end
 
   end
