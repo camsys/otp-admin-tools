@@ -23,6 +23,12 @@
               .h4
                 =image_tag(image_url("ped.svg"), size: "18x18")
                 ="#{(i[:walk_time]/60.0).round} | "
+                -unless i[:drive_time].nil? or i[:drive_time] == 0
+                  %i.fa.fa-car
+                  ="#{(i[:drive_time]/60.0).round} | "
+                -unless i[:bike_time].nil? or i[:bike_time] == 0
+                  %i.fa.fa-bicycle
+                  ="#{(i[:bike_time]/60.0).round} | "
                 %i.fa.fa-times
                 ="#{i[:transfers]} | "
                 %i.fa.fa-clock-o

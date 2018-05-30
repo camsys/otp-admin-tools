@@ -6,6 +6,12 @@
         .h4
           =image_tag(image_url("ped.svg"), size: "18x18")
           ="#{(itin[:walk_time]/60.0).round} | "
+          -unless itin[:drive_time].nil? or itin[:drive_time] == 0
+            %i.fa.fa-car
+            ="#{(itin[:drive_time]/60.0).round} | "
+          -unless itin[:bike_time].nil? or itin[:bike_time] == 0
+            %i.fa.fa-bicycle
+            ="#{(itin[:bike_time]/60.0).round} | "
           %i.fa.fa-times
           ="#{itin[:transfers]} | "
           %i.fa.fa-clock-o
