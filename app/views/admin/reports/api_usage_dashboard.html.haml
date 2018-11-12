@@ -1,0 +1,33 @@
+=content_for :title do
+  API Usage Dashboard
+
+-#= DashboardReport.new(:planned_trips, trips: @trips, grouping: @grouping).html
+.row
+  .col-md-3
+  .col-md-6
+    %table.table.table-hover#staff-table
+      %thead.thead-default
+        %tr
+          %th API Key
+          %th User/Service Name
+          %th Counts (all)
+          %th plan
+          %th nearby
+          %th collector
+          
+      -@trips.each do |member|
+        %tr{style: "cursor: pointer"}
+          %td
+            =member.api_key
+          %td
+            =member.service_name
+          %td
+            =member.count_total
+          %td
+            =member.count_plan
+          %td
+            =member.count_nearby
+          %td
+            =member.count_collector
+
+=back_link admin_reports_path

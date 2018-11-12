@@ -27,4 +27,27 @@ module ApplicationHelper
     "#{hours}:#{mins} #{ampm}"
 
   end
+
+  ### REMOTE PARTIAL HELPERS ###
+  # Helpers for handling naming and rendering of remote form partials
+  
+  def partial_path
+    self.instance_variable_get(:@virtual_path)
+  end
+
+  def form_id_from_path
+    "form" + partial_path.split('/').last.dasherize
+  end
+
+  # Renders a centered back link to the desired URL
+  def back_link(path, opts={})
+    link_label = opts[:label] || "Back"
+    
+    html = "<div class='text-center'>"
+    html << link_to(link_label, path, method: :get, class: 'btn btn-lg btn-link')
+    html << "</div>"
+    
+    html.html_safe
+  end
+
 end

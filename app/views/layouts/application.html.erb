@@ -27,7 +27,11 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right">    
+
+            <li class="nav-item">
+              <%= link_to("Reports", admin_reports_path(current_user), :method => :get) %> 
+            </li>
             
             <% if current_user%>
               <li>
@@ -69,24 +73,29 @@
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
   -->
-    <div class="row">
-      <div class="col-sm-12">
-        <h1 class="text-center">
-          <%= yield(:title)%>
-        </h1>
+    <!-- PAGE BODY -->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1 class="text-center">
+            <%= yield(:title)%>
+          </h1>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <%= yield %>
+      <div class="row">
+        <div class="col-md-12">
+          <%= yield %>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="text-center">
-          <%= "v0.10.7" %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-center">
+            <%= "v0.10.7" %>
+          </div>
         </div>
       </div>
     </div>
+    <!-- PAGE BODY -->
+
   </body>
 </html>

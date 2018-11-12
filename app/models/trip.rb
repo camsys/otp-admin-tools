@@ -5,6 +5,19 @@ class Trip < ApplicationRecord
   belongs_to :group
   has_many   :results
 
+  # For testing
+  attr_accessor :api_key, :service_name, :count_total, :count_plan, :count_nearby, :count_collector
+
+  ### SCOPES ###
+
+  # Return trips before or after a given date and time
+  scope :from_datetime, -> (datetime) { datetime ? where('trip_time >= ?', datetime) : all }
+  scope :to_datetime, -> (datetime) { datetime ? where('trip_time <= ?', datetime) : all }
+  
+  # Rounds to beginning or end of day.
+  scope :from_date, -> (date) { date ? from_datetime(date.in_time_zone.beginning_of_day) : all }
+  scope :to_date, -> (date) { date ? to_datetime(date.in_time_zone.end_of_day) : all }
+
   def params trip_time=self.time
     {
       origin: {lat: self.origin_lat, lng: self.origin_lng},
@@ -17,6 +30,8 @@ class Trip < ApplicationRecord
       atis_accessible: self.atis_accessible || false,
       atis_mode: self.atis_mode || "BCXTFRSLK123",
       otp_mode: self.otp_mode
+
+
     }
   end
 

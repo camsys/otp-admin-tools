@@ -19,6 +19,18 @@ Rails.application.routes.draw do
     # Trips
     resources :trips, :only => [:destroy, :create, :edit, :update]
 
+    # Reports
+    resources :reports, only: [:index] do
+      collection do
+
+        # DASHBOARD REPORTS
+        post 'dashboard'
+        get 'api_usage_dashboard'
+        get 'origin_destination_dashboard'
+
+      end
+    end
+
     # Results
     resources :results, :only => [:show]
 
