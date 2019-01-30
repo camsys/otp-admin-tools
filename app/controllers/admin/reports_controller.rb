@@ -4,6 +4,12 @@ class Admin::ReportsController < Admin::AdminController
   GROUPINGS = [:hour, :day, :week, :month, :quarter, :year, :day_of_week, :month_of_year]
   # OTP API calls of interest
   APIS = [:plan, :nearby, :collector]
+  REPORT_UNITS = ['Trip Plans', 'Sessions']
+  GEOGRAPHIES = ['Counties', 'NYCT Zones', 'LIRR Areas', 'MNR Areas']
+  ORIGINS = ['All', 'Allerton', 'Alley Pond Park']
+  DESTINATIONS = ['All', 'Allerton', 'Alley Pond Park']
+  TIME_PERIODS = ['All Time', 'Last 3 Months', 'Last Month', 'Yesterday', 'Custom']
+  PLATFORMS = ['All', 'Responsive Web', 'iOS', 'Android']
   
   # Set filters on Dashboards
   before_action :set_dashboard_filters, only: [
@@ -14,8 +20,16 @@ class Admin::ReportsController < Admin::AdminController
   before_action :authorize_reports
   
   def index
+    @counties = ['All'].concat(Location.where(category: 1).pluck(:name))
+
     @dashboards = DASHBOARDS
     @groupings = GROUPINGS
+    @report_units = REPORT_UNITS
+    @geographies = GEOGRAPHIES
+    @origins = @counties
+    @destinations = @counties
+    @platforms = PLATFORMS
+    @time_periods = TIME_PERIODS
   end
     
   ### GRAPHICAL DASHBOARDS ###
@@ -74,12 +88,47 @@ class Admin::ReportsController < Admin::AdminController
   end
   
   def origin_destination_dashboard
-    @trips = Trip.from_date(@from_date).to_date(@to_date)
+
+    @time_period = params[:time_period]
+    @from_date = parse_date_param(params[:from_date])
+    @to_date = parse_date_param(params[:to_date])
+    case @time_period
+    when 'Last 3 Months'
+       @report_units = Plan.where("extract(month from request_time) >= ? AND extract(month from request_time) <= ?", 
+        3.months.ago.month, 1.months.ago.month)
+    when 'Last Month'
+       @report_units = Plan.where("extract(month from request_time) = ?", 1.months.ago.month)
+    when 'Yesterday'
+       @report_units = Plan.where("DATE(request_time) = ?", Date.today - 1)
+    when 'Custom'
+       @report_units = Plan.where(:request_time => @from_date..@to_date)
+    else
+       @report_units = Plan.all
+    end
+
+    @origin = params[:origin]
+    if (@origin != 'All') then
+      origin_id = Location.where(category: 1).where(name: @origin).pluck(:id)[0]
+      @report_units = @report_units.where(id: PlanLocation.where(from_category_id: origin_id).select(:plan_id))
+    end
+
+    @destination = params[:destination]
+    if (@destination != 'All') then
+      destination_id = Location.where(category: 1).where(name: @destination).pluck(:id)[0]
+      @report_units = @report_units.where(id: PlanLocation.where(to_category_id: destination_id).select(:plan_id))   
+    end
+
+    @report_units_count = add_commas(@report_units.count.to_s)
+    
   end
   
   ### / graphical dashboards  
   
   protected
+
+  def add_commas(num_string)
+    num_string.reverse.scan(/\d{3}|.+/).join(",").reverse
+  end
 
   # Ensures that current_user has permission to view the reports
   def authorize_reports
@@ -123,6 +172,8 @@ class Admin::ReportsController < Admin::AdminController
     @to_date = parse_date_param(params[:to_date])
     @grouping = params[:grouping]
     @partner_agency = params[:partner_agency].blank? ? nil : PartnerAgency.find(params[:partner_agency])
+
+
     
   end
   
@@ -161,10 +212,16 @@ class Admin::ReportsController < Admin::AdminController
   def dashboard_params
     params.require(:dashboard).permit(
       :dashboard_name, 
+      :report_unit,
+      :time_period,
       :from_date, 
       :to_date, 
       :grouping,
-      :partner_agency
+      :partner_agency,
+      :geography,
+      :origin,
+      :destination,
+      :platform,
     )
   end
   

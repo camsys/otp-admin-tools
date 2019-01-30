@@ -17,4 +17,5 @@
 //= require_tree .
 //= require jquery-ui
 //= require bootstrap-datepicker
+//= require Chart.bundle
 //= require chartkick

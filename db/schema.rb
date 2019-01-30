@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180530150448) do
+ActiveRecord::Schema.define(version: 20181204132326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_calls", force: :cascade do |t|
+    t.integer  "type_id"
+    t.integer  "api_key_id"
+    t.datetime "server_time"
+    t.string   "platform"
+    t.string   "session"
+  end
+
+  create_table "api_keys", force: :cascade do |t|
+    t.string "api_key"
+    t.string "consumer_name"
+  end
 
   create_table "configs", force: :cascade do |t|
     t.string   "key"
@@ -46,6 +59,31 @@ ActiveRecord::Schema.define(version: 20180530150448) do
     t.decimal  "otp_car_reluctance",                      default: "4.0",     null: false
     t.string   "otp_path_comparator",                     default: "mta",     null: false
     t.integer  "otp_max_walk_distance_heuristic",         default: 8047,      null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.integer "category"
+    t.string  "name"
+    t.string  "geojson"
+  end
+
+  create_table "plan_locations", force: :cascade do |t|
+    t.integer "plan_id"
+    t.integer "category_id"
+    t.integer "from_category_id"
+    t.integer "to_category_id"
+    t.index ["plan_id"], name: "index_plan_locations_on_plan_id", using: :btree
+  end
+
+  create_table "plans", force: :cascade do |t|
+    t.integer  "type_id"
+    t.decimal  "from_lat"
+    t.decimal  "from_lng"
+    t.decimal  "to_lat"
+    t.decimal  "to_lng"
+    t.datetime "request_time"
+    t.datetime "server_time"
+    t.boolean  "arrive_by"
   end
 
   create_table "results", force: :cascade do |t|
@@ -112,6 +150,11 @@ ActiveRecord::Schema.define(version: 20180530150448) do
     t.integer  "min_total_seconds"
     t.string   "otp_mode",               default: "WALK,TRANSIT", null: false
     t.index ["group_id"], name: "index_trips_on_group_id", using: :btree
+  end
+
+  create_table "types", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
   end
 
   create_table "users", force: :cascade do |t|

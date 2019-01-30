@@ -1,5 +1,5 @@
 =content_for :header do
-  Dashboards
+  Reports
 
 =simple_form_for :dashboard,
   url: dashboard_admin_reports_path,
@@ -8,16 +8,32 @@
   
   =f.input :dashboard_name, required: true, 
     collection: @dashboards, 
-    label: "Select Dashboard"
-  
-  -# DATE RANGE SELECTORS
+    label: "Select Report", selected: 'Origin Destination'
+
   .dashboard-options.api-usage.origin-destination.hidden
-    =f.input :from_date, required: false,
-      input_html: {class: 'datepicker'}, 
-      as: :string, label: "From Date"
-    =f.input :to_date, required: false,
-      input_html: {class: 'datepicker'}, 
-      as: :string, label: "To Date"
+  =f.input :report_unit, required: true, 
+    collection: @report_units, 
+    label: "Report On", selected: 'Trip Plans'
+
+  .dashboard-options.api-usage.origin-destination.hidden
+  =f.input :geography, required: true, 
+    collection: @geographies, 
+    label: "Geography", selected: 'Counties'
+
+  .dashboard-options.api-usage.origin-destination.hidden
+  =f.input :origin, required: true, 
+    collection: @origins, 
+    label: "Origin", selected: 'All'
+
+  .dashboard-options.api-usage.origin-destination.hidden
+  =f.input :destination, required: true, 
+    collection: @destinations, 
+    label: "Destination", selected: 'All'
+
+  .dashboard-options.api-usage.origin-destination.hidden
+  =f.input :platform, required: true, 
+    collection: @platforms, 
+    label: "Platform", selected: 'All'
 
 
   -# PARTNER AGENCY SELECTION
@@ -29,14 +45,21 @@
       
   -# DATE GROUPING
   .dashboard-options.api-usage.origin-destination.hidden
-    =f.input :grouping,
-      collection: @groupings, include_blank: false,
-      label: "Group By", selected: :month
+    =f.input :time_period,
+      collection: @time_periods, include_blank: false,
+      label: "Time Period", selected: 'All Time'
       
-  
+  -# DATE RANGE SELECTORS
+  .dashboard-options.api-usage.origin-destination.hidden
+    =f.input :from_date, required: false,
+      input_html: {class: 'datepicker'}, 
+      as: :string, label: "From"
+    =f.input :to_date, required: false,
+      input_html: {class: 'datepicker'}, 
+      as: :string, label: "To" 
 
 =content_for :footer do
-  .btn.btn-primary.dashboard-form-submit View Dashboard
+  .btn.btn-primary.dashboard-form-submit View Report
     
     
 :javascript

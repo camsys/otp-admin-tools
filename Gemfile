@@ -79,6 +79,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-ui-rails'
 gem 'bootstrap-datepicker-rails'
 gem 'chartkick' # For google charts
+gem 'groupdate' # For chart grouping
 ############################################
 
 # Use Capistrano for deployment
@@ -87,6 +88,8 @@ gem 'chartkick' # For google charts
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  # Create ERD diagram
+  gem "rails-erd"
 end
 
 group :development do
