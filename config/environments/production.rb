@@ -56,6 +56,8 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "TripCompare_#{Rails.env}"
   config.action_mailer.perform_caching = true
+  # Queuing backend for AWS SQS
+  #config.active_job.queue_adapter = :shoryuken
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -83,4 +85,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Application Title Config. Used by OTP Reports.
+  config.application_title = 'OTP Reports'
 end

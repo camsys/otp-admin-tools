@@ -1,0 +1,12 @@
+concurrency: 1
+delay: 0
+logfile: ./shoryuken.log
+pidfile: ./shoryuken.pid
+queues:
+  - [dev_archive, 1]
+wait_time_seconds: 20
+aws:
+  access_key_id: 'AKIAITSTWL6U3EYF3WUQ'
+  region: 'us-east-1'
+  secret_access_key: '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'
+

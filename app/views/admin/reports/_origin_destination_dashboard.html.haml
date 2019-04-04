@@ -1,0 +1,40 @@
+%h4.text-center
+  Origin Destination Report
+#accordion.panel-group
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title
+        %a.accordion-toggle{"data-parent" => "#accordian", "data-toggle" => "collapse", :href => "#collapse1"}
+          Results: Counts
+    .panel-collapse.collapse.in{:id => "collapse1"}
+      .panel-body
+        .row.form-group
+          .col-md-6.detail.text-right
+            Trip Plans
+          .col-md-6.text-left
+            = @report_units_count
+        .row.form-group
+          .col-md-12.detail
+            = DashboardReport.new(:origin_destination_counts_daily, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_counts_weekly, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_counts_monthly, report_units: @report_units, grouping: @grouping).html
+  .panel.panel-default
+    .panel-heading
+      %h4.panel-title
+        %a.accordion-toggle{"data-parent" => "#accordian", "data-toggle" => "collapse", :href => "#collapse2"}
+          Results: Distribution
+    .panel-collapse.collapse.in{:id => "collapse2"}
+      .panel-body
+        .row.form-group
+          .col-md-12.detail
+            Distribution of Trip Plans
+        .row.form-group
+          .col-md-12.detail
+            = DashboardReport.new(:origin_destination_dist_day_of_week, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_dist_hour_weekday, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_dist_hour_weekend, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_dist_planned, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_dist_origin, report_units: @report_units, grouping: @grouping).html
+            = DashboardReport.new(:origin_destination_dist_dest, report_units: @report_units, grouping: @grouping).html
+
+=back_link admin_reports_path

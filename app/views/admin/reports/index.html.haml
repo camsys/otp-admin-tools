@@ -2,3 +2,6 @@
   Reports
 
 =render partial: 'dashboards', layout: '/layouts/panel'
+
+-if @report_units
+  =render partial: 'origin_destination_dashboard', layout: '/layouts/panel'

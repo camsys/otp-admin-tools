@@ -45,12 +45,9 @@ gem 'mail'
 ### DATES #############################
 gem 'holidays', '~> 6.2'
 
-### API & SERIALIZING ######################
-# ActiveModel Serializers for serving JSON via the API
-gem 'active_model_serializers', '~> 0.10.0'
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.6'
+#gem 'rails', '~> 5.0.6'
+gem 'rails', '4.2.8'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -82,6 +79,20 @@ gem 'chartkick' # For google charts
 gem 'groupdate' # For chart grouping
 ############################################
 
+# AWS SQS message queue
+gem 'aws-sdk-sqs'
+gem 'shoryuken', '4.0.3'
+#gem 'shoryuken', '4.0.0'
+
+# Database partitioning
+#gem "partitioned", "~> 1.1.0"
+gem 'activerecord-redshift-adapter', git: "https://github.com/arp/activerecord-redshift-adapter.git", branch: "rails4-compatibility"
+gem 'partitioned', git: "https://github.com/dkhofer/partitioned.git", branch: "rails-4-2"
+
+# GIS
+gem 'rgeo'
+gem 'rgeo-geojson'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -97,8 +108,8 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  #gem 'spring'
+  #gem 'spring-watcher-listen', '~> 2.0.0'
   gem "better_errors"
   gem "binding_of_caller"
 end
