@@ -16,7 +16,8 @@ Rails.application.routes.draw do
       collection do
 
         # DASHBOARD REPORTS
-        post 'dashboard'
+        get 'index'
+        post 'index'
         get 'api_usage_dashboard'
         get 'origin_destination_dashboard'
 

@@ -1,6 +1,18 @@
-class Plan < ApplicationRecord
+class ByRequestTime < Partitioned::ByWeeklyTimeField
+  self.abstract_class = true
 
-  has_one :plan_location
-  has_many :types
+  def self.partition_time_field
+    return :request_time
+  end
+end
+
+class Plan < ByRequestTime
+
+  has_many :plan_locations, dependent: :destroy
+  belongs_to :type
+
+  partitioned do |partition|
+    partition.index :id, :unique => true
+  end
 
 end

@@ -20,18 +20,55 @@ class Admin::ReportsController < AdminController
   before_action :authorize_reports
   
   def index
-    @counties = ['All'].concat(Location.where(category: 1).pluck(:name))
+
+    @counties = ['All'].concat(Location.where(category: Location::COUNTY).pluck(:name))
+    @transit_zones = ['All'].concat(Location.where(category: Location::NYCT_ZONE).pluck(:name))
 
     @dashboards = DASHBOARDS
     @groupings = GROUPINGS
-    @report_units = REPORT_UNITS
+    @report_units_on = REPORT_UNITS
     @geographies = GEOGRAPHIES
-    @origins = @counties
-    @destinations = @counties
     @platforms = PLATFORMS
     @time_periods = TIME_PERIODS
+
+    if params[:dashboard].blank?
+      @origins = @counties
+      @destinations = @counties
+
+      @selected_dashboard_name = 'Origin Destination'
+      @selected_report_unit = 'Trip Plans'
+      @selected_geography = 'Counties'
+      @selected_origin = ['All']
+      @selected_destination = ['All']
+      @selected_platform = 'All'
+      @selected_time_period = 'All Time'
+    else
+      params = dashboard_params
+      @selected_dashboard_name = params[:dashboard_name]
+      @selected_report_unit = params[:report_unit]
+      @selected_geography = params[:geography]
+      if @selected_geography == 'Counties'
+        @origins = @counties
+        @destinations = @counties  
+      else
+        @origins = @transit_zones
+        @destinations = @transit_zones
+      end          
+      @selected_origin = params[:origin]
+      @selected_destination = params[:destination]
+      @selected_platform = params[:platform]
+      @selected_time_period = params[:time_period]
+      if !params[:from_date].blank?
+        @selected_from_date = parse_date_param(params[:from_date])
+      end
+      if !params[:to_date].blank?
+        @selected_to_date = parse_date_param(params[:to_date])
+      end
+
+      dashboard
+    end
   end
-    
+
   ### GRAPHICAL DASHBOARDS ###
   
   def dashboard
@@ -40,7 +77,8 @@ class Admin::ReportsController < AdminController
     action_name = dashboard_name + "_dashboard"
     filters = params.except(:dashboard_name).to_h # Explicitly convert params to hash to avoid deprecation warning
 
-    redirect_to({controller: 'reports', action: action_name}.merge(filters))
+    origin_destination_dashboard
+    #redirect_to({controller: 'reports', action: action_name}.merge(filters))
   end
   
   def api_usage_dashboard
@@ -89,6 +127,8 @@ class Admin::ReportsController < AdminController
   
   def origin_destination_dashboard
 
+    params = dashboard_params
+
     @time_period = params[:time_period]
     @from_date = parse_date_param(params[:from_date])
     @to_date = parse_date_param(params[:to_date])
@@ -106,15 +146,20 @@ class Admin::ReportsController < AdminController
        @report_units = Plan.all
     end
 
+    if @selected_geography == 'Counties' then
+      category_id = Location::COUNTY
+    else
+      category_id = Location::NYCT_ZONE
+    end
     @origin = params[:origin]
-    if (@origin != 'All') then
-      origin_id = Location.where(category: 1).where(name: @origin).pluck(:id)[0]
+    if (!@origin.nil? && !@origin.include?('All')) then
+      origin_id = Location.where(category: category_id).where(name: @origin).pluck(:id)[0]
       @report_units = @report_units.where(id: PlanLocation.where(from_category_id: origin_id).select(:plan_id))
     end
 
     @destination = params[:destination]
-    if (@destination != 'All') then
-      destination_id = Location.where(category: 1).where(name: @destination).pluck(:id)[0]
+    if (!@destination.nil? && !@destination.include?('All')) then
+      destination_id = Location.where(category: category_id).where(name: @destination).pluck(:id)[0]
       @report_units = @report_units.where(id: PlanLocation.where(to_category_id: destination_id).select(:plan_id))   
     end
 
@@ -219,8 +264,8 @@ class Admin::ReportsController < AdminController
       :grouping,
       :partner_agency,
       :geography,
-      :origin,
-      :destination,
+      {:origin => []},
+      {:destination => []},
       :platform,
     )
   end

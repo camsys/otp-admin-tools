@@ -21,6 +21,7 @@ Rails.application.configure do
       'Cache-Control' => 'public, max-age=172800'
     }
   else
+    # Rails 5
     config.action_controller.perform_caching = false
 
     config.cache_store = :null_store
@@ -29,7 +30,8 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.perform_caching = false
+  # Rails 5
+  #config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -50,10 +52,14 @@ Rails.application.configure do
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
-  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  # Rails 5
+  #config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Mail Config: Used by Devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  # Application Title Config. Used by OTP Reports.
+  config.application_title = 'OTP Reports'
 
   # The location for the stations API to connect to
   config.station_api_endpoint = 'http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity'
