@@ -13,11 +13,13 @@
   .dashboard-options.api-usage.origin-destination.hidden
   =f.input :report_unit, required: true,
     collection: @report_units_on, 
+    disabled: ['Sessions'],
     label: "Report On", selected: @selected_report_unit
 
   .dashboard-options.api-usage.origin-destination.hidden
   =f.input :geography, required: true, 
     collection: @geographies, 
+    disabled: ['LIRR Areas', 'MNR Areas'],
     label: "Geography", selected: @selected_geography
 
   .dashboard-options.api-usage.origin-destination.hidden
@@ -63,8 +65,6 @@
 =content_for :footer do
   .btn.btn-primary.dashboard-form-submit View Report
 
-%hr/ 
-
 :javascript
   $(document).ready(function() {
   
@@ -78,15 +78,33 @@
         $(dashboardOptionsSelector).removeClass('hidden');
       }
     }
+
+    var showCustomDatePickers = function(timePeriod) {
+      $('.dashboard_from_date').addClass('hidden');
+      $('.dashboard_to_date').addClass('hidden');
+      if (timePeriod == 'Custom') {
+        $('.dashboard_from_date').removeClass('hidden');
+        $('.dashboard_to_date').removeClass('hidden');
+
+      }
+    }
     
     // Show dashboard options on document ready if a dashboard is selected.
     var initialDashboard = $('select#dashboard_dashboard_name').val();
     showDashboardOptions(initialDashboard);
+    var initialTimePeriod = $('select#dashboard_time_period').val();
+    showCustomDatePickers(initialTimePeriod);
     
     // Show appropriate dashboard options when a new dashboard is selected.
     $('select#dashboard_dashboard_name').change(function() {
       var dashboard = $(this).val();
       showDashboardOptions(dashboard);
+    });
+
+    // Show appropriate dashboard options when a new dashboard is selected.
+    $('select#dashboard_time_period').change(function() {
+      var timePeriod = $(this).val();
+      showCustomDatePickers(timePeriod);
     });
 
     // Handle reload of origin and destination if a new geography is selected.

@@ -41,7 +41,7 @@ class Admin::ReportsController < Admin::AdminController
       @selected_origin = ['All']
       @selected_destination = ['All']
       @selected_platform = 'All'
-      @selected_time_period = 'All Time'
+      @selected_time_period = 'Last Month'
     else
       params = dashboard_params
       @selected_dashboard_name = params[:dashboard_name]
@@ -78,6 +78,9 @@ class Admin::ReportsController < Admin::AdminController
     filters = params.except(:dashboard_name).to_h # Explicitly convert params to hash to avoid deprecation warning
 
     origin_destination_dashboard
+    if params[:dashboard_name] == DASHBOARDS[0] then
+      api_usage_dashboard
+    end
     #redirect_to({controller: 'reports', action: action_name}.merge(filters))
   end
   
@@ -121,7 +124,15 @@ class Admin::ReportsController < Admin::AdminController
     trip5.count_plan = 750
     trip5.count_nearby = 0
     trip5.count_collector = 0
-    @trips = [ trip1, trip2, trip3, trip4, trip5 ]
+    tripAll = Trip.new
+    tripAll.api_key = 'All'
+    tripAll.service_name = 'All'
+    tripAll.count_total = @report_units.count
+    tripAll.count_plan = @report_units.count
+    tripAll.count_nearby = 0
+    tripAll.count_collector = 0    
+    #@trips = [ trip1, trip2, trip3, trip4, trip5 ]
+    @trips = [ tripAll ]
 
   end
   
@@ -151,6 +162,7 @@ class Admin::ReportsController < Admin::AdminController
     else
       category_id = Location::NYCT_ZONE
     end
+    @grouping = category_id
     @origin = params[:origin]
     if (!@origin.nil? && !@origin.include?('All')) then
       origin_id = Location.where(category: category_id).where(name: @origin).pluck(:id)[0]
@@ -215,7 +227,7 @@ class Admin::ReportsController < Admin::AdminController
     # DATE FILTERS
     @from_date = parse_date_param(params[:from_date])
     @to_date = parse_date_param(params[:to_date])
-    @grouping = params[:grouping]
+    @grouping = params[:grouping]    
     @partner_agency = params[:partner_agency].blank? ? nil : PartnerAgency.find(params[:partner_agency])
 
 
