@@ -34,8 +34,14 @@ class DashboardReport
   }
 
   COUNT_CHART_OPTIONS = {
-    chartArea: { width: '90%', height: '25%' },
-    vAxis: { format: '#' }
+    chartArea: { width: '90%', height: '75%' },
+    hAxis: { format: 'M/d/yy' },
+    vAxis: { format: 'short', textPosition: 'in' }
+  }
+
+  DIST_CHART_OPTIONS = {
+    chartArea: { width: '90%', height: '75%' },
+    vAxis: { format: 'short', textPosition: 'in' }
   }
   
   def initialize(report_type=nil, params={})
@@ -126,7 +132,7 @@ class DashboardReport
         download: true,
         thousands: ",",
         adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+        library: DIST_CHART_OPTIONS)
     else
         return ''
     end
@@ -142,7 +148,7 @@ class DashboardReport
         download: true,
         thousands: ",",
         adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+        library: DIST_CHART_OPTIONS)
     else
         return ''
     end
@@ -158,7 +164,7 @@ class DashboardReport
         download: true,
         thousands: ",",
         adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+        library: DIST_CHART_OPTIONS)
     else
         return ''
     end
@@ -184,7 +190,7 @@ class DashboardReport
         ytitle: "Day Planned",
         download: true,
         adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+        library: DIST_CHART_OPTIONS)
     else
         return ''
     end
@@ -192,8 +198,11 @@ class DashboardReport
 
   def origin_destination_dist_origin_html
     report_units = @params[:report_units]
+    category_id = @params[:grouping]
     if (!report_units.nil?) then
      data = report_units.includes(:plan_locations, plan_locations: [ :from_location ])
+        .where("category_id = ?", category_id)
+        .where.not('locations.name' => nil)
         .group(['locations.name'])
         .order('COUNT(plans.id) DESC')
         .references(:plan_locations, :from_location)
@@ -204,7 +213,7 @@ class DashboardReport
         ytitle: "Top 25 Origins",
         download: true,
         adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+        library: DIST_CHART_OPTIONS)
     else
       return ''
     end
@@ -212,8 +221,11 @@ class DashboardReport
 
   def origin_destination_dist_dest_html
     report_units = @params[:report_units]
+    category_id = @params[:grouping]
     if (!report_units.nil?) then
      data = report_units.includes(:plan_locations, plan_locations: [ :to_location ])
+        .where("category_id = ?", category_id)
+        .where.not('locations.name' => nil)
         .group(['locations.name'])
         .order('COUNT(plans.id) DESC')
         .references(:plan_locations, :to_location)
@@ -224,7 +236,7 @@ class DashboardReport
         ytitle: "Top 25 Destinations",
         download: true,
         adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+        library: DIST_CHART_OPTIONS)
     else
       return ''
     end

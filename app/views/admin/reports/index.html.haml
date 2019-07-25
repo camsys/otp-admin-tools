@@ -4,4 +4,7 @@
 =render partial: 'dashboards', layout: '/layouts/panel'
 
 -if @report_units
-  =render partial: 'origin_destination_dashboard', layout: '/layouts/panel'
+  -if @selected_dashboard_name == 'Origin Destination'
+    =render partial: 'origin_destination_dashboard', layout: '/layouts/panel', locals: {hide_footer: true}
+  -else
+    =render partial: 'api_usage_dashboard', layout: '/layouts/panel', locals: {hide_footer: true}
