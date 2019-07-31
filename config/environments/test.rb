@@ -39,4 +39,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+
+  # The location for the stations API to connect to
+  config.station.api_endpoint = 'http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity'
+
+
 end
