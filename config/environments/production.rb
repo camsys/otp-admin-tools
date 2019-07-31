@@ -86,7 +86,7 @@ Rails.application.configure do
 
 
   # The location for the stations API to connect to
-  config.station.api_endpoint = 'http://otp-mta-prod.camsys-apps.com/otp/routers/default/stationConnectivity'
+  config.station_api_endpoint = 'http://otp-mta-prod.camsys-apps.com/otp/routers/default/stationConnectivity'
 
 
 end

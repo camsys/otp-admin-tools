@@ -10,7 +10,8 @@ end
 ### Needed for Production/Ubuntu ###########
 group :production do
   gem 'execjs'
-  gem 'therubyracer'
+  # gem 'therubyracer'
+  gem 'mini_racer'
 end
 
 ### API & SERIALIZING ######################

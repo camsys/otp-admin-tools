@@ -32,6 +32,10 @@
             <li class="nav-item">
               <%= link_to("Reports", admin_reports_path(current_user), :method => :get) %> 
             </li>
+
+            <li class="nav-item">
+              <%= link_to("Station Visualizer_1", stations_stations_path(current_user), :method => :get) %>
+            </li>
             
             <% if current_user%>
               <li>

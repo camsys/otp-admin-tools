@@ -63,4 +63,11 @@ Rails.application.routes.draw do
     end
   end
 
+  ### Station Visualizer ###
+  namespace :stations do
+    resources :stations, :only => [:index]
+
+  end
+
+
 end

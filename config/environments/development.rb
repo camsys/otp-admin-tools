@@ -56,6 +56,6 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # The location for the stations API to connect to
-  config.station.api_endpoint = 'http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity'
+  config.station_api_endpoint = 'http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity'
 
 end

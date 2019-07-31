@@ -1,0 +1,3 @@
+class Station  < Tableless
+
+end
