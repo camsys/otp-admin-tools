@@ -1,5 +1,5 @@
 class StationNode
-
+  attr_accessor :id, :lat, :lon, :type, :way_id, :is_accessible
 #
 #   id
 #   lat

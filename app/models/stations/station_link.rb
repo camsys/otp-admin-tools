@@ -1,4 +1,5 @@
 class StationLink
+  attr_accessor :id, :equipment_id, :source, :destination, :type, :pathway_code, :is_active
 
   # id
   # equipmentId (this might be some internal MTA designation for this entity, e.g. all links which physically are served by the same elevator would have the same device ID)

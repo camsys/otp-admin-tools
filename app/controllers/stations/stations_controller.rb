@@ -7,9 +7,14 @@ module Stations
   class StationsController < ApplicationController
 
     def index
-      @stops = get_stations_from_api
+      # @stops = get_stations_from_api
 
       get_station_from_api
+
+      respond_to do |format|
+        format.html
+        format.json { render json: @station }
+      end
     end
 
     def create
