@@ -24,8 +24,43 @@ class Station
     puts @alerts
   end
 
-  def find_node node_id
+  def find_entrance_nodes
+    entrance_nodes = []
+    @nodes.each do |node|
 
+      if node.type == 'ENTRANCE'
+        entrance_nodes << node
+      end
+
+    end
+
+    entrance_nodes
+  end
+
+  def find_stop_nodes
+    stop_nodes = []
+    @nodes.each do |node|
+
+      if node.type == 'STOP'
+        stop_nodes << node
+      end
+
+    end
+
+    stop_nodes
+  end
+
+  def find_other_nodes
+    other_nodes = []
+    @nodes.each do |node|
+
+    if (node.type != 'STOP' && node.type != 'ENTRANCE')
+      other_nodes << node
+    end
+
+  end
+
+    other_nodes
   end
 
 

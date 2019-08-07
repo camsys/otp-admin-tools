@@ -20,13 +20,13 @@
 <div class="col-md-3">
   <%#= collection_select :stop_id, nil, @stops, :id, :name, include_blank: true %>
   <div>
-    Station Id: <%= text_field(:station_id, size: 25)  %>
+    Station Id: <%= text_field(:station_vis, :station_id, size: 25)  %>
   </div>
   <div>
-    Date: <%= date_field(:date, :otp_date)  %>
+    Date: <%= date_field(:station_vis, :otp_date)  %>
   </div>
   <div>
-    Time: <%= time_field(:time, :started_at)  %>
+    Time: <%= time_field(:station_vis, :start_time)  %>
   </div>
 
   <div>
@@ -52,46 +52,92 @@
     // create an array with nodes
     var station = <%= @station.to_json.html_safe %>;
 
-    var nodes_for_visualization = [];
-    var edges_for_visualization = [];
+    function build_edges(){
+        var edges_for_visualization = [];
 
-    console.log(station);
+        station.links.forEach(function(element) {
+            console.log(element);
 
-    station.nodes.forEach(function(element) {
-        console.log(element);
+            edges_for_visualization.push({from: element.source, to: element.destination})
+        });
+        console.log(edges_for_visualization);
 
-        nodes_for_visualization.push({id: element.id, label: element.label+' '+element.type})
-    });
-    console.log(nodes_for_visualization);
+        return edges_for_visualization;
+    }
 
-    station.links.forEach(function(element) {
-        console.log(element);
+    function build_nodes(){
+        var nodes_for_visualization = [];
 
-        edges_for_visualization.push({from: element.source, to: element.destination})
-    });
-    console.log(edges_for_visualization);
+        station.nodes.forEach(function(element) {
+            console.log(element);
 
-    var nodes = new vis.DataSet(nodes_for_visualization);
+            nodes_for_visualization.push({id: element.id, label: element.label+' '+element.type})
+        });
+        console.log(nodes_for_visualization);
 
-    // create an array with edges
-    var edges = new vis.DataSet(edges_for_visualization);
+        return nodes_for_visualization;
+    }
 
-    // create a network
-    var container = document.getElementById('station_graph');
+    function build_nodes(station_nodes, primary_color, cluster) {
+        var nodes_for_visualization = [];
 
-    // provide the data in the vis format
-    var data = {
-        nodes: nodes,
-        edges: edges
-    };
-    var options = {
-        edges: {
-            length: 325,
-        }
-    };
+        station_nodes.forEach(function(element) {
+            console.log(element);
 
-    // initialize your network!
-    var network = new vis.Network(container, data, options);
+            nodes_for_visualization.push({id: element.id, label: element.label, color: primary_color, cid: cluster})
+        });
+        console.log(nodes_for_visualization);
+
+        return nodes_for_visualization;
+    }
+
+    function build_entrance_nodes()
+    {
+        return build_nodes(<%= @station.find_entrance_nodes.to_json.html_safe %>, 'Gold', 'entrance')
+    }
+
+    function build_stop_nodes()
+    {
+        return build_nodes(<%= @station.find_stop_nodes.to_json.html_safe %>, 'LightSkyBlue ', 'stop')
+    }
+
+    function build_other_nodes()
+    {
+        return build_nodes(<%= @station.find_other_nodes.to_json.html_safe %>, 'LightGreen', 'other')
+    }
+
+    function build_new_networkgraph(){
+        // create an array with edges
+        var edges = new vis.DataSet(build_edges());
+        var nodes = new vis.DataSet();
+
+        nodes.add(build_entrance_nodes());
+        nodes.add(build_stop_nodes());
+        nodes.add(build_other_nodes());
+
+        // create a network
+        var container = document.getElementById('station_graph');
+
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+
+        //define the length of edges to space them out more.
+        var options = {
+            edges: {
+                length: 325,
+            }
+        };
+
+        // initialize your network!
+        var network = new vis.Network(container, data, options);
+    }
+
+    build_new_networkgraph();
+
+
 
 
 </script>

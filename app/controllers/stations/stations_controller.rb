@@ -7,6 +7,11 @@ module Stations
   class StationsController < ApplicationController
 
     def index
+      sn = StationNode
+      sl = StationLink
+      st = Station
+
+
       # @stops = get_stations_from_api
 
       get_station_from_api
@@ -31,8 +36,8 @@ module Stations
 
     def get_station_from_api()
       # TODO get the API key from anywhere else... Get the Stop ID from a list of stop IDs, get the date and time from UI elements.
-      resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:211N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
-      # resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:A32N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
+      # resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:211N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
+      resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:A32N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
 
       data = JSON.parse(resp.body)
 
