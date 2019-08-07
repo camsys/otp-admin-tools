@@ -30,6 +30,16 @@
     Time: <%= time_field(:time, :started_at)  %>
   </div>
 
+  <div>
+    <ul>
+      <% @station.alerts.each do |a| %>
+        <li>
+          <%= a %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
 </div>
 <div class="col-md-9">
     <h3 class="text-center"><%= @station.station_name %></h3>
@@ -38,8 +48,7 @@
 
 </div>
 
-<div class="col-md-12">Alerts go here?????</div>
-</body>
+
 
 
 <script type="text/javascript">
