@@ -9,9 +9,8 @@
 
 
     <style type="text/css">
-      #mynetwork {
+      #station_graph {
         height: 600px;
-        height: 1000px;
         border: 1px solid lightgray;
       }
     </style>
@@ -43,9 +42,7 @@
 </div>
 <div class="col-md-9">
     <h3 class="text-center"><%= @station.station_name %></h3>
-    <div id="mynetwork"></div>
-
-
+    <div id="station_graph"></div>
 </div>
 
 
@@ -80,14 +77,18 @@
     var edges = new vis.DataSet(edges_for_visualization);
 
     // create a network
-    var container = document.getElementById('mynetwork');
+    var container = document.getElementById('station_graph');
 
     // provide the data in the vis format
     var data = {
         nodes: nodes,
         edges: edges
     };
-    var options = {};
+    var options = {
+        edges: {
+            length: 325,
+        }
+    };
 
     // initialize your network!
     var network = new vis.Network(container, data, options);
