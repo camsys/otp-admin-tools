@@ -65,7 +65,12 @@ Rails.application.routes.draw do
 
   ### Station Visualizer ###
   namespace :stations do
-    resources :stations, :only => [:index]
+    resources :stations do
+      collection do
+        get 'index'
+        get 'get_station_from_api'
+      end
+    end
 
   end
 

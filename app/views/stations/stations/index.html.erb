@@ -28,8 +28,12 @@
   <div>
     Time: <%= time_field(:station_vis, :start_time)  %>
   </div>
+  <div>
+    <button class="search_station" onclick="find_station_from_api()">Display Station</button>
+  </div>
 
   <div>
+    <h4 class="text-center">Alerts</h4>
     <ul>
       <% @station.alerts.each do |a| %>
         <li>
@@ -56,37 +60,21 @@
         var edges_for_visualization = [];
 
         station.links.forEach(function(element) {
-            console.log(element);
-
             edges_for_visualization.push({from: element.source, to: element.destination})
         });
-        console.log(edges_for_visualization);
 
         return edges_for_visualization;
-    }
-
-    function build_nodes(){
-        var nodes_for_visualization = [];
-
-        station.nodes.forEach(function(element) {
-            console.log(element);
-
-            nodes_for_visualization.push({id: element.id, label: element.label+' '+element.type})
-        });
-        console.log(nodes_for_visualization);
-
-        return nodes_for_visualization;
     }
 
     function build_nodes(station_nodes, primary_color, cluster) {
         var nodes_for_visualization = [];
 
         station_nodes.forEach(function(element) {
-            console.log(element);
-
             nodes_for_visualization.push({id: element.id, label: element.label, color: primary_color, cid: cluster})
         });
-        console.log(nodes_for_visualization);
+
+        // console.log('nodes_for_visualization');
+        // console.log(nodes_for_visualization);
 
         return nodes_for_visualization;
     }
@@ -137,7 +125,26 @@
 
     build_new_networkgraph();
 
+    function find_station_from_api(){
 
+        console.log('I WAS CLICKED');
+
+        var url = "<%= get_station_from_api_stations_stations_path %>";
+        $.ajax({
+            url: url,
+            data: {station_vis_station_id: $('#station_vis_station_id').val(),
+                  station_vis_otp_date: $('#station_vis_otp_date').val(),
+                  station_vis_start_time: $('#station_vis_start_time').val()},
+            success: function(result){
+                console.log(result);
+                station = <%= @station.to_json.html_safe %>;
+                build_new_networkgraph();
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                alert("We are sorry but something went wrong please check the station ID and date and time." +' '+thrownError);
+            }
+        });
+    }
 
 
 </script>
