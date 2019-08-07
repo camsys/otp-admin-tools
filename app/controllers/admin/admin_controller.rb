@@ -1,7 +1,7 @@
 module Admin
   class AdminController < ApplicationController
     
-    include AdminHelpers
+
 
     before_action :authenticate_user!
     before_action :confirm_admin

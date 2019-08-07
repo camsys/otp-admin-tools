@@ -11,10 +11,10 @@ module Stations
 
       get_station_from_api
 
-      respond_to do |format|
-        format.html
-        format.json { render json: @station }
-      end
+      # respond_to do |format|
+      #   format.html
+      #   format.json { render json: @station }
+      # end
     end
 
     def create
@@ -31,13 +31,14 @@ module Stations
 
     def get_station_from_api()
       # TODO get the API key from anywhere else... Get the Stop ID from a list of stop IDs, get the date and time from UI elements.
-      resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:211N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
+      # resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:211N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
+      resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:A32N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
 
       data = JSON.parse(resp.body)
 
-      nodes = data['nodes'].map { |nd| StationNode.new(nd['id'], nd['lat'], nd['lon'], nd['type'], nd['wayId'], nd['isAccessible'])}
+      nodes = data['nodes'].map { |nd| StationNode.new(nd['id'], nd['label'], nd['lat'], nd['lon'], nd['type'], nd['osmWayId'], nd['accessible'])}
       # nodes = data['alerts'].map { |nd| StationNode.new(nd['id'], nd['lat'], nd['lon'], nd['type'], nd['wayId'], nd['isAccessible'])}
-      links = data['links'].map { |nd| StationLink.new(nd['id'], nd['equipmentId'], nd['source'], nd['destination'], nd['type'], nd['pathwayCode'], nd['isActive'])}
+      links = data['links'].map { |nd| StationLink.new(nd['id'], nd['equipmentId'], nd['sourceId'], nd['destinationId'], nd['type'], nd['pathwayCode'], nd['active'])}
 
       @station = Station.new(data['stationName'], data['stationId'], nodes, data['alerts'], links)
 

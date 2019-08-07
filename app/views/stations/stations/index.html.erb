@@ -2,10 +2,16 @@
     <meta charset="UTF-8">
     <title>Staion Viewer</title>
 
+<!--    <script type="text/javascript" src="../../assets/javascripts/vis.js"></script>-->
+<!--    <link href="../../assets/stylesheets/vis-network.min.css" rel="stylesheet" type="text/css" />-->
+
+  <script type="text/javascript" src="../javascripts/visjs/vis-network.js"></script>
+
+
     <style type="text/css">
       #mynetwork {
-        width: 600px;
-        height: 400px;
+        height: 600px;
+        height: 1000px;
         border: 1px solid lightgray;
       }
     </style>
@@ -38,19 +44,21 @@
 
 <script type="text/javascript">
     // create an array with nodes
-    var station = <%= @station.to_json %>;
+    var station = <%= @station.to_json.html_safe %>;
 
     var nodes_for_visualization = [];
     var edges_for_visualization = [];
 
-    station.nodes.each(function(element) {
+    console.log(station);
+
+    station.nodes.forEach(function(element) {
         console.log(element);
 
-        nodes_for_visualization.push({id: element.id, label: element.type})
+        nodes_for_visualization.push({id: element.id, label: element.label+' '+element.type})
     });
     console.log(nodes_for_visualization);
 
-    station.links.each(function(element) {
+    station.links.forEach(function(element) {
         console.log(element);
 
         edges_for_visualization.push({from: element.source, to: element.destination})

@@ -1,5 +1,5 @@
 class StationNode
-  attr_accessor :id, :lat, :lon, :type, :way_id, :is_accessible
+  attr_accessor :id, :label, :lat, :lon, :type, :way_id, :is_accessible
 #
 #   id
 #   lat
@@ -9,13 +9,14 @@ class StationNode
 #   isAccessible (false if this node is not accessible from the street for people in wheelchairs at the date and time specified, otherwise true)
 
 
-  def initialize(id, lat, lon, type, wayId, isAccessible)
+  def initialize(id, label, lat, lon, type, osmWayId, accessible)
     @id = id
+    @label = label
     @lat = lat
     @lon = lon
     @type = type
-    @way_id = wayId
-    @is_accessible = isAccessible
+    @way_id = osmWayId
+    @is_accessible = accessible
   end
 
 end
