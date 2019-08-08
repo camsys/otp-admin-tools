@@ -71,7 +71,7 @@ module Stations
       result = make_station_api_request
 
       respond_to do |format|
-        format.json { render json: result.to_json }
+        format.json { render json: result.as_json }
       end
     end
 

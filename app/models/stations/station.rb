@@ -63,5 +63,17 @@ class Station
     other_nodes
   end
 
+  def as_json(options={})
+    super(options).merge!({
+            station_name: @station_name,
+            station_id: @station_id,
+            nodes: @nodes,
+            alerts: @alerts,
+            links: @links,
+            find_entrance_nodes: self.find_entrance_nodes,
+            find_stop_nodes: self.find_stop_nodes,
+            find_other_nodes: self.find_other_nodes
+        })
+  end
 
 end
