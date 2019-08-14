@@ -83,4 +83,10 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+
+  # The location for the stations API to connect to
+  config.station_api_endpoint = 'http://otp-mta-prod.camsys-apps.com/otp/routers/default/stationConnectivity'
+
+
 end

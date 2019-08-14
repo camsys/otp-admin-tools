@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.4.0'
+ruby '2.5.3'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -10,7 +10,8 @@ end
 ### Needed for Production/Ubuntu ###########
 group :production do
   gem 'execjs'
-  gem 'therubyracer'
+  # gem 'therubyracer'
+  gem 'mini_racer'
 end
 
 ### API & SERIALIZING ######################
@@ -25,6 +26,12 @@ gem 'simple_form'
 gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
+
+### Graping and Visualizing ########################
+# gem "d3-rails"
+# gem 'visjs-rails' # https://github.com/luciuschoi/visjs-rails
+# gem 'vis-gem' # https://github.com/sniperwolf/vis-gem
+
 
 ### Pagination #######################
 gem 'kaminari', '~> 0.16.1'

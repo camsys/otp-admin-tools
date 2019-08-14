@@ -32,6 +32,10 @@
             <li class="nav-item">
               <%= link_to("Reports", admin_reports_path(current_user), :method => :get) %> 
             </li>
+
+            <li class="nav-item">
+              <%= link_to("Station Visualizer_1", stations_stations_path, :method => :get) %>
+            </li>
             
             <% if current_user%>
               <li>
@@ -52,10 +56,10 @@
 
                   <li role="separator" class="divider"></li>
                   <li>
-                    <%= link_to('My Profile', edit_admin_user_path(current_user), :method => :get) %>  
+                    <%= link_to('My Profile', edit_admin_user_path(current_user), :method => :get) %>
                   </li>
                   <li>
-                    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>  
+                    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
                   </li>
 
 

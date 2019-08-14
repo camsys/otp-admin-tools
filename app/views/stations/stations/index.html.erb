@@ -1,0 +1,183 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Staion Viewer</title>
+
+<!--    <script type="text/javascript" src="../../assets/javascripts/vis.js"></script>-->
+<!--    <link href="../../assets/stylesheets/vis-network.min.css" rel="stylesheet" type="text/css" />-->
+
+<!--  <script type="text/javascript" src="../javascripts/visjs/vis-network.js"></script>-->
+
+
+    <style type="text/css">
+      #station_graph {
+        height: 600px;
+        border: 1px solid lightgray;
+      }
+    </style>
+
+</head>
+<body>
+  <div class="col-md-3">
+<!--    <form action="get_station_from_api_stations_stations_path" method="get">-->
+      <%#= collection_select :stop_id, nil, @stops, :id, :name, include_blank: true %>
+      <div>
+        Station Id: <%= text_field(:station_vis, :station_id, size: 25)  %>
+      </div>
+      <div>
+        Date: <%= date_field(:station_vis, :otp_date)  %>
+      </div>
+      <div>
+        Time: <%= time_field(:station_vis, :start_time)  %>
+      </div>
+      <div>
+            <button class="search_station" onclick="find_station_from_api()">Display Station</button>
+
+        <%#=  submit_tag("Find Station", name: 'get_station_from_api_stations_stations_path') %>
+
+      </div>
+<!--    </form>-->
+    <div>
+      <h4 class="text-center">Alerts</h4>
+      <ul id='staion_graph_station_alerts'>
+        <% @station.alerts.each do |a| %>
+          <li>
+            <%= a %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+      <h3 id='station_graph_station_name' class="text-center"><%= @station.station_name %></h3>
+      <div id="station_graph"></div>
+  </div>
+
+</body>
+
+
+<script type="text/javascript">
+    // create an array with nodes
+    var station = <%= @station.to_json.html_safe %>;
+
+    //Method to build the endges for the nodes.
+    function build_edges(){
+        var edges_for_visualization = [];
+
+        station.links.forEach(function(element) {
+            edges_for_visualization.push({from: element.source, to: element.destination})
+        });
+
+        return edges_for_visualization;
+    }
+
+    //Method to build nodes. It takes a set of nodes, the color for the nodes, the cluster for the nodes (used for clustering like nodes) and the level (used by hierarchy options)
+    function build_nodes(station_nodes, primary_color, cluster, level) {
+        var nodes_for_visualization = [];
+
+        station_nodes.forEach(function(element) {
+            nodes_for_visualization.push({id: element.id, label: element.label, color: primary_color, cid: cluster, level: level})
+        });
+        return nodes_for_visualization;
+    }
+
+    //The following methods build nodes based on the hierarchical structure we want for stations
+    function build_entrance_nodes()
+    {
+        return build_nodes(station.find_entrance_nodes, 'Gold', 'entrance', 1)
+    }
+
+    function build_stop_nodes()
+    {
+        return build_nodes(station.find_stop_nodes, 'LightSkyBlue ', 'stop', 3)
+    }
+
+    function build_other_nodes()
+    {
+        return build_nodes(station.find_other_nodes, 'LightGreen', 'other', 2)
+    }
+
+    //Builds a new graph. In this case we never append anything to the graph we are always creating a new one.
+    function build_new_networkgraph(){
+        // create an array with edges
+        var edges = new vis.DataSet(build_edges());
+        var nodes = new vis.DataSet();
+
+        nodes.add(build_entrance_nodes());
+        nodes.add(build_stop_nodes());
+        nodes.add(build_other_nodes());
+
+        // create a network
+        var container = document.getElementById('station_graph');
+
+        // provide the data in the vis format
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+
+        //define the length of edges to space them out more.
+        var options = {
+            edges: {
+                arrows: 'to',
+                length: 350,
+            },
+            layout: {
+                hierarchical: {
+                    enabled: true,
+                    nodeSpacing: 250,
+                    treeSpacing: 350,
+                    blockShifting: false,
+                    parentCentralization: true,
+                    direction: 'LR',
+                    sortMethod: 'hubsize'
+                },
+            },
+        };
+
+        // initialize your network!
+        var network = new vis.Network(container, data, options);
+    }
+
+    //updates the alerts section of the UI
+    function update_alerts(){
+        $('#staion_graph_station_alerts').empty();
+
+
+        if (station.alerts.length > 0){
+            station.alerts.forEach(function(element) {
+                $("#staion_graph_station_alerts").append('<li>'+element+'</li>')
+            });
+        }else{
+            $("#staion_graph_station_alerts").append('<li>No alerts found.</li>')
+        }
+
+
+
+
+
+    }
+
+    //Method to run an ajax call to the Ruby backend to call the API and update the graph
+    function find_station_from_api(){
+        var url = "<%= get_station_from_api_stations_stations_path %>";
+        $.ajax({
+            url: url,
+            data: {station_vis_station_id: $('#station_vis_station_id').val(),
+                  station_vis_otp_date: $('#station_vis_otp_date').val(),
+                  station_vis_start_time: $('#station_vis_start_time').val()},
+            success: function(result){
+                station = result;
+                $('#station_graph_station_name').text(station.station_name);
+                update_alerts();
+                build_new_networkgraph();
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                alert("We are sorry but something went wrong please check the station ID and date and time." +' '+thrownError);
+            }
+        });
+    }
+
+    build_new_networkgraph();
+
+</script>
