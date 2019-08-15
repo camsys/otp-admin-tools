@@ -1,4 +1,4 @@
-class StationLink
+class Stations::StationLink
   attr_accessor :id, :equipment_id, :source, :destination, :type, :pathway_code, :is_active
 
   # id

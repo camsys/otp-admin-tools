@@ -1,4 +1,4 @@
-class StationNode
+class Stations::StationNode
   attr_accessor :id, :label, :lat, :lon, :type, :way_id, :is_accessible
 #
 #   id

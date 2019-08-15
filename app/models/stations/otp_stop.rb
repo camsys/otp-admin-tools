@@ -1,4 +1,4 @@
-class OtpStop
+class Stations::OtpStop
   attr_accessor :id, :name, :lat, :lon, :cluster
 
   def initialize(id, name, lat, lon, cluster)

@@ -1,2 +1,2 @@
-class StationAlert
+class Stations::StationAlert
 end

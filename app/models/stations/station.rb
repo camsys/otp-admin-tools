@@ -1,4 +1,4 @@
-class Station
+class Stations::Station
   attr_accessor :station_name, :station_id, :nodes, :alerts, :links
 
   def initialize(stationName, stationId, nodes, alerts, links)
