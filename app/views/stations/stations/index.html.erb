@@ -2,12 +2,6 @@
     <meta charset="UTF-8">
     <title>Staion Viewer</title>
 
-<!--    <script type="text/javascript" src="../../assets/javascripts/vis.js"></script>-->
-<!--    <link href="../../assets/stylesheets/vis-network.min.css" rel="stylesheet" type="text/css" />-->
-
-<!--  <script type="text/javascript" src="../javascripts/visjs/vis-network.js"></script>-->
-
-
     <style type="text/css">
       #station_graph {
         height: 600px;
@@ -18,8 +12,6 @@
 </head>
 <body>
   <div class="col-md-3">
-<!--    <form action="get_station_from_api_stations_stations_path" method="get">-->
-      <%#= collection_select :stop_id, nil, @stops, :id, :name, include_blank: true %>
       <div>
         Station Id: <%= text_field(:station_vis, :station_id, size: 25)  %>
       </div>
@@ -31,11 +23,7 @@
       </div>
       <div>
             <button class="search_station" onclick="find_station_from_api()">Display Station</button>
-
-        <%#=  submit_tag("Find Station", name: 'get_station_from_api_stations_stations_path') %>
-
       </div>
-<!--    </form>-->
     <div>
       <h4 class="text-center">Alerts</h4>
       <ul id='staion_graph_station_alerts'>
@@ -56,6 +44,7 @@
 </body>
 
 
+
 <script type="text/javascript">
     // create an array with nodes
     var station = <%= @station.to_json.html_safe %>;
@@ -65,7 +54,12 @@
         var edges_for_visualization = [];
 
         station.links.forEach(function(element) {
-            edges_for_visualization.push({from: element.source, to: element.destination})
+            if(element.type == 'ELEVATOR') {
+                edges_for_visualization.push({from: element.source, to: element.destination, label: element.type})
+            }else {
+                edges_for_visualization.push({from: element.source, to: element.destination})
+            }
+
         });
 
         return edges_for_visualization;
@@ -76,7 +70,17 @@
         var nodes_for_visualization = [];
 
         station_nodes.forEach(function(element) {
-            nodes_for_visualization.push({id: element.id, label: element.label, color: primary_color, cid: cluster, level: level})
+
+            console.log(element);
+
+            if(element.is_accessible) {
+                // nodes_for_visualization.push({id: element.id, label: element.label+' AAAAA', color: primary_color, cid: cluster, level: level, icon: {code:'\uf164'} })
+                nodes_for_visualization.push({id: element.id, label: element.label, color: primary_color, cid: cluster, level: level, shape: 'box' });
+            }else {
+                nodes_for_visualization.push({id: element.id, label: element.label, color: primary_color, cid: cluster, level: level});
+            }
+
+
         });
         return nodes_for_visualization;
     }
