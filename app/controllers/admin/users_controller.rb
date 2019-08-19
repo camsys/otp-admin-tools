@@ -1,4 +1,4 @@
-class Admin::UsersController < Admin::AdminController
+class Admin::UsersController < AdminController
   
   # before_action :initialize_user, only: [:index, :create]
   def index

@@ -1,4 +1,4 @@
-class Admin::ReportsController < Admin::AdminController
+class Admin::ReportsController < AdminController
   
   DASHBOARDS = ['API Usage', 'Origin Destination']
   GROUPINGS = [:hour, :day, :week, :month, :quarter, :year, :day_of_week, :month_of_year]

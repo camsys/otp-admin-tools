@@ -1,5 +1,5 @@
 module Admin
-  class GroupsController < Admin::AdminController
+  class GroupsController < AdminController
 
     def index
       @groups = Group.all 

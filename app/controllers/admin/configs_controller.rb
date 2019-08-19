@@ -1,4 +1,4 @@
-class Admin::ConfigsController < Admin::AdminController
+class Admin::ConfigsController < AdminController
   
   before_action :load_configs, only: [:index, :update]
   

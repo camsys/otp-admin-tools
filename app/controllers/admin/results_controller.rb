@@ -1,5 +1,5 @@
 module Admin
-  class ResultsController < Admin::AdminController
+  class ResultsController < AdminController
 
     def show
       @result = Result.find(params[:id])

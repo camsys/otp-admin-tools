@@ -1,5 +1,5 @@
 module Admin
-  class TripsController < Admin::AdminController
+  class TripsController < AdminController
 
     def create
       @trip = Trip.create(trip_params)

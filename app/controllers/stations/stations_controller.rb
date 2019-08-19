@@ -4,8 +4,7 @@ module Stations
   require 'json'
 
 
-  class StationsController < ApplicationController
-
+  class StationsController < AdminController
     def index
       sn = StationNode
       sl = StationLink
