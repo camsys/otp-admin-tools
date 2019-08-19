@@ -36,6 +36,11 @@
   .col-md-4
     = simple_form_for @new_group, url: admin_groups_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
       =render partial: 'new_group', layout: '/layouts/new_record_panel', locals: {f: f}
+.row.text-center
+  .col-md-12.center
+    %h3
+      =link_to admin_configs_path do 
+        Configuration
 
 :javascript
   $(document).ready(function() {
