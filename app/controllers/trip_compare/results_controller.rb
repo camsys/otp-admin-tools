@@ -1,4 +1,4 @@
-module Admin
+module TripCompare
   class ResultsController < AdminController
 
     def show

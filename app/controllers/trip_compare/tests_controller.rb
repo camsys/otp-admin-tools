@@ -1,4 +1,4 @@
-module Admin
+module TripCompare
   class TestsController < AdminController
 
     def show
@@ -10,7 +10,7 @@ module Admin
       @test = Test.find(params[:id])
       @group = @test.group 
       @test.destroy
-      redirect_to edit_admin_group_path(@group)
+      redirect_to edit_trip_compare_group_path(@group)
     end
 
   end

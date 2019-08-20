@@ -1,0 +1,263 @@
+=content_for :title do
+  =@test.comment
+
+%h5.text-center
+  .row
+    %h3
+      ="Percent Matched: #{(@test.get_percent_matched*100).round(2)}%"
+  .row
+    ="Tested at: #{@test.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+
+.row
+  .col-md-3
+  .col-md-6
+    .well
+      .row
+        .col-md-6
+          %h4 OTP Settings
+          %table
+            %tr
+              %td.detail Walk Speed
+              %td 
+                ="#{@test.otp_walk_speed} m/s"
+            %tr
+              %td.detail Max Walk Distance
+              %td  
+                ="#{@test.otp_max_walk_distance} m"
+            %tr
+              %td.detail Walk Reluctance
+              %td 
+                ="#{@test.otp_walk_reluctance}X"
+            %tr
+              %td.detail Transfer Penalty
+              %td 
+                ="#{@test.otp_transfer_penalty.to_i} s"
+            %tr
+              %td.detail Transfer Slack
+              %td 
+                ="#{@test.otp_transfer_slack}"
+            %tr
+              %td.detail Allow Unknown Transfers
+              %td 
+                ="#{@test.otp_allow_unknown_transfers}"
+            %tr
+              %td.detail Use Unpreferred Routes Penalty
+              %td 
+                ="#{@test.otp_use_unpreferred_routes_penalty}"
+            %tr
+              %td.detail Use Unpreferred Start End Penalty
+              %td 
+                ="#{@test.otp_use_unpreferred_start_end_penalty}"
+            %tr
+              %td.detail Other Than Preferred Routes Penalty
+              %td 
+                ="#{@test.otp_other_than_preferred_routes_penalty}"
+            %tr
+              %td.detail Use Unpreferred Routes Penalty
+              %td 
+                ="#{@test.otp_use_unpreferred_routes_penalty}"
+            %tr
+              %td.detail Car Reluctance
+              %td 
+                ="#{@test.otp_car_reluctance}"
+            %tr
+              %td.detail Path Comparator
+              %td 
+                ="#{@test.otp_path_comparator}"
+            %tr
+              %td.detail Max Walk Distance Heuristic
+              %td 
+                ="#{@test.otp_max_walk_distance_heuristic}"
+
+        -if @test.group.compare_type == 'atis'
+          .col-md-6
+            %h4 ATIS Settings
+            %table
+              %tr
+                %td.detail Walk Speed
+                %td
+                  ="#{@test.atis_walk_speed} m/s"
+              %tr
+                %td.detail Max Walk Distance
+                %td
+                  ="#{@test.atis_walk_dist} m"
+              %tr
+                %td.detail Minimize
+                %td
+                  ="#{@test.atis_minimize}"
+
+  .col-md-4            
+
+.row
+  .col-md-1
+  .col-md-10.detail.text-right
+    =paginate @test_results
+    =page_entries_info @test_results
+
+.row
+  -@test_results.order(:id).each do |result|
+    -unless result.trip.nil?
+      .row
+        %div.panel.panel-default
+          %div.panel-heading.text-center
+            %h4
+              =  link_to trip_compare_result_path(result), target: :_blank do
+                ="#{result.id}"
+              ="From "
+              = link_to "https://www.google.com/maps/?q=#{result.trip.origin_lat},#{result.trip.origin_lng}", target: :_blank do
+                =result.trip.origin
+              =" to "
+              = link_to "https://www.google.com/maps/?q=#{result.trip.destination_lat},#{result.trip.destination_lng}", target: :_blank do
+                =result.trip.destination
+              =result.trip.arrive_by ? " arriving by #{(result.trip_time||result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}" : " departing at #{(result.trip_time || result.trip.time).in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')}"
+            %h5
+              %b OTP MODE:
+              =result.trip.otp_mode
+              %span.bar
+                = "|"
+              %b ATIS MODE:
+              =result.trip.atis_mode
+              %span.bar
+                = "|"
+              %b ACCESSIBLE:
+              =result.trip.atis_accessible
+
+          %div.panel-body
+            .row 
+              .col-md-4
+                .row.text-center
+                  %h3
+                    = link_to result.otp_viewable_request, target: :_blank do
+                      OTP Results
+                .row
+                  =render partial: "itin_summary", locals: {itins: result.otp_summary}
+
+              .col-md-4.text-center
+                -if result.compare_type == 'atis'
+                  .row.text-center
+                    %h3
+                      ATIS Results
+                  .row
+                    =render partial: "itin_summary", locals: {itins: result.atis_summary}
+                -elsif result.compare_type == 'otp'
+                  .row.text-center
+                    %h3
+                      = link_to result.get_viewable_url(result.compare_request), target: :_blank do
+                        OTP2 Results
+                  .row
+                    =render partial: "itin_summary", locals: {itins: result.otp2_summary}
+                -elsif result.compare_type == 'baseline'
+                  =render partial: "baseline_expected", locals: {result: result, summary: result.compare_baseline_summary}
+                          
+              .col-md-4.text-center
+                .row
+                  %h3
+                    -if result.get_percent_matched != nil
+                      ="Percent of Matching Results: #{(result.get_percent_matched*100).round(2)}%"
+                    -else
+                      ="Percent of Matching Results: N/A"
+                .row
+                  .col-md-1
+                  .col-md-10
+                    %hr
+                .row
+                  -if result.get_percent_matched != nil and !result.test.group.baseline?
+                    %h4
+                      ="Comparing the top result from OTP and #{result.comparison_service_name}"
+                    -result.compare_summary.each do |k, v|
+                      -if k == :transfer
+                        .row
+                          .col-md-1
+                          .col-md-10
+                            -if v == 'atis_nil' || v == 'otp2_nil'
+                              .well.well-sm.good
+                                %h4
+                                  ="#{result.comparison_service_name} transfers are n/a"
+                            -elsif v == 'otp_nil'
+                              .well.well-sm.bad
+                                %h4
+                                  ="OTP transfers are n/a"
+                            -elsif v < 0.0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP route has #{pluralize(v.abs, 'fewer transfer')}"
+                            -elsif v == 0.0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP & #{result.comparison_service_name} transfers are equal"
+                            -else
+                              .well.well-sm.bad 
+                                %h4  
+                                  ="OTP route has #{pluralize(v.abs, 'more transfer')}"
+                      -elsif k == :walk_time
+                        .row
+                          .col-md-1
+                          .col-md-10
+                            -if v == 'atis_nil' || v == 'otp2_nil'
+                              .well.well-sm.good
+                                %h4
+                                  ="#{result.comparison_service_name} walk time is n/a"
+                            -elsif v == 'otp_nil'
+                              .well.well-sm.bad
+                                %h4
+                                  ="OTP walk time is n/a"
+                            -elsif v == 0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP & #{result.comparison_service_name} #{k.to_s.humanize.downcase} are equal"
+                            -elsif v.abs <= 5
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                            -elsif v.abs <= 10
+                              .well.well-sm.ok
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                            -else
+                              .well.well-sm.bad
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
+                      -else
+                        .row
+                          .col-md-1
+                          .col-md-10
+                            -if v == 'atis_nil' || v == 'otp2_nil'
+                              .well.well-sm.good
+                                %h4
+                                  ="#{result.comparison_service_name} total time is n/a"
+                            -elsif v == 'otp_nil'
+                              .well.well-sm.bad
+                                %h4
+                                  ="OTP total time is n/a"
+                            -elsif v < 0.0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% less"
+                            -elsif v == 0.0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP & #{result.comparison_service_name} #{k.to_s.humanize.downcase} are equal"
+                            -elsif v < 0.15
+                              .well.well-sm.ok
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
+                            -else
+                              .well.well-sm.bad 
+                                %h4  
+                                  ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
+
+          %div.panel-footer.text-center
+            =link_to trip_compare_result_path(result), target: :_blank do
+              ="View Full Details"
+
+.row
+  .col-md-1
+  .col-md-10.detail.text-right
+    =paginate @test_results
+    =page_entries_info @test_results
+
+
+
+
+
+

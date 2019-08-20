@@ -6,19 +6,6 @@ Rails.application.routes.draw do
 
   namespace :admin do 
     
-    # Groups
-    resources :groups, :only => [:index, :destroy, :create, :edit, :update]
-    resources :groups do
-      member do
-        post 'run'
-        get  'geocode'
-        post 'export_trips'
-      end
-    end
-
-    # Trips
-    resources :trips, :only => [:destroy, :create, :edit, :update]
-
     # Reports
     resources :reports, only: [:index] do
       collection do
@@ -31,19 +18,9 @@ Rails.application.routes.draw do
       end
     end
 
-    # Results
-    resources :results, :only => [:show]
-
     # Users
     resources :users, :only => [:index, :create, :destroy, :edit, :update]
 
-    # Tests
-    resources :tests, :only => [:show, :destroy]
-
-    # Configs
-    resources :configs, only: [:index]
-    patch 'configs' => 'configs#update'
-    patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
   end
 
   ### JSON API ###
@@ -63,6 +40,31 @@ Rails.application.routes.draw do
     end
   end
 
+  ### Trip Compare ###
+  namespace :trip_compare do
+    # Groups
+    resources :groups, :only => [:index, :destroy, :create, :edit, :update]
+    resources :groups do
+      member do
+        post 'run'
+        get  'geocode'
+        post 'export_trips'
+      end
+    end
+
+    resources :results, :only => [:show]
+    resources :tests, :only => [:show, :destroy]
+
+    resources :configs, only: [:index]
+    patch 'configs' => 'configs#update'
+    patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
+
+    # Trips
+    resources :trips, :only => [:destroy, :create, :edit, :update]
+  
+  end
+
+
   ### Station Visualizer ###
   namespace :stations do
     resources :stations do
@@ -71,7 +73,6 @@ Rails.application.routes.draw do
         get 'get_station_from_api'
       end
     end
-
   end
 
 

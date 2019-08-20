@@ -1,17 +1,17 @@
-module Admin
+module TripCompare
   class TripsController < AdminController
 
     def create
       @trip = Trip.create(trip_params)
       @trip.group.geocode_trips
-      redirect_to edit_admin_group_path(@trip.group) 
+      redirect_to edit_trip_compare_group_path(@trip.group) 
     end
 
     def destroy
       @trip = Trip.find(params[:id])
       @group = @trip.group 
       @trip.destroy
-      redirect_to edit_admin_group_path(@group)
+      redirect_to edit_trip_compare_group_path(@group)
     end
 
     def edit
@@ -22,7 +22,7 @@ module Admin
       @trip = Trip.find(params[:id])
       @trip.update_attributes(trip_params)
       @trip.group.geocode_trips
-      redirect_to edit_admin_group_path(@trip.group) 
+      redirect_to edit_trip_compare_group_path(@trip.group) 
     end
 
     private

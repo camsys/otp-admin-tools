@@ -220,6 +220,8 @@ module TestTools
           max_walk_distance_heuristic = self.otp_max_walk_distance_heuristic
       )
 
+      puts viewable.ai 
+
       result = Result.create(trip: trip, test: test,
                     otp_request: otp_request, otp_response: otp_response, otp_viewable_request: viewable,
                     compare_request: otp2_request, compare_response: otp2_response, trip_time: trip_time)

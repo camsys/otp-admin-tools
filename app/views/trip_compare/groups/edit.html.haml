@@ -20,7 +20,7 @@
               %th 
               
           -@group_tests.order(:created_at).reverse_order.each do |test|
-            %tr{style: "cursor: pointer", data: {url: admin_test_path(test)}}
+            %tr{style: "cursor: pointer", data: {url: trip_compare_test_path(test)}}
               %td
                 =test.id
               %td
@@ -30,7 +30,7 @@
               %td
                 ="#{(test.get_percent_matched*100).round(2)}% Matching"
               %td.text-right
-                =link_to "Delete", admin_test_path(test), 
+                =link_to "Delete", trip_compare_test_path(test), 
                   method: :delete, 
                   class: "btn btn-sm btn-danger", 
                   data: {confirm: "Are you sure?  This action cannot be undone!"}
@@ -42,13 +42,13 @@
 %br
 
 .row
-  .col-md-3
-  .col-md-6
+  .col-md-2
+  .col-md-8
     -if @group.compare_type == 'atis'
-      = simple_form_for @group, url: run_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+      = simple_form_for @group, url: run_trip_compare_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
         =render partial: 'run_test_otp_atis', layout: '/layouts/new_record_panel', locals: {f: f}
     -else
-      = simple_form_for @group, url: run_admin_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+      = simple_form_for @group, url: run_trip_compare_group_path(@group), html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
         =render partial: 'run_test_otp', layout: '/layouts/new_record_panel', locals: {f: f}
 
 .row
@@ -84,7 +84,7 @@
       -@group.trips.each do |trip|
         %tr
           %td
-            =link_to edit_admin_trip_path(trip) do 
+            =link_to edit_trip_compare_trip_path(trip) do 
               %i.fa.fa-edit
           %td
             =trip.origin
@@ -114,7 +114,7 @@
             =trip.otp_mode
             
           %td.text-right
-            =link_to "Delete", admin_trip_path(trip), 
+            =link_to "Delete", trip_compare_trip_path(trip), 
               method: :delete, 
               class: "btn btn-sm btn-danger", 
               data: {confirm: "Are you sure?  This action cannot be undone!"}
@@ -123,14 +123,14 @@
         .row
           .col-md-12.text-center
             %h4
-              =link_to export_trips_admin_group_path(@group), :method=> :post do
+              =link_to export_trips_trip_compare_group_path(@group), :method=> :post do
                 ="Export Trips"
 
 .row
   .col-md-3
   .col-md-6
-    = simple_form_for @new_trip, url: admin_trips_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
-      =render partial: '/admin/trips/edit_trip', layout: '/layouts/new_record_panel', locals: {f: f, trip: @new_trip}
+    = simple_form_for @new_trip, url: trip_compare_trips_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+      =render partial: '/trip_compare/trips/edit_trip', layout: '/layouts/new_record_panel', locals: {f: f, trip: @new_trip}
 
 .row
   %h3.text-center
@@ -138,7 +138,7 @@
   .col-md-4
   .col-md-4.text-center
     .well
-      =simple_form_for @group, url: admin_group_path(@group), html: {class: 'form-vertical', multipart: true, method: :patch }, authenticity_token: true do |f|
+      =simple_form_for @group, url: trip_compare_group_path(@group), html: {class: 'form-vertical', multipart: true, method: :patch }, authenticity_token: true do |f|
 
         = f.input "file", required:true, label: "Upload CSV", :as => :file
         %br
@@ -148,7 +148,7 @@
 .row
   .col-md-12.text-center
     %h4
-      = link_to geocode_admin_group_path(@group) do
+      = link_to geocode_trip_compare_group_path(@group) do
         ="Geocode"
 
 :javascript

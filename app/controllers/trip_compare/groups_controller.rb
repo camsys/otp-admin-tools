@@ -1,4 +1,4 @@
-module Admin
+module TripCompare
   class GroupsController < AdminController
 
     def index
@@ -8,7 +8,7 @@ module Admin
 
     def create
       @group = Group.create(group_params)
-      redirect_to admin_groups_path
+      redirect_to trip_compare_groups_path
     end
 
     def edit
@@ -23,20 +23,20 @@ module Admin
     def destroy
       @group = Group.find(params[:id])
       @group.destroy
-      redirect_to admin_groups_path
+      redirect_to trip_compare_groups_path
     end
 
     def run
       @group = Group.find(params[:id])
       @group.update_attributes(group_params)
       RunTestsJob.perform_later(@group.id)
-      redirect_to edit_admin_group_path(@group)
+      redirect_to edit_trip_compare_group_path(@group)
     end
 
     def geocode
       @group = Group.find(params[:id])
       @group.geocode_trips
-      redirect_to edit_admin_group_path(@group)
+      redirect_to edit_trip_compare_group_path(@group)
     end
 
     def update
@@ -65,7 +65,7 @@ module Admin
 
       respond_to do |format|
         format.js
-        format.html {redirect_to edit_admin_group_path(@group)}
+        format.html {redirect_to edit_trip_compare_group_path(@group)}
       end
     end
 

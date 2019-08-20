@@ -15,7 +15,7 @@
           %th
           
       -@groups.order(:created_at).reverse_order.each do |group|
-        %tr{style: "cursor: pointer", data: {url: edit_admin_group_path(group)}}
+        %tr{style: "cursor: pointer", data: {url: edit_trip_compare_group_path(group)}}
           %td
             =group.formatted_type
           %td
@@ -27,19 +27,19 @@
           %td
             =group.created_at.in_time_zone.strftime('%m-%d-%Y %l:%M %p %Z')
           %td.text-right
-            =link_to "Delete", admin_group_path(group), 
+            =link_to "Delete", trip_compare_group_path(group), 
               method: :delete, 
               class: "btn btn-sm btn-danger", 
               data: {confirm: "Are you sure?  This action cannot be undone!"}
 .row
   .col-md-4
   .col-md-4
-    = simple_form_for @new_group, url: admin_groups_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
+    = simple_form_for @new_group, url: trip_compare_groups_path, html: {class: 'form-horizontal', multipart: true, method: :post }, authenticity_token: true do |f|
       =render partial: 'new_group', layout: '/layouts/new_record_panel', locals: {f: f}
 .row.text-center
   .col-md-12.center
     %h3
-      =link_to admin_configs_path do 
+      =link_to trip_compare_configs_path   do 
         Configuration
 
 :javascript
