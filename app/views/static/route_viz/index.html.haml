@@ -26,6 +26,9 @@
             %div
               %label{for: "mydatetime"} Date/Time:
               %input#mydatetime.flatpickr{placeholder: "Select Time", type: "text"}
+            %div
+              %label{for: "routeVizURL"} OTP URL:
+              %input#routeVizURL{type: "text", value: @url}
             %br
             %div
               %input#submit.btn.btn-info{type: "button", value: "Submit"}

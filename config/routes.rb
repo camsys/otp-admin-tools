@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   
   root "static#index"
 
+  resources :configs, only: [:index]
+  patch 'configs' => 'configs#update'
+  patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
+
   namespace :admin do 
     
     # Reports
@@ -54,10 +58,6 @@ Rails.application.routes.draw do
 
     resources :results, :only => [:show]
     resources :tests, :only => [:show, :destroy]
-
-    resources :configs, only: [:index]
-    patch 'configs' => 'configs#update'
-    patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
 
     # Trips
     resources :trips, :only => [:destroy, :create, :edit, :update]

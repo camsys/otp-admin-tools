@@ -1,4 +1,4 @@
-class TripCompare::ConfigsController < AdminController
+class ConfigsController < AdminController
   
   before_action :load_configs, only: [:index, :update]
   
@@ -27,7 +27,7 @@ class TripCompare::ConfigsController < AdminController
     flash[:danger] = @errors.flat_map(&:full_messages)
                             .to_sentence unless @errors.empty?
 
-    redirect_to trip_compare_configs_path 
+    redirect_to configs_path 
 
   end
 
@@ -36,7 +36,7 @@ class TripCompare::ConfigsController < AdminController
     if !atis_otp_mapping.nil?
       Config.update_atis_otp_mapping atis_otp_mapping
     end
-    redirect_to trip_compare_configs_path
+    redirect_to configs_path
   end
   
   def configs_params
