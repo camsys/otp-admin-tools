@@ -1,4 +1,6 @@
-var otpApi = "http://otp-mta-qa.camsys-apps.com/otp/routers/";
+var otpApi = "http://localhost:8080/otp/routers/";
+
+
 
 //http://otp-mta-prod.camsys-apps.com/otp/routers/default/plan?fromPlace=40.755465%2C-73.98690879999998&toPlace=40.7329403%2C-73.98827870000002&date=08%2F20%2F2019&time=8%3A54+PM&arriveBy=false&wheelchair=false&allowUnknownTransfers=false&maxWalkDistance=804&walkReluctance=2&optimize=TRANSFERS&mode=TRANSIT%2CWALK&transferPenalty=600&numItineraries=3&flagStopBufferSize=50&bannedRouteTypes=702&smartKissAndRide=true&ignoreRealtimeUpdates=false&waitReluctance=1&waitAtBeginningFactor=0.4&softWalkPenalty=&softWalkOverageMultiplier=2&a
 
@@ -13,7 +15,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var datetime = null; //d3.select("#mydatetime").node().value;
     var route = d3.select("#route").node().value;
     var direction = d3.select('input[name=direction]:checked').node().value;
-    var date = null, time = null;
+    var date = "2019-08-05";
+    var time = "12:00PM";
+    //var date = null, time = null;
     if (datetime) {
       var date = datetime.split(" ")[0]
       var time = datetime.split(" ")[1]
