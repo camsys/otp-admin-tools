@@ -59,7 +59,9 @@
 
         station.links.forEach(function(element) {
             if(element.type == 'ELEVATOR') {
-                edges_for_visualization.push({from: element.source, to: element.destination, label: element.type})
+                edges_for_visualization.push({from: element.source, to: element.destination, label: 'E', color: 'blue'})
+            }else if(element.type == 'STAIRS') {
+                edges_for_visualization.push({from: element.source, to: element.destination, label: 'S', color: 'black'})
             }else {
                 edges_for_visualization.push({from: element.source, to: element.destination})
             }
