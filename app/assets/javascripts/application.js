@@ -20,3 +20,8 @@
 //= require bootstrap-datepicker
 //= require Chart.bundle
 //= require chartkick
+//= require flatpickr
+
+document.addEventListener('DOMContentLoaded', function() {
+  flatpickr('.your-selector');
+})

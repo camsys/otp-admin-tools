@@ -27,13 +27,14 @@ gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 
+
 ### Graping and Visualizing ########################
 # gem "d3-rails"
 # gem 'visjs-rails' # https://github.com/luciuschoi/visjs-rails
 # gem 'vis-gem' # https://github.com/sniperwolf/vis-gem
 
 
-### Pagination #######################
+### Pagination #######################em
 gem 'kaminari', '~> 0.16.1'
 
 ### Geocding ##########################
@@ -51,6 +52,7 @@ gem 'mail'
 
 ### DATES #############################
 gem 'holidays', '~> 6.2'
+gem 'flatpickr'
 
 ### API & SERIALIZING ######################
 # ActiveModel Serializers for serving JSON via the API

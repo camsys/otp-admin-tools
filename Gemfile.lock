@@ -91,6 +91,7 @@ GEM
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.11.1)
+    flatpickr (4.5.7.0)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
     geocoder (1.5.1)
@@ -273,6 +274,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   devise
   execjs
+  flatpickr
   font-awesome-rails
   geocoder (~> 1.4, >= 1.4.4)
   groupdate

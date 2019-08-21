@@ -1,4 +1,4 @@
-var otpApi = "http://localhost:8080/otp/routers/";
+var otpApi = "http://localhost:8080/otp/routers/default";
 
 
 
@@ -6,18 +6,16 @@ var otpApi = "http://localhost:8080/otp/routers/";
 
 document.addEventListener("DOMContentLoaded", function(event) { 
 
-  //flatpickr(d3.select("#mydatetime").node(), {
-  //  enableTime: true,
-  //  dateFormat: "Y-m-d h:iK",
-  //});
+  flatpickr(d3.select("#mydatetime").node(), {
+    enableTime: true,
+    dateFormat: "Y-m-d h:iK",
+  });
 
   d3.select("#submit").on("click", function() {
-    var datetime = null; //d3.select("#mydatetime").node().value;
+    var datetime = d3.select("#mydatetime").node().value;
     var route = d3.select("#route").node().value;
     var direction = d3.select('input[name=direction]:checked').node().value;
-    var date = "2019-08-05";
-    var time = "12:00PM";
-    //var date = null, time = null;
+    var date = null, time = null;
     if (datetime) {
       var date = datetime.split(" ")[0]
       var time = datetime.split(" ")[1]
@@ -28,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function update(route, direction, date, time) {
   // based on https://jsfiddle.net/ye2xanf9/77/
-  var url = otpApi  + "default/patternGraph?routeIds=" + route + "&directionId=" + direction;
+  var url = otpApi  + "/patternGraph?routeIds=" + route + "&directionId=" + direction;
   if (date != null && time != null) {
       url += "&date=" + date + "&time=" + time;
   }
