@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :configs, only: [:index]
   patch 'configs' => 'configs#update'
+  post 'configs' => 'configs#update'
   patch 'config_atis_otp_mapping' => 'configs#update_atis_otp_mapping'
 
   namespace :admin do 

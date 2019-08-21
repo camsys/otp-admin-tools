@@ -9,13 +9,15 @@ class ConfigsController < AdminController
     :otp2_api_key,
     :atis_app_id,
     :atis_url,
-    :atis_otp_mapping
+    :atis_otp_mapping,
+    :route_viz_url
   ].freeze
 
   def index
   end
   
   def update
+
     configs = configs_params.to_h.map do |k,v|
       [ @configs.find_or_create_by(key: k).id, { value: format_config_value(k, v) } ]
     end.to_h
@@ -27,7 +29,10 @@ class ConfigsController < AdminController
     flash[:danger] = @errors.flat_map(&:full_messages)
                             .to_sentence unless @errors.empty?
 
-    redirect_to configs_path 
+    respond_to do |format|
+      format.html { redirect_to configs_path }
+      format.json { head :no_content }
+    end
 
   end
 
