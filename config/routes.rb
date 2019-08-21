@@ -75,5 +75,9 @@ Rails.application.routes.draw do
     end
   end
 
+  ### Static Websites ###
+  get "/static/route_viz" => "static#show"
+
+
 
 end
