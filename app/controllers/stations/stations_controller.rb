@@ -59,8 +59,7 @@ module Stations
       data = JSON.parse(resp.body)
 
       nodes = data['nodes'].map { |nd| StationNode.new(nd['id'], nd['label'], nd['lat'], nd['lon'], nd['type'], nd['osmWayId'], nd['accessible'])}
-      alerts = ['This is a test alert', 'This is a second alert with a longer more details message']
-      # alerts = data['alerts'].map { |nd| StationNode.new(nd['id'], nd['lat'], nd['lon'], nd['type'], nd['wayId'], nd['isAccessible'])}
+      alerts = data['alerts'].map { |nd| StationAlert.new(nd['alertHeaderText'], nd['alertDescription'], nd['alertUrl'])}
       links = data['links'].map { |nd| StationLink.new(nd['id'], nd['equipmentId'], nd['sourceId'], nd['destinationId'], nd['type'], nd['pathwayCode'], nd['active'])}
 
       @station = Station.new(data['stationName'], data['stationId'], nodes, alerts, links)

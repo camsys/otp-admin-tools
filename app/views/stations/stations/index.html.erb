@@ -29,7 +29,7 @@
       <ul id='staion_graph_station_alerts'>
         <% @station.alerts.each do |a| %>
           <li>
-            <%= a %>
+            <%= a.alert_description %>
           </li>
         <% end %>
       </ul>
