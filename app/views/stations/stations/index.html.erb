@@ -11,21 +11,34 @@
 
 </head>
 <body>
-  <div class="col-md-3">
-      <div>
+<div class="container">    
+
+  <br>
+  <div class="row">
+    <h1> StationViz </h1>
+    <h4> Enter Station ID to View Layout </h4>
+  <div>
+  <hr> 
+  
+
+  <div class="row"> 
+    <div class="col-md-4">
+      <label>
         Station Id: <%= text_field(:station_vis, :station_id, size: 25)  %>
-      </div>
-      <div>
+      </label>
+      <br>
+      <label>
         Date: <%= date_field(:station_vis, :otp_date)  %>
-      </div>
-      <div>
+      </label>
+      <br>
+      <label>
         Time: <%= time_field(:station_vis, :start_time)  %>
-      </div>
+      </label>
       <div>
-            <button class="search_station" onclick="find_station_from_api()">Display Station</button>
+        <button class="search_station btn btn-info" onclick="find_station_from_api()">Display Station</button>
       </div>
-    <div>
-      <h4 class="text-center">Alerts</h4>
+    </div>  
+    <div class="col-md-4">
       <ul id='staion_graph_station_alerts'>
         <% @station.alerts.each do |a| %>
           <li>
@@ -34,17 +47,45 @@
         <% end %>
       </ul>
     </div>
+    <div class="col-md-4">
+      <h5>LEGEND
+        <table>
+          <tr>
+            <td>
+              <%= image_tag('station_viz/e.png'); %>
+            </td>
+            <td>Elevator Link</td>
+            <td>
+              <%= image_tag('station_viz/accessible.png', {height: 30}); %>
+            </td>
+            <td>Accessible Platform</td>
+          </tr>
+          <tr>
+            <td>
+              <%= image_tag('station_viz/s.png'); %>
+            </td>
+            <td>Stair Link</td>
+            <td>
+              <%= image_tag('station_viz/inaccessible.png', {height: 30} ); %>
+            </td>
+            <td>Inaccessible Platform</td>
+          </tr>
+        </table>
+      </h5>
+    </div>
   </div>
-
-  <div class="col-md-9">
-      <h3 id='station_graph_station_name' class="text-center"><%= @station.station_name %></h3>
-      <div id="station_graph"></div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <h3 id='station_graph_station_name' class="text-center"><%= @station.station_name %></h3>
+        <div id="station_graph"></div>
+      <div>
+    </div>
   </div>
-  <div>
-    key: ellipse nodes are not accessible square nodes are.
-  </div>
+  
+  <br>
 
-
+</div>
 </body>
 
 
