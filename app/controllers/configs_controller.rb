@@ -10,7 +10,9 @@ class ConfigsController < AdminController
     :atis_app_id,
     :atis_url,
     :atis_otp_mapping,
-    :route_viz_url
+    :route_viz_url,
+    :station_viz_url,
+    :station_viz_api_key
   ].freeze
 
   def index

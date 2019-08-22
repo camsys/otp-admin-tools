@@ -34,11 +34,20 @@
       <label>
         Time: <%= time_field(:station_vis, :start_time)  %>
       </label>
+      <br>
+      <label>
+        OTP URL: <%= text_field(:station_vis, :station_viz_url, value: Config.station_viz_url)  %>
+      </label>
+      <br>
+       <label>
+        API Key: <%= text_field(:station_vis, :station_viz_api_key, value: Config.station_viz_api_key)  %>
+      </label>
       <div>
         <button class="search_station btn btn-info" onclick="find_station_from_api()">Display Station</button>
       </div>
     </div>  
     <div class="col-md-4">
+      <% if @station %>
       <ul id='staion_graph_station_alerts'>
         <% @station.alerts.each do |a| %>
           <li>
@@ -46,6 +55,7 @@
           </li>
         <% end %>
       </ul>
+      <% end %>
     </div>
     <div class="col-md-4">
       <h5>LEGEND
@@ -77,7 +87,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="row">
-        <h3 id='station_graph_station_name' class="text-center"><%= @station.station_name %></h3>
+        <h3 id='station_graph_station_name' class="text-center"><%= @station.station_name unless @station.nil? %></h3>
         <div id="station_graph"></div>
       <div>
     </div>
@@ -216,7 +226,10 @@
             url: url,
             data: {station_vis_station_id: $('#station_vis_station_id').val(),
                   station_vis_otp_date: $('#station_vis_otp_date').val(),
-                  station_vis_start_time: $('#station_vis_start_time').val()},
+                  station_vis_start_time: $('#station_vis_start_time').val(),
+                  station_vis_station_viz_url: $('#station_vis_station_viz_url').val(),
+                  station_vis_station_viz_api_key: $('#station_vis_station_viz_api_key').val()
+                },
             success: function(result){
                 station = result;
                 $('#station_graph_station_name').text(station.station_name);

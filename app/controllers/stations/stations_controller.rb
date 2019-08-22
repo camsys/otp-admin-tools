@@ -13,7 +13,7 @@ module Stations
 
       # @stops = get_stations_from_api
 
-      make_station_api_request
+      #make_station_api_request
 
       respond_to do |format|
         format.html
@@ -33,6 +33,7 @@ module Stations
     end
 
     def make_station_api_request()
+
       if params[:station_vis_station_id].present?
         station_vis_station_id =  'stopId='+params[:station_vis_station_id]
       else
@@ -49,12 +50,20 @@ module Stations
         station_vis_start_time = nil
       end
 
+      if params[:station_vis_station_viz_url].present?
+        Config.station_viz_url = params[:station_vis_station_viz_url]
+      end
 
+      if params[:station_vis_station_viz_api_key].present?
+        Config.station_viz_api_key = params[:station_vis_station_viz_api_key]
+      end
 
-      # TODO get the API key from anywhere else... Get the Stop ID from a list of stop IDs, get the date and time from UI elements.
-      # resp = uri_requesting('http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=MTASBWY:211N&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L')
-      # resp = uri_requesting("http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?stopId=#{MTASBWY:A32N}&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L")
-      resp = uri_requesting("http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity?#{station_vis_station_id}#{station_vis_otp_date}#{station_vis_start_time}&apikey=EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L")
+      base_url = Config.station_viz_url
+      api_key = Config.station_viz_api_key
+
+      url = "#{base_url}/stationConnectivity?#{station_vis_station_id}#{station_vis_otp_date}#{station_vis_start_time}&apikey=#{api_key}"
+      
+      resp = uri_requesting(url)
 
       data = JSON.parse(resp.body)
 
