@@ -1,4 +1,6 @@
+require 'csv'
 class Admin::ReportsController < AdminController
+
   
   DASHBOARDS = ['API Usage', 'Origin Destination']
   GROUPINGS = [:hour, :day, :week, :month, :quarter, :year, :day_of_week, :month_of_year]
@@ -181,6 +183,30 @@ class Admin::ReportsController < AdminController
   
   ### / graphical dashboards  
   
+  ### CSV TABLE DOWNLOADS ###
+
+  def download_table
+
+    redirect_to({
+      controller: 'reports', 
+      action: 'chart_table', 
+      format: :csv,
+      params: params
+    })
+  end
+  
+  def chart_table
+
+    rows = params[:data]
+    csv_str = rows.inject([]) { |csv, row|  csv << CSV.generate_line(row) }.join("")
+
+    respond_to do |format|
+      format.csv { send_data csv_str }
+    end
+  end
+
+  ### / csv table downloads
+
   protected
 
   def add_commas(num_string)

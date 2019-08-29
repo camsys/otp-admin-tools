@@ -21,6 +21,9 @@ Rails.application.routes.draw do
         get 'api_usage_dashboard'
         get 'origin_destination_dashboard'
 
+        # CSV TABLE DOWNLOADS
+        post 'download_table'
+        get 'chart_table'
       end
     end
 

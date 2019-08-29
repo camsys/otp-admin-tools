@@ -54,6 +54,10 @@ class DashboardReport
     REPORT_TYPES.include?(@report_type) ? self.send("#{@report_type}_html") : nil
   end
   
+  def data
+    REPORT_TYPES.include?(@report_type) ? self.send("#{@report_type}_data") : nil
+  end
+
   # Returns true/false if the report can actually be rendered
   def valid?
     html.present?
@@ -74,17 +78,37 @@ class DashboardReport
   
   ### REPORT BUILDER METHODS ###
 
-  def origin_destination_counts_daily_html
+  def origin_destination_counts_daily_data
     report_units = @params[:report_units]
     if (!report_units.nil?) then
       data = report_units.group_by_day(:request_time).count
-      return line_chart(data,
-        id: "counts_daily",
-        ytitle: "Daily",
-        download: true,
-        thousands: ",",
-        adapter: "google",
-        library: COUNT_CHART_OPTIONS)
+      return data
+    else
+      return ''
+    end
+  end
+
+  def origin_destination_counts_daily_html
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = origin_destination_counts_daily_data
+        return line_chart(data,
+          id: "counts_daily",
+          ytitle: "Daily",
+          download: true,
+          thousands: ",",
+          adapter: "google",
+          library: COUNT_CHART_OPTIONS)          
+    else
+        return ''
+    end
+  end
+
+  def origin_destination_counts_weekly_data
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = report_units.group_by_week(:request_time).count
+      return data
     else
         return ''
     end
@@ -93,7 +117,7 @@ class DashboardReport
   def origin_destination_counts_weekly_html
     report_units = @params[:report_units]
     if (!report_units.nil?) then
-      data = report_units.group_by_week(:request_time).count
+      data = origin_destination_counts_weekly_data
       return line_chart(data,
         id: "counts_weekly",
         ytitle: "Weekly",
@@ -106,10 +130,20 @@ class DashboardReport
     end
   end
 
-  def origin_destination_counts_monthly_html
+  def origin_destination_counts_monthly_data
     report_units = @params[:report_units]
     if (!report_units.nil?) then
       data = report_units.group_by_month(:request_time).count
+      return data
+    else
+        return ''
+    end
+  end
+
+  def origin_destination_counts_monthly_html
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = origin_destination_counts_monthly_data
       return line_chart(data,
         id: "counts_monthly",
         ytitle: "Monthly",
@@ -121,11 +155,21 @@ class DashboardReport
         return ''
     end
   end
+
+  def origin_destination_dist_day_of_week_data
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = report_units.group_by_day_of_week(:request_time, format: "%a", week_start: :mon).count
+      return data
+    else
+        return ''
+    end
+  end
   
   def origin_destination_dist_day_of_week_html
     report_units = @params[:report_units]
     if (!report_units.nil?) then
-      data = report_units.group_by_day_of_week(:request_time, format: "%a", week_start: :mon).count
+      data = origin_destination_dist_day_of_week_data
       return column_chart(data,
         id: "dist_day_of_week",
         ytitle: "Day of Week",
@@ -138,10 +182,20 @@ class DashboardReport
     end
   end
 
-  def origin_destination_dist_hour_weekday_html
+  def origin_destination_dist_hour_weekday_data
     report_units = @params[:report_units]
     if (!report_units.nil?) then
       data = report_units.where("extract(dow from request_time) in (1, 2, 3, 4, 5)").group_by_hour_of_day(:request_time, format: "%-l %p").count
+      return data
+    else
+        return ''
+    end
+  end
+
+  def origin_destination_dist_hour_weekday_html
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = origin_destination_dist_hour_weekday_data
       return column_chart(data,
         id: "dist_hour_weekday",
         ytitle: "By Hour (Weekdays)",
@@ -154,10 +208,20 @@ class DashboardReport
     end
   end
 
-  def origin_destination_dist_hour_weekend_html
+  def origin_destination_dist_hour_weekend_data
     report_units = @params[:report_units]
     if (!report_units.nil?) then
       data = report_units.where("extract(dow from request_time) in (0, 6)").group_by_hour_of_day(:request_time, format: "%-l %p").count
+      return data
+    else
+        return ''
+    end
+  end
+
+  def origin_destination_dist_hour_weekend_html
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = origin_destination_dist_hour_weekend_data
       return column_chart(data,
         id: "dist_hour_weekend",
         ytitle: "By Hour (Weekend/Holiday)",
@@ -170,7 +234,7 @@ class DashboardReport
     end
   end
 
-  def origin_destination_dist_planned_html
+  def origin_destination_dist_planned_data
     report_units = @params[:report_units]
     if (!report_units.nil?) then
       now = DateTime.now
@@ -185,6 +249,16 @@ class DashboardReport
         '+2' => dataFuture[today + 2], 
         '+3' => dataFuture[today + 3]
       }
+      return data
+    else
+        return ''
+    end
+  end
+
+  def origin_destination_dist_planned_html
+    report_units = @params[:report_units]
+    if (!report_units.nil?) then
+      data = origin_destination_dist_planned_data
       return column_chart(data,
         id: "dist_planned",
         ytitle: "Day Planned",
@@ -196,11 +270,11 @@ class DashboardReport
     end
   end
 
-  def origin_destination_dist_origin_html
+  def origin_destination_dist_origin_data
     report_units = @params[:report_units]
     category_id = @params[:grouping]
     if (!report_units.nil?) then
-     data = report_units.includes(:plan_locations, plan_locations: [ :from_location ])
+      data = report_units.includes(:plan_locations, plan_locations: [ :from_location ])
         .where("category_id = ?", category_id)
         .where.not('locations.name' => nil)
         .group(['locations.name'])
@@ -208,6 +282,17 @@ class DashboardReport
         .references(:plan_locations, :from_location)
         .count
         .first(25).to_h
+      return data
+    else
+      return ''
+    end
+  end
+
+  def origin_destination_dist_origin_html
+    report_units = @params[:report_units]
+    category_id = @params[:grouping]
+    if (!report_units.nil?) then
+     data = origin_destination_dist_origin_data
       return bar_chart(data,
         id: "dist_geo_origin",
         ytitle: "Top 25 Origins",
@@ -219,11 +304,11 @@ class DashboardReport
     end
   end
 
-  def origin_destination_dist_dest_html
+  def origin_destination_dist_dest_data
     report_units = @params[:report_units]
     category_id = @params[:grouping]
     if (!report_units.nil?) then
-     data = report_units.includes(:plan_locations, plan_locations: [ :to_location ])
+      data = report_units.includes(:plan_locations, plan_locations: [ :to_location ])
         .where("category_id = ?", category_id)
         .where.not('locations.name' => nil)
         .group(['locations.name'])
@@ -231,6 +316,17 @@ class DashboardReport
         .references(:plan_locations, :to_location)
         .count
         .first(25).to_h
+      return data
+    else
+      return ''
+    end
+  end
+
+  def origin_destination_dist_dest_html
+    report_units = @params[:report_units]
+    category_id = @params[:grouping]
+    if (!report_units.nil?) then
+     data = origin_destination_dist_dest_data
       return bar_chart(data,
         id: "dist_geo_dest",
         ytitle: "Top 25 Destinations",
