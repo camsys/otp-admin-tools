@@ -10,11 +10,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // UDATE the route_viz_url config on submit
     var configsURL = document.getElementById("configsURL").innerHTML;
     var otpApi = d3.select("#routeVizURL").node().value;
+    var otpKey = d3.select("#routeVizKey").node().value;
     $.ajax({
       type: "POST",
       url: configsURL,
       dataType: "json",
-      data: {config: {route_viz_url: otpApi}}
+      data: {config: {route_viz_url: otpApi, route_viz_api_key: otpKey}}
     });
 
     var datetime = d3.select("#mydatetime").node().value;
@@ -32,12 +33,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function update(route, direction, date, time) {
   // based on https://jsfiddle.net/ye2xanf9/77/
   var otpApi = d3.select("#routeVizURL").node().value;
+  var otpKey = d3.select("#routeVizKey").node().value;
+
 
   var url = otpApi  + "/patternGraph?routeIds=" + route + "&directionId=" + direction;
   if (date != null && time != null) {
       url += "&date=" + date + "&time=" + time;
   }
-  url += "&apikey=" + "EQVQV8RM6R4o3Dwb6YNWfg6OMSR7kT9L"
+  url += "&apikey=" + otpKey;
   d3.json(url).then((data) => {
 
     /////////////////////////

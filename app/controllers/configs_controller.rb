@@ -11,6 +11,7 @@ class ConfigsController < AdminController
     :atis_url,
     :atis_otp_mapping,
     :route_viz_url,
+    :route_viz_api_key,
     :station_viz_url,
     :station_viz_api_key
   ].freeze
@@ -19,11 +20,11 @@ class ConfigsController < AdminController
   end
   
   def update
-
     configs = configs_params.to_h.map do |k,v|
       [ @configs.find_or_create_by(key: k).id, { value: format_config_value(k, v) } ]
     end.to_h
-        
+
+
     # Update all relevant configs at once, as a batch
     @errors = Config.update(configs.keys, configs.values)
                     .map(&:errors)

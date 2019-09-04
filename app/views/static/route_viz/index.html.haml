@@ -26,6 +26,9 @@
             %div
               %label{for: "routeVizURL"} OTP URL:
               %input#routeVizURL{type: "text", value: @url}
+            %div
+              %label{for: "routeVizKey"} OTP API Key:
+              %input#routeVizKey{type: "text", value: @api_key}
             %br
             %div#configsURL{style: "display: none"}
               =configs_url            
