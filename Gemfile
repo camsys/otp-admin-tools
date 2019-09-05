@@ -55,8 +55,7 @@ gem 'holidays', '~> 6.2'
 gem 'flatpickr'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-#gem 'rails', '~> 5.0.6'
-gem 'rails', '4.2.8'
+gem 'rails', '~> 5.0.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.20'
 # Use Puma as the app server
@@ -95,8 +94,8 @@ gem 'shoryuken', '4.0.3'
 
 # Database partitioning
 #gem "partitioned", "~> 1.1.0"
-gem 'activerecord-redshift-adapter', git: "https://github.com/arp/activerecord-redshift-adapter.git", branch: "rails4-compatibility"
-gem 'partitioned', git: "https://github.com/dkhofer/partitioned.git", branch: "rails-4-2"
+gem 'activerecord-redshift-adapter'
+gem 'partitioned', github: 'AirHelp/partitioned', branch: 'rails-5-1'
 
 # GIS
 gem 'rgeo'
@@ -117,8 +116,8 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  #gem 'spring'
-  #gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
   gem "better_errors"
   gem "binding_of_caller"
 end
