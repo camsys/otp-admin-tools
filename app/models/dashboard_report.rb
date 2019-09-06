@@ -278,7 +278,7 @@ class DashboardReport
         .where("category_id = ?", category_id)
         .where.not('locations.name' => nil)
         .group(['locations.name'])
-        .order('COUNT(plans.id) DESC')
+        .order('COUNT(DISTINCT plans.id) DESC')
         .references(:plan_locations, :from_location)
         .count
         .first(25).to_h
@@ -312,7 +312,7 @@ class DashboardReport
         .where("category_id = ?", category_id)
         .where.not('locations.name' => nil)
         .group(['locations.name'])
-        .order('COUNT(plans.id) DESC')
+        .order('COUNT(DISTINCT plans.id) DESC')
         .references(:plan_locations, :to_location)
         .count
         .first(25).to_h

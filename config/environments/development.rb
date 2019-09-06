@@ -55,9 +55,6 @@ Rails.application.configure do
   # Mail Config: Used by Devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # Application Title Config. Used by OTP Reports.
-  config.application_title = 'OTP Reports'
-
   # The location for the stations API to connect to
   config.station_api_endpoint = 'http://otp-mta-qa.camsys-apps.com/otp/routers/default/stationConnectivity'
 

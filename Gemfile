@@ -25,7 +25,7 @@ gem 'haml-rails'
 gem 'simple_form'
 gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass'
 
 
 ### Graping and Visualizing ########################
@@ -95,6 +95,7 @@ gem 'shoryuken', '4.0.3'
 # Database partitioning
 #gem "partitioned", "~> 1.1.0"
 gem 'activerecord-redshift-adapter'
+gem 'bulk_data_methods', github: 'AirHelp/bulk_data_methods', branch: 'rails5'
 gem 'partitioned', github: 'AirHelp/partitioned', branch: 'rails-5-1'
 
 # GIS
