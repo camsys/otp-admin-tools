@@ -1,4 +1,6 @@
+require 'csv'
 class Admin::ReportsController < AdminController
+
   
   DASHBOARDS = ['API Usage', 'Origin Destination']
   GROUPINGS = [:hour, :day, :week, :month, :quarter, :year, :day_of_week, :month_of_year]
@@ -20,18 +22,55 @@ class Admin::ReportsController < AdminController
   before_action :authorize_reports
   
   def index
-    @counties = ['All'].concat(Location.where(category: 1).pluck(:name))
+
+    @counties = ['All'].concat(Location.where(category: Location::COUNTY).pluck(:name))
+    @transit_zones = ['All'].concat(Location.where(category: Location::NYCT_ZONE).pluck(:name))
 
     @dashboards = DASHBOARDS
     @groupings = GROUPINGS
-    @report_units = REPORT_UNITS
+    @report_units_on = REPORT_UNITS
     @geographies = GEOGRAPHIES
-    @origins = @counties
-    @destinations = @counties
     @platforms = PLATFORMS
     @time_periods = TIME_PERIODS
+
+    if params[:dashboard].blank?
+      @origins = @counties
+      @destinations = @counties
+
+      @selected_dashboard_name = 'Origin Destination'
+      @selected_report_unit = 'Trip Plans'
+      @selected_geography = 'Counties'
+      @selected_origin = ['All']
+      @selected_destination = ['All']
+      @selected_platform = 'All'
+      @selected_time_period = 'Last Month'
+    else
+      params = dashboard_params
+      @selected_dashboard_name = params[:dashboard_name]
+      @selected_report_unit = params[:report_unit]
+      @selected_geography = params[:geography]
+      if @selected_geography == 'Counties'
+        @origins = @counties
+        @destinations = @counties  
+      else
+        @origins = @transit_zones
+        @destinations = @transit_zones
+      end          
+      @selected_origin = params[:origin]
+      @selected_destination = params[:destination]
+      @selected_platform = params[:platform]
+      @selected_time_period = params[:time_period]
+      if !params[:from_date].blank?
+        @selected_from_date = parse_date_param(params[:from_date])
+      end
+      if !params[:to_date].blank?
+        @selected_to_date = parse_date_param(params[:to_date])
+      end
+
+      dashboard
+    end
   end
-    
+
   ### GRAPHICAL DASHBOARDS ###
   
   def dashboard
@@ -40,7 +79,11 @@ class Admin::ReportsController < AdminController
     action_name = dashboard_name + "_dashboard"
     filters = params.except(:dashboard_name).to_h # Explicitly convert params to hash to avoid deprecation warning
 
-    redirect_to({controller: 'reports', action: action_name}.merge(filters))
+    origin_destination_dashboard
+    if params[:dashboard_name] == DASHBOARDS[0] then
+      api_usage_dashboard
+    end
+    #redirect_to({controller: 'reports', action: action_name}.merge(filters))
   end
   
   def api_usage_dashboard
@@ -83,11 +126,21 @@ class Admin::ReportsController < AdminController
     trip5.count_plan = 750
     trip5.count_nearby = 0
     trip5.count_collector = 0
-    @trips = [ trip1, trip2, trip3, trip4, trip5 ]
+    tripAll = Trip.new
+    tripAll.api_key = 'All'
+    tripAll.service_name = 'All'
+    tripAll.count_total = @report_units.count
+    tripAll.count_plan = @report_units.count
+    tripAll.count_nearby = 0
+    tripAll.count_collector = 0    
+    #@trips = [ trip1, trip2, trip3, trip4, trip5 ]
+    @trips = [ tripAll ]
 
   end
   
   def origin_destination_dashboard
+
+    params = dashboard_params
 
     @time_period = params[:time_period]
     @from_date = parse_date_param(params[:from_date])
@@ -106,15 +159,21 @@ class Admin::ReportsController < AdminController
        @report_units = Plan.all
     end
 
+    if @selected_geography == 'Counties' then
+      category_id = Location::COUNTY
+    else
+      category_id = Location::NYCT_ZONE
+    end
+    @grouping = category_id
     @origin = params[:origin]
-    if (@origin != 'All') then
-      origin_id = Location.where(category: 1).where(name: @origin).pluck(:id)[0]
+    if (!@origin.nil? && !@origin.include?('All')) then
+      origin_id = Location.where(category: category_id).where(name: @origin).pluck(:id)[0]
       @report_units = @report_units.where(id: PlanLocation.where(from_category_id: origin_id).select(:plan_id))
     end
 
     @destination = params[:destination]
-    if (@destination != 'All') then
-      destination_id = Location.where(category: 1).where(name: @destination).pluck(:id)[0]
+    if (!@destination.nil? && !@destination.include?('All')) then
+      destination_id = Location.where(category: category_id).where(name: @destination).pluck(:id)[0]
       @report_units = @report_units.where(id: PlanLocation.where(to_category_id: destination_id).select(:plan_id))   
     end
 
@@ -124,6 +183,30 @@ class Admin::ReportsController < AdminController
   
   ### / graphical dashboards  
   
+  ### CSV TABLE DOWNLOADS ###
+
+  def download_table
+
+    redirect_to({
+      controller: 'reports', 
+      action: 'chart_table', 
+      format: :csv,
+      params: params
+    })
+  end
+  
+  def chart_table
+
+    rows = params[:data]
+    csv_str = rows.inject([]) { |csv, row|  csv << CSV.generate_line(row) }.join("")
+
+    respond_to do |format|
+      format.csv { send_data csv_str }
+    end
+  end
+
+  ### / csv table downloads
+
   protected
 
   def add_commas(num_string)
@@ -170,7 +253,7 @@ class Admin::ReportsController < AdminController
     # DATE FILTERS
     @from_date = parse_date_param(params[:from_date])
     @to_date = parse_date_param(params[:to_date])
-    @grouping = params[:grouping]
+    @grouping = params[:grouping]    
     @partner_agency = params[:partner_agency].blank? ? nil : PartnerAgency.find(params[:partner_agency])
 
 
@@ -219,8 +302,8 @@ class Admin::ReportsController < AdminController
       :grouping,
       :partner_agency,
       :geography,
-      :origin,
-      :destination,
+      {:origin => []},
+      {:destination => []},
       :platform,
     )
   end

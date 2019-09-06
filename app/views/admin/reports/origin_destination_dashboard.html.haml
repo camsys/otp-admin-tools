@@ -1,40 +1,4 @@
 =content_for :title do
   Origin Destination Report
 
-%hr/ 
-%h4.text-center
-  Results: Counts
-.row.form-group
-  .col-md-6.detail.text-right
-    Trip Plans
-  .col-md-6.text-left
-    = @report_units_count
-.row.form-group
-  .col-md-12.detail
-
-= DashboardReport.new(:origin_destination_counts_daily, report_units: @report_units, grouping: @grouping).html
-
-= DashboardReport.new(:origin_destination_counts_weekly, report_units: @report_units, grouping: @grouping).html
-
-= DashboardReport.new(:origin_destination_counts_monthly, report_units: @report_units, grouping: @grouping).html
-
-%hr/ 
-%h4.text-center
-  Results: Distribution
-.row.form-group
-  .col-md-12.detail
-    Distribution of Trip Plans
-.row.form-group
-  .col-md-12.detail
-
-= DashboardReport.new(:origin_destination_dist_day_of_week, report_units: @report_units, grouping: @grouping).html
-
-= DashboardReport.new(:origin_destination_dist_hour_weekday, report_units: @report_units, grouping: @grouping).html
-
-= DashboardReport.new(:origin_destination_dist_hour_weekend, report_units: @report_units, grouping: @grouping).html
-
-= DashboardReport.new(:origin_destination_dist_planned, report_units: @report_units, grouping: @grouping).html
-
-%hr/ 
-
-=back_link admin_reports_path
+=render partial: 'origin_destination_dashboard', layout: '/layouts/panel'
