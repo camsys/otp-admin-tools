@@ -9,8 +9,8 @@ GIT
 
 GIT
   remote: https://github.com/AirHelp/partitioned.git
-  revision: 8d693b6d2f72de64dd6ec16f668d239656388cda
-  branch: rails-5-1
+  revision: 4304620861002e8fea7d53cc62c297eb5810d23e
+  branch: rails-5-0
   specs:
     partitioned (2.1.0)
       activerecord

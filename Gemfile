@@ -96,7 +96,7 @@ gem 'shoryuken', '4.0.3'
 #gem "partitioned", "~> 1.1.0"
 gem 'activerecord-redshift-adapter'
 gem 'bulk_data_methods', github: 'AirHelp/bulk_data_methods', branch: 'rails5'
-gem 'partitioned', github: 'AirHelp/partitioned', branch: 'rails-5-1'
+gem 'partitioned', github: 'AirHelp/partitioned', branch: 'rails-5-0'
 
 # GIS
 gem 'rgeo'
