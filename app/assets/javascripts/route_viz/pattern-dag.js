@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(event) { 
+//document.addEventListener("DOMContentLoaded", function(event) { 
 
   flatpickr(d3.select("#mydatetime").node(), {
     enableTime: true,
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     update(route, direction, date, time);
   })
-})
+//})
 
 function update(route, direction, date, time) {
   // based on https://jsfiddle.net/ye2xanf9/77/

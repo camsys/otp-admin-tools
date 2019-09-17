@@ -11,3 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 Rails.application.config.assets.precompile += %w( network/* )
+Rails.application.config.assets.precompile += %w( route_viz/pattern-dag.js )
