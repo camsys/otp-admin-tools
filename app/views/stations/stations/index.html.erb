@@ -160,6 +160,8 @@
 
     //Builds a new graph. In this case we never append anything to the graph we are always creating a new one.
     function build_new_networkgraph(){
+        if (station == null) { return; }
+
         // create an array with edges
         var edges = new vis.DataSet(build_edges());
         var nodes = new vis.DataSet();

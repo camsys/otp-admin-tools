@@ -12,11 +12,15 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require visjs/vis-network                                                    
+//= require d3/d3.min                                                            
+//= require d3/d3-dag.min  
 
 //= require_tree .
-//= require jquery-ui
+//= stub "route_viz/pattern-dag"  
 //= require bootstrap-datepicker
 //= require Chart.bundle
 //= require chartkick
