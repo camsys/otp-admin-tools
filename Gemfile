@@ -25,7 +25,7 @@ gem 'haml-rails'
 gem 'simple_form'
 gem 'autoprefixer-rails'
 gem 'font-awesome-rails'
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass'
 
 
 ### Graping and Visualizing ########################
@@ -53,10 +53,6 @@ gem 'mail'
 ### DATES #############################
 gem 'holidays', '~> 6.2'
 gem 'flatpickr'
-
-### API & SERIALIZING ######################
-# ActiveModel Serializers for serving JSON via the API
-gem 'active_model_serializers', '~> 0.10.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.6'
@@ -90,6 +86,21 @@ gem 'bootstrap-datepicker-rails'
 gem 'chartkick' # For google charts
 gem 'groupdate' # For chart grouping
 ############################################
+
+# AWS SQS message queue
+gem 'aws-sdk-sqs'
+gem 'shoryuken', '4.0.3'
+#gem 'shoryuken', '4.0.0'
+
+# Database partitioning
+#gem "partitioned", "~> 1.1.0"
+gem 'activerecord-redshift-adapter'
+gem 'bulk_data_methods', github: 'AirHelp/bulk_data_methods', branch: 'rails5'
+gem 'partitioned', github: 'AirHelp/partitioned', branch: 'rails-5-0'
+
+# GIS
+gem 'rgeo'
+gem 'rgeo-geojson'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

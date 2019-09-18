@@ -1,3 +1,23 @@
+GIT
+  remote: https://github.com/AirHelp/bulk_data_methods.git
+  revision: 981f1aed161f4cc6612a2bada0569b5953f861dc
+  branch: rails5
+  specs:
+    bulk_data_methods (2.0.0)
+      activerecord (>= 3.0)
+      pg
+
+GIT
+  remote: https://github.com/AirHelp/partitioned.git
+  revision: 4304620861002e8fea7d53cc62c297eb5810d23e
+  branch: rails-5-0
+  specs:
+    partitioned (2.1.0)
+      activerecord
+      activerecord-redshift-adapter
+      bulk_data_methods
+      pg
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -39,6 +59,11 @@ GEM
       activemodel (= 5.0.7.2)
       activesupport (= 5.0.7.2)
       arel (~> 7.0)
+    activerecord-redshift-adapter (0.9.12)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      arel (>= 3.0.0)
+      pg
     activesupport (5.0.7.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
@@ -48,9 +73,21 @@ GEM
       gyoku (>= 0.4.0)
       nokogiri
     arel (7.1.4)
-    autoprefixer-rails (9.6.1)
+    autoprefixer-rails (9.6.1.1)
       execjs
     awesome_print (1.8.0)
+    aws-eventstream (1.0.3)
+    aws-partitions (1.209.0)
+    aws-sdk-core (3.66.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
+      aws-partitions (~> 1.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1.0)
+    aws-sdk-sqs (1.22.0)
+      aws-sdk-core (~> 3, >= 3.61.1)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     bcrypt (3.1.13)
     better_errors (2.5.1)
       coderay (>= 1.0.0)
@@ -61,9 +98,9 @@ GEM
       debug_inspector (>= 0.0.1)
     bootstrap-datepicker-rails (1.8.0.1)
       railties (>= 3.0)
-    bootstrap-sass (3.3.7)
+    bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+      sassc (>= 2.0.0)
     builder (3.2.3)
     byebug (11.0.1)
     case_transform (0.2)
@@ -81,10 +118,10 @@ GEM
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     debug_inspector (0.0.3)
-    devise (4.6.2)
+    devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 6.0)
+      railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
     erubi (1.8.0)
@@ -123,6 +160,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
+    jmespath (1.4.0)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -143,13 +181,13 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     method_source (0.9.2)
-    mini_mime (1.0.2)
+    mini_mime (1.0.0)
     mini_portile2 (2.4.0)
     mini_racer (0.2.6)
       libv8 (>= 6.9.411)
     minitest (5.11.3)
-    nio4r (2.4.0)
-    nokogiri (1.10.3)
+    nio4r (2.1.0)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     orm_adapter (0.5.0)
@@ -179,7 +217,7 @@ GEM
       activesupport (>= 4.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-html-sanitizer (1.0.4)
+    rails-html-sanitizer (1.2.0)
       loofah (~> 2.2, >= 2.2.2)
     railties (5.0.7.2)
       actionpack (= 5.0.7.2)
@@ -194,6 +232,9 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rgeo (2.1.1)
+    rgeo-geojson (2.1.1)
+      rgeo (>= 1.0.0)
     ruby-graphviz (1.2.4)
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
@@ -208,6 +249,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sassc (2.2.0)
+      ffi (~> 1.9)
     savon (2.12.0)
       akami (~> 1.2)
       builder (>= 2.1.2)
@@ -217,6 +260,10 @@ GEM
       nori (~> 2.4)
       wasabi (~> 3.4)
     sexp_processor (4.12.1)
+    shoryuken (4.0.3)
+      aws-sdk-core (>= 2)
+      concurrent-ruby
+      thor
     simple_form (4.1.0)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -263,12 +310,15 @@ PLATFORMS
 DEPENDENCIES
   Indirizzo
   active_model_serializers (~> 0.10.0)
+  activerecord-redshift-adapter
   autoprefixer-rails
   awesome_print
+  aws-sdk-sqs
   better_errors
   binding_of_caller
   bootstrap-datepicker-rails
-  bootstrap-sass (~> 3.3.6)
+  bootstrap-sass
+  bulk_data_methods!
   byebug
   chartkick
   coffee-rails (~> 4.2)
@@ -287,13 +337,17 @@ DEPENDENCIES
   listen (~> 3.0.5)
   mail
   mini_racer
+  partitioned!
   pg (~> 0.20)
   puma (~> 3.0)
   rack-cors
   rails (~> 5.0.6)
   rails-erd
+  rgeo
+  rgeo-geojson
   sass-rails (~> 5.0)
   savon
+  shoryuken (= 4.0.3)
   simple_form
   spring
   spring-watcher-listen (~> 2.0.0)
