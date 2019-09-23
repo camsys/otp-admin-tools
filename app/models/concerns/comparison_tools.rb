@@ -16,6 +16,9 @@ module ComparisonTools
             route_ids << leg["routeId"]
           end
         end
+
+        fare = itin.try(:[],'fare').try(:[], 'fare').try(:[],'regular').try(:[],'cents')
+
         summary << {duration: itin["duration"], 
                     start_time: itin["startTime"], 
                     end_time: itin["endTime"], 
@@ -28,7 +31,9 @@ module ComparisonTools
                     transfers: itin["transfers"],
                     routes: routes,
                     route_ids: route_ids,
-                    legs: itin["legs"]}
+                    legs: itin["legs"],
+                    fare: (fare && fare >= 0) ? fare : nil
+                    }
       end
     end
 
@@ -73,7 +78,9 @@ module ComparisonTools
                     transfers: [routes.count - 1, 0].max,
                     routes: routes,
                     route_ids: route_ids,
-                    legs: legs}
+                    legs: legs,
+                    fare: itin['Regularfare'] ? ((itin['Regularfare'].to_f)*100).to_i : nil
+        }
       end
     end
 
@@ -169,11 +176,11 @@ module ComparisonTools
 
   def compare_atis_summary
     if self.parsed_atis_response.nil? && self.compare_type == 'atis'
-      return {walk_time: 'atis_nil', transit_time: 'atis_nil', transfer: 'atis_nil'}
+      return {walk_time: 'atis_nil', total_time: 'atis_nil', transfer: 'atis_nil', fare: 'atis_nil'}
     end
 
     if self.otp_response["plan"].nil?
-      return {walk_time: 'otp_nil', transit_time: 'otp_nil', transfers: 'otp_nil'}
+      return {walk_time: 'otp_nil', total_time: 'otp_nil', transfer: 'otp_nil', fare: 'otp_nil'}
     end
 
 
@@ -184,17 +191,29 @@ module ComparisonTools
     total_time_ratio = ((otp["duration"]/60.0).round.to_f/(atis["Totaltime"]).to_f) - 1
     transfers_ratio = otp["transfers"] - self.atis_summary.first[:transfers]
 
-    return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio}
+    fare = otp.try(:[],'fare').try(:[], 'fare').try(:[],'regular').try(:[],'cents')
+
+    if fare && fare >= 0
+      if self.atis_summary.first[:fare]
+        fare_ratio = fare - self.atis_summary.first[:fare]
+      else
+        fare_ratio = 'atis_nil'
+      end
+    else
+      fare_ratio = 'otp_nil'
+    end
+
+    return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio, fare: fare_ratio}
   end
 
   def compare_otp_summary
 
     if self.compare_response["plan"].nil?
-      return {walk_time: 'otp2_nil', transit_time: 'otp2_nil', transfers: 'otp2_nil'}
+      return {walk_time: 'otp2_nil', total_time: 'otp2_nil', transfer: 'otp2_nil', fare: 'otp2_nil'}
     end
 
     if self.otp_response["plan"].nil?
-      return {walk_time: 'otp_nil', transit_time: 'otp_nil', transfers: 'otp_nil'}
+      return {walk_time: 'otp_nil', total_time: 'otp_nil', transfer: 'otp_nil', fare: 'otp_nil'}
     end
 
     otp2 = self.compare_response["plan"]["itineraries"].first
@@ -205,7 +224,19 @@ module ComparisonTools
     total_time_ratio = ((otp["duration"]).to_f/(otp2["duration"]).to_f) - 1
     transfers_ratio = otp["transfers"] - otp2["transfers"]
 
-    return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio}
+    fare = otp.try(:[],'fare').try(:[], 'fare').try(:[],'regular').try(:[],'cents')
+    fare2 = otp2.try(:[],'fare').try(:[], 'fare').try(:[],'regular').try(:[],'cents')
+    if fare && fare >= 0
+      if fare2 && fare2 >= 0
+        fare_ratio = fare - fare2
+      else
+        fare_ratio = 'otp2_nil'
+      end
+    else
+      fare_ratio = 'otp_nil'
+    end
+
+    return {walk_time: walk_time, total_time: total_time_ratio, transfer: transfers_ratio, fare: fare_ratio}
   end
 
   def match? compare_route, mapped_otp_routes

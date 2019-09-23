@@ -15,7 +15,12 @@
           %i.fa.fa-times
           ="#{itin[:transfers]} | "
           %i.fa.fa-clock-o
-          ="#{(itin[:duration]/60.0).round}"
+          - if itin[:fare]
+            ="#{(itin[:duration]/60.0).round} | "
+            %i.fa.fa-usd
+            = "#{number_to_currency(itin[:fare]/100.0, :unit => "")}"
+          - else
+            ="#{(itin[:duration]/60.0).round}"
         .h4
           -itin[:routes].each do |route|
             =route

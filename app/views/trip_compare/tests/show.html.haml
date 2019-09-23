@@ -217,7 +217,7 @@
                               .well.well-sm.bad
                                 %h4
                                   ="OTP #{k.to_s.humanize.downcase} is #{v.round.abs} min #{result.getQuantityText v}"
-                      -else
+                      -elsif k == :total_time
                         .row
                           .col-md-1
                           .col-md-10
@@ -245,6 +245,30 @@
                               .well.well-sm.bad 
                                 %h4  
                                   ="OTP #{k.to_s.humanize.downcase} is #{(v.round(3).abs*100).round(3)}% more"
+                      - elsif k == :fare
+                        .row
+                          .col-md-1
+                          .col-md-10
+                            -if v == 'atis_nil' || v == 'otp2_nil'
+                              .well.well-sm.good
+                                %h4
+                                  ="#{result.comparison_service_name} fare is n/a"
+                            -elsif v == 'otp_nil'
+                              .well.well-sm.bad
+                                %h4
+                                  ="OTP fare is n/a"
+                            -elsif v < 0.0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{number_to_currency(v.abs/100.0)} less"
+                            -elsif v == 0.0
+                              .well.well-sm.good
+                                %h4
+                                  ="OTP & #{result.comparison_service_name} #{k.to_s.humanize.downcase} are equal"
+                            -else
+                              .well.well-sm.bad
+                                %h4
+                                  ="OTP #{k.to_s.humanize.downcase} is #{number_to_currency(v/100.0)} more"
 
           %div.panel-footer.text-center
             =link_to trip_compare_result_path(result), target: :_blank do
