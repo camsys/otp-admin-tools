@@ -82,6 +82,14 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+
+qa:
+  <<: *default
+  host: trip-compare-qa.ckgyhi5n2bdz.us-east-1.rds.amazonaws.com
+  database: otp_test
+  username: otp_test
+  password: 3qCqDrsJWNTqWMUk
+
 production:
   <<: *default
   database: TripCompare_production
