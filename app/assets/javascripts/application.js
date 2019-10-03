@@ -18,14 +18,11 @@
 //= require visjs/vis-network                                                    
 //= require d3/d3.min                                                            
 //= require d3/d3-dag.min  
+//= require flatpickr
 
 //= require_tree .
 //= stub "route_viz/pattern-dag"  
 //= require bootstrap-datepicker
 //= require Chart.bundle
 //= require chartkick
-//= require flatpickr
 
-document.addEventListener('DOMContentLoaded', function() {
-  flatpickr('.your-selector');
-})
