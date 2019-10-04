@@ -17,8 +17,18 @@
           %i.fa.fa-clock-o
           - if itin[:fare]
             ="#{(itin[:duration]/60.0).round} | "
-            %i.fa.fa-usd
-            = "#{number_to_currency(itin[:fare]/100.0, :unit => "")}"
+            -if itin[:fare_match] == "GOOD"
+              %span.good
+                %i.fa.fa-usd
+                = "#{number_to_currency(itin[:fare]/100.0, :unit => "")}"
+            -elsif itin[:fare_match] == "BAD"
+              %span.bad
+                %i.fa.fa-usd
+                = "#{number_to_currency(itin[:fare]/100.0, :unit => "")}"
+            -else 
+              %span.neutral
+                %i.fa.fa-usd
+                = "#{number_to_currency(itin[:fare]/100.0, :unit => "")}"
           - else
             ="#{(itin[:duration]/60.0).round}"
         .h4
