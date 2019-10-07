@@ -8,16 +8,10 @@ module ComparisonTools
     summary = []
     if otp_response["plan"]
       otp_response["plan"]["itineraries"].each do |itin|
-        routes = []
-        route_ids = []
-        itin["legs"].each do |leg|
-          unless leg["route"].blank?
-            routes << leg["route"]
-            route_ids << leg["routeId"]
-          end
-        end
+        legs = itin["legs"]
+        routes, route_ids = get_otp_routes legs 
 
-        fare = itin.try(:[],'fare').try(:[], 'fare').try(:[],'regular').try(:[],'cents')
+        fare = get_otp_fare itin 
 
         summary << {duration: itin["duration"], 
                     start_time: itin["startTime"], 
@@ -32,13 +26,26 @@ module ComparisonTools
                     routes: routes,
                     route_ids: route_ids,
                     legs: itin["legs"],
-                    fare: (fare && fare >= 0) ? fare : nil
+                    fare: (fare && fare >= 0) ? fare : nil,
+                    fare_match: fare_match(itin["legs"], fare)
                     }
       end
     end
 
     return summary 
 
+  end
+
+  def get_otp_fare itin
+    itin.try(:[],'fare').try(:[], 'fare').try(:[],'regular').try(:[],'cents')
+  end
+
+  def get_atis_fare itin
+    itin['Regularfare'] ? ((itin['Regularfare'].to_f)*100).to_i : nil
+  end
+
+  def get_atis_itineraries 
+    self.parsed_atis_response.nil? ? [] : (arrayify self.parsed_atis_response["Itin"])
   end
 
   def otp_summary
@@ -51,22 +58,13 @@ module ComparisonTools
 
   def atis_summary
     summary = []
-
-    itineraries = self.parsed_atis_response.nil? ? [] : (arrayify self.parsed_atis_response["Itin"])
-
+    itineraries = get_atis_itineraries
     itineraries.each do |itin|
       routes = []
 
       if itin["Legs"] 
         legs = arrayify itin["Legs"]["Leg"]
-        routes  = []
-        route_ids  = []
-        legs.each do |value|
-          unless value["Service"].blank? 
-            routes << value["Service"]["Publicroute"]
-            route_ids << value["Service"]["Route"]
-          end
-        end
+        routes, route_ids = get_atis_routes legs
 
         summary << {duration: itin["Totaltime"].to_f*60, 
                     start_time: atis_start_time(itin), 
@@ -79,13 +77,38 @@ module ComparisonTools
                     routes: routes,
                     route_ids: route_ids,
                     legs: legs,
-                    fare: itin['Regularfare'] ? ((itin['Regularfare'].to_f)*100).to_i : nil
+                    fare: get_atis_fare(itin),
+                    fare_match: "NEUTRAL"
         }
       end
     end
 
     return summary 
 
+  end
+
+  def get_otp_routes legs
+    routes = []
+    route_ids = []
+    legs.each do |leg|
+      unless leg["route"].blank?
+        routes << leg["route"]
+        route_ids << leg["routeId"]
+      end
+    end
+    return routes, route_ids
+  end
+
+  def get_atis_routes legs
+    routes  = []
+    route_ids  = []
+    legs.each do |value|
+      unless value["Service"].blank? 
+        routes << value["Service"]["Publicroute"]
+        route_ids << value["Service"]["Route"]
+      end
+    end
+    return routes, route_ids 
   end
 
   def atis_start_time itin 
@@ -295,6 +318,45 @@ module ComparisonTools
 
   def compare_baseline_summary
     return get_baseline_stats.last 
+  end
+
+  def convert_to_atis_routes routes
+    mapping = Config.atis_otp_mapping
+    new_routes = []
+    routes.each do |route|
+      new_routes << (mapping[route.to_sym].nil? ? 'MAP MISSING' : mapping[route.to_sym].first[:atis_id])
+    end
+    new_routes
+  end
+
+  # Does this Itinerary Fare Match an ATIS Route and Fare?
+  def fare_match legs, fare 
+    
+    #Currently, this only supports the OTP to ATIS comparison.
+    unless self.compare_type == 'atis'
+      return "NEUTRAL"
+    end
+
+    # Get the OTP Routes for this Itinerary
+    routes, route_ids = get_otp_routes legs 
+    # Convert them to ATIS routes
+    atis_routes = convert_to_atis_routes route_ids 
+
+    # Get all the ATIS routes that were returned and compare them to the OTP routes.
+    get_atis_itineraries.each do |itin|
+      legs = arrayify itin["Legs"]["Leg"]
+      compare_routes, compare_route_ids = get_atis_routes legs
+      atis_fare = get_atis_fare itin 
+      if atis_routes == compare_route_ids 
+        if atis_fare == fare 
+          return "GOOD"
+        else 
+          return "BAD"
+        end
+      end
+    end
+    return "NEUTRAL"
+
   end
 
   #BASELINE Tests

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -29,12 +28,6 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.string "consumer_name"
   end
 
-  create_table "ar_internal_metadata", primary_key: "key", force: :cascade do |t|
-    t.string   "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "configs", force: :cascade do |t|
     t.string   "key"
     t.text     "value"
@@ -45,12 +38,12 @@ ActiveRecord::Schema.define(version: 20190401153033) do
   create_table "groups", force: :cascade do |t|
     t.text     "comment"
     t.string   "name"
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
-    t.decimal  "otp_walk_speed",                          default: 1.3,     null: false
-    t.decimal  "otp_max_walk_distance",                   default: 8046.72, null: false
-    t.decimal  "otp_walk_reluctance",                     default: 4.0,     null: false
-    t.decimal  "otp_transfer_penalty",                    default: 600.0,   null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
+    t.decimal  "otp_walk_speed",                          default: "1.3",     null: false
+    t.decimal  "otp_max_walk_distance",                   default: "8046.72", null: false
+    t.decimal  "otp_walk_reluctance",                     default: "4.0",     null: false
+    t.decimal  "otp_transfer_penalty",                    default: "600.0",   null: false
     t.string   "atis_minimize"
     t.decimal  "atis_walk_dist"
     t.decimal  "atis_walk_speed"
@@ -58,14 +51,14 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.boolean  "otp_accessible"
     t.boolean  "atis_accessible"
     t.string   "compare_type"
-    t.integer  "otp_transfer_slack",                      default: 120,     null: false
-    t.boolean  "otp_allow_unknown_transfers",             default: false,   null: false
-    t.integer  "otp_use_unpreferred_routes_penalty",      default: 1200,    null: false
-    t.integer  "otp_use_unpreferred_start_end_penalty",   default: 3600,    null: false
-    t.integer  "otp_other_than_preferred_routes_penalty", default: 10800,   null: false
-    t.decimal  "otp_car_reluctance",                      default: 4.0,     null: false
-    t.string   "otp_path_comparator",                     default: "mta",   null: false
-    t.integer  "otp_max_walk_distance_heuristic",         default: 8047,    null: false
+    t.integer  "otp_transfer_slack",                      default: 120,       null: false
+    t.boolean  "otp_allow_unknown_transfers",             default: false,     null: false
+    t.integer  "otp_use_unpreferred_routes_penalty",      default: 1200,      null: false
+    t.integer  "otp_use_unpreferred_start_end_penalty",   default: 3600,      null: false
+    t.integer  "otp_other_than_preferred_routes_penalty", default: 10800,     null: false
+    t.decimal  "otp_car_reluctance",                      default: "4.0",     null: false
+    t.string   "otp_path_comparator",                     default: "mta",     null: false
+    t.integer  "otp_max_walk_distance_heuristic",         default: 8047,      null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -80,9 +73,8 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.integer  "from_category_id"
     t.integer  "to_category_id"
     t.datetime "plan_request_time"
+    t.index ["plan_id"], name: "index_plan_locations_on_plan_id", using: :btree
   end
-
-  add_index "plan_locations", ["plan_id"], name: "index_plan_locations_on_plan_id", using: :btree
 
   create_table "plans", force: :cascade do |t|
     t.integer  "type_id"
@@ -107,10 +99,9 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.text     "compare_response"
     t.decimal  "percent_matched"
     t.datetime "trip_time"
+    t.index ["test_id"], name: "index_results_on_test_id", using: :btree
+    t.index ["trip_id"], name: "index_results_on_trip_id", using: :btree
   end
-
-  add_index "results", ["test_id"], name: "index_results_on_test_id", using: :btree
-  add_index "results", ["trip_id"], name: "index_results_on_trip_id", using: :btree
 
   create_table "tests", force: :cascade do |t|
     t.text     "comment"
@@ -132,12 +123,11 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.integer  "otp_use_unpreferred_routes_penalty",      default: 1200,  null: false
     t.integer  "otp_use_unpreferred_start_end_penalty",   default: 3600,  null: false
     t.integer  "otp_other_than_preferred_routes_penalty", default: 10800, null: false
-    t.decimal  "otp_car_reluctance",                      default: 4.0,   null: false
+    t.decimal  "otp_car_reluctance",                      default: "4.0", null: false
     t.string   "otp_path_comparator",                     default: "mta", null: false
     t.integer  "otp_max_walk_distance_heuristic",         default: 8047,  null: false
+    t.index ["group_id"], name: "index_tests_on_group_id", using: :btree
   end
-
-  add_index "tests", ["group_id"], name: "index_tests_on_group_id", using: :btree
 
   create_table "trips", force: :cascade do |t|
     t.text     "origin"
@@ -160,9 +150,8 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.integer  "max_total_seconds"
     t.integer  "min_total_seconds"
     t.string   "otp_mode",               default: "WALK,TRANSIT", null: false
+    t.index ["group_id"], name: "index_trips_on_group_id", using: :btree
   end
-
-  add_index "trips", ["group_id"], name: "index_trips_on_group_id", using: :btree
 
   create_table "types", force: :cascade do |t|
     t.string "name"
@@ -184,9 +173,8 @@ ActiveRecord::Schema.define(version: 20190401153033) do
     t.datetime "updated_at",                          null: false
     t.string   "first_name"
     t.string   "last_name"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
