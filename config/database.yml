@@ -92,6 +92,7 @@ qa:
 
 production:
   <<: *default
-  database: TripCompare_production
-  username: TripCompare
-  password: <%= ENV['TRIPCOMPARE_DATABASE_PASSWORD'] %>
+  host: trip-compare-qa.ckgyhi5n2bdz.us-east-1.rds.amazonaws.com
+  database: otp_test
+  username: otp_test
+  password: 3qCqDrsJWNTqWMUk
