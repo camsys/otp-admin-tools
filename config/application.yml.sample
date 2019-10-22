@@ -1,0 +1,65 @@
+# Add configuration values here, as shown below.
+#
+# pusher_app_id: "2954"
+# pusher_key: 7381a978f7dd7f9a1117
+# pusher_secret: abdc3b896a0ffb85d373
+# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
+# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
+#
+# production:
+#   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
+#   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
+
+CLOUDWATCH_AWS_ACCESS_KEY:  "FROM DEVOPS"
+CLOUDWATCH_AWS_SECRET_KEY: "FROM DEVOPS"
+AWS_SQS_REGION: "FROM DEVOPS"
+
+# Generic DB settings
+DB_ADAPTER:               "postgresql"
+DB_ENCODING:              "unicode"
+DB_PORT:                  "5432"
+DB_POOL_SIZE:             "35"
+
+development:
+  DB_USER_NAME:           "FROM DEVOPS"
+  DB_PASSWORD:            "FROM DEVOPS"
+  DB_HOST:                "FROM DEVOPS"
+  DB_SCHEMA:              "FROM DEVOPS"
+  SECRET_KEY_BASE:        "FROM DEVOPS"
+  SQS_AWS_ACCESS_KEY:     "FROM DEVOPS"
+  SQS_AWS_SECRET_KEY:     "FROM DEVOPS"
+  SQS_ENDPOINT:           "FROM DEVOPS"
+  SQS_QUEUE:              "FROM DEVOPS"
+
+test:
+  DB_USER_NAME:           "FROM DEVOPS"
+  DB_PASSWORD:            "FROM DEVOPS"
+  DB_HOST:                "FROM DEVOPS"
+  DB_SCHEMA:              "FROM DEVOPS"
+  SECRET_KEY_BASE:        "FROM DEVOPS"
+  SQS_AWS_ACCESS_KEY:     "FROM DEVOPS"
+  SQS_AWS_SECRET_KEY:     "FROM DEVOPS"
+  SQS_ENDPOINT:           "FROM DEVOPS"
+  SQS_QUEUE:              "FROM DEVOPS"
+
+qa:
+  DB_USER_NAME:           "FROM DEVOPS"
+  DB_PASSWORD:            "FROM DEVOPS"
+  DB_HOST:                "FROM DEVOPS"
+  DB_SCHEMA:              "FROM DEVOPS"
+  SECRET_KEY_BASE:        "FROM DEVOPS"
+  SQS_AWS_ACCESS_KEY:     "FROM DEVOPS"
+  SQS_AWS_SECRET_KEY:     "FROM DEVOPS"
+  SQS_ENDPOINT:           "FROM DEVOPS"
+  SQS_QUEUE:              "FROM DEVOPS"
+
+production:
+  DB_USER_NAME:           "FROM DEVOPS"
+  DB_PASSWORD:            "FROM DEVOPS"
+  DB_HOST:                "FROM DEVOPS"
+  DB_SCHEMA:              "FROM DEVOPS"
+  SECRET_KEY_BASE:        "FROM DEVOPS"
+  SQS_AWS_ACCESS_KEY:     "FROM DEVOPS"
+  SQS_AWS_SECRET_KEY:     "FROM DEVOPS"
+  SQS_ENDPOINT:           "FROM DEVOPS"
+  SQS_QUEUE:              "FROM DEVOPS"

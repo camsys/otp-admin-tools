@@ -15,28 +15,27 @@
 # gem 'pg'
 #
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  adapter: <%= ENV['DB_ADAPTER'] %>
+  encoding: <%= ENV['DB_ENCODING'] %>
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
-  password: postgres
+  pool: <%= ENV['DB_POOL_SIZE'].to_i %>
+  port: <%= ENV['DB_PORT'].to_i %>
 
 development:
   <<: *default
-  database: TripCompare_development
+  database: <%= ENV['DB_SCHEMA'] %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
   #username: TripCompare
-  username: postgres
+  username: <%= ENV['DB_USER_NAME'] %>
 
   # The password associated with the postgres role (username).
   #password:
-  password: postgres
+  password: <%= ENV['DB_PASSWORD'] %>
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -61,7 +60,9 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: TripCompare_test
+  database: <%= ENV['DB_SCHEMA'] %>
+  username: <%= ENV['DB_USER_NAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -85,14 +86,14 @@ test:
 
 qa:
   <<: *default
-  host: trip-compare-qa.ckgyhi5n2bdz.us-east-1.rds.amazonaws.com
-  database: otp_test
-  username: otp_test
-  password: 3qCqDrsJWNTqWMUk
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['DB_SCHEMA'] %>
+  username: <%= ENV['DB_USER_NAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 production:
   <<: *default
-  host: trip-compare-qa.ckgyhi5n2bdz.us-east-1.rds.amazonaws.com
-  database: otp_test
-  username: otp_test
-  password: 3qCqDrsJWNTqWMUk
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['DB_SCHEMA'] %>
+  username: <%= ENV['DB_USER_NAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>

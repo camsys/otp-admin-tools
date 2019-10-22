@@ -1,14 +1,15 @@
 Aws.config.update({ 
-  region:      "us-east-1",
-  credentials: Aws::Credentials.new('AKIAITSTWL6U3EYF3WUQ', 'JFH4BjzhjYqybAT4vnmdb1VUIcUXRXDBUsXOADZz')
+  region:      ENV['AWS_SQS_REGION'],
+  credentials: Aws::Credentials.new(ENV['SQS_AWS_ACCESS_KEY'], ENV['SQS_AWS_SECRET_KEY'])
 })
 
 Shoryuken.configure_client do |config|
   config.sqs_client = Aws::SQS::Client.new(
-    region: 'us-east-1',
-    access_key_id: 'AKIAITSTWL6U3EYF3WUQ',
-    secret_access_key: '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',
-    endpoint: 'https://sqs.us-east-1.amazonaws.com/347059689224/dev_archive',
+    region: ENV['AWS_SQS_REGION'],
+    access_key_id: ENV['SQS_AWS_ACCESS_KEY'],
+    secret_access_key: ENV['SQS_AWS_SECRET_KEY'],
+    endpoint: ENV['SQS_ENDPOINT'],
+    log_level: :info,
     verify_checksums: false
   )
 end

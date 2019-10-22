@@ -3,10 +3,10 @@ delay: 0
 logfile: ./shoryuken.log
 pidfile: ./shoryuken.pid
 queues:
-  - [dev_archive, 1]
+  - [<%= ENV['SQS_QUEUE'] %>, 1]
 wait_time_seconds: 20
 aws:
-  access_key_id: 'AKIAITSTWL6U3EYF3WUQ'
-  region: 'us-east-1'
-  secret_access_key: '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'
+  access_key_id: <%= ENV['SQS_AWS_ACCESS_KEY'] %>
+  region: <%= ENV['AWS_SQS_REGION'] %>
+  secret_access_key:  <%= ENV['SQS_AWS_SECRET_KEY'] %>
 

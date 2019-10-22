@@ -9,7 +9,8 @@ namespace :reports do
 
 	file = File.read "lib/assets/new-york-counties.geojson"
 	data = JSON.parse(file)
-	feature_collection = RGeo::GeoJSON.decode(data)
+  geo_factory = RGeo::Cartesian.factory(uses_lenient_assertions: true)
+  feature_collection = RGeo::GeoJSON.decode(data, geo_factory: geo_factory)
 
 	nyc_counties = ['Bronx County', 'Kings County', 'New York County', 'Queens County', 'Richmond County']
 
@@ -30,7 +31,8 @@ namespace :reports do
 
 	file = File.read "lib/assets/TransitZones.geojson"
 	data = JSON.parse(file)
-	feature_collection = RGeo::GeoJSON.decode(data)
+  geo_factory = RGeo::Cartesian.factory(uses_lenient_assertions: true)
+  feature_collection = RGeo::GeoJSON.decode(data, geo_factory: geo_factory)
 
 	Location.where(category: 2).destroy_all
 	feature_collection.each do |feature|
@@ -71,19 +73,22 @@ namespace :reports do
   	counties_features = get_location_features(wkt_parser, Location::COUNTY)
   	transit_zones_features = get_location_features(wkt_parser, Location::NYCT_ZONE)
 
-	plans.each do |plan|
-	  point_from = geo_factory.point(plan.from_lng, plan.from_lat)
-	  point_to = geo_factory.point(plan.to_lng, plan.to_lat)
+    ActiveRecord::Base.uncached do
+      plans.find_each batch_size: 100 do |plan|
 
-	  # Remove any existing PlanLocation's for this Plan.
-	  plan.plan_locations.clear
+    	  point_from = geo_factory.point(plan.from_lng, plan.from_lat)
+    	  point_to = geo_factory.point(plan.to_lng, plan.to_lat)
 
-	  # Create and save a PlanLocation for each Location category.
-	  from_category_id, to_category_id = get_from_to_category_ids(counties_features, point_from, point_to)
-	  save_plan_location_for_category(plan, Location::COUNTY, from_category_id, to_category_id)
+    	  # Remove any existing PlanLocation's for this Plan.
+    	  plan.plan_locations.clear
 
-	  from_category_id, to_category_id = get_from_to_category_ids(transit_zones_features, point_from, point_to)
-	  save_plan_location_for_category(plan, Location::NYCT_ZONE, from_category_id, to_category_id)
+    	  # Create and save a PlanLocation for each Location category.
+    	  from_category_id, to_category_id = get_from_to_category_ids(counties_features, point_from, point_to)
+    	  save_plan_location_for_category(plan, Location::COUNTY, from_category_id, to_category_id)
+
+    	  from_category_id, to_category_id = get_from_to_category_ids(transit_zones_features, point_from, point_to)
+    	  save_plan_location_for_category(plan, Location::NYCT_ZONE, from_category_id, to_category_id)
+      end
   	end
   end
 
@@ -98,7 +103,7 @@ namespace :reports do
     locations_for_category = Location.where(category: category_id)
   	features_for_category = Hash.new
 
-	locations_for_category.each do |location|
+	  locations_for_category.each do |location|
   	 	begin
 	  		feature = wkt_parser.parse(location.geojson) 
 	  		features_for_category[location.id] = feature

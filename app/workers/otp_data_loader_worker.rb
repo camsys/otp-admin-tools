@@ -9,7 +9,7 @@ class OTPDataLoaderWorker
   #              during the consumption. AWS doesn't automatically delete the message.
   # body_parser: The received message is parsed as JSON.
   # Shoryuken tries to grab 10 messages at time (max allowed by SQS), but it calls a worker per message, unless you enable batch.
-  shoryuken_options queue: 'dev_archive', auto_delete: true, body_parser: :json
+  shoryuken_options queue: ENV['SQS_QUEUE'], auto_delete: true, body_parser: :json
   # batch: true
 
   # When batch is enabled, the sqs_msg and body arguments are arrays.

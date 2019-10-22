@@ -102,6 +102,9 @@ gem 'partitioned', github: 'AirHelp/partitioned', branch: 'rails-5-0'
 gem 'rgeo'
 gem 'rgeo-geojson'
 
+# Application configuration
+gem 'figaro'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

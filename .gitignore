@@ -12,6 +12,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/*.log
+/*.pid
 
 # Ignore Byebug command history file.
 .byebug_history
@@ -20,3 +22,8 @@
 *~
 /.project
 /.idea/
+
+# Ignore generated asset files.
+/public/assets
+# Ignore application configuration
+/config/application.yml
