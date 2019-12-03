@@ -105,7 +105,7 @@ GEM
     byebug (11.0.1)
     case_transform (0.2)
       activesupport
-    chartkick (3.2.1)
+    chartkick (3.3.0)
     choice (0.2.0)
     coderay (1.1.2)
     coffee-rails (4.2.2)
