@@ -56,10 +56,9 @@ function update(route, direction, date, time) {
        .parentIds(d => d.successors.map(function(x) { return x.id }))
        (data.nodes)
     }catch(err){
-      alert("These routes do not intersect.");
+      alert("Unable to display this graph. The graph must be a single, directed, acyclic graph.");
     }
     // End Error Checking
-
     var successorsArray  = [];
     var routeTypeMap  = buildRouteTypeMap(data);
 
@@ -69,7 +68,11 @@ function update(route, direction, date, time) {
      (data.nodes)
      .reverse()
 
-    d3.sugiyama()(dag);
+    try{
+       d3.sugiyama()(dag);
+    }catch(err){
+      alert("Unable to display this graph. The graph must be a single, directed, acyclic graph.");
+    }
 
     const links = dag.links()
     const descendants = dag.descendants();
@@ -90,7 +93,6 @@ function update(route, direction, date, time) {
     }
 
     const width = 800;
-    
 
     d3.selectAll("svg").remove();
     
@@ -106,6 +108,7 @@ function update(route, direction, date, time) {
       .y(d => d.y * height);
 
     const g = svgSelection.append('g').attr('transform', `translate(${200},${100})`)
+
 
     g.append('g')
       .selectAll('path')
@@ -142,7 +145,6 @@ function update(route, direction, date, time) {
         y
       }) => `translate(${x*width}, ${y*height})`);
 
-
     //Create one gradient for each stop. TODO: We really only need to do this for stops with > 1 color.
     var colorTypes = [];
     descendants.forEach(function(e){
@@ -153,7 +155,6 @@ function update(route, direction, date, time) {
      .append("linearGradient").attr("id", d => d.name).attr("x1", "0%").attr("x2", "0%").attr("y1", "100%").attr("y2", "0%");
     grad.append("stop").attr("offset", "50%").style("stop-color", d => d.color1);
     grad.append("stop").attr("offset", "50%").style("stop-color", d => d.color2);
-
 
     nodes.append('circle').filter(function(d) { return isShuttle(d) })
       .attr('width', 30) 

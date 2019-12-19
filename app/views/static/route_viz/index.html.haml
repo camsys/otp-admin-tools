@@ -19,7 +19,7 @@
               %label{for: "direction1"} Downtown
             %div
               %label{for: "mydatetime"} Date/Time:
-              %input#mydatetime.flatpickr{placeholder: "Select Time", type: "text"}
+              %input#mydatetime.flatpickr{placeholder: "Select Time", type: "text", value: Time.now.strftime("%Y-%m-%d %I:%M%p")}
             %div
               %label{for: "routeVizURL"} OTP URL:
               %input#routeVizURL{type: "text", value: @url}
