@@ -35,7 +35,7 @@ gem 'bootstrap-sass'
 
 
 ### Pagination #######################em
-gem 'kaminari', '~> 0.16.1'
+gem 'kaminari', '~> 1.2.1'
 
 ### Geocding ##########################
 gem 'geocoder', '~> 1.4', '>= 1.4.4'
