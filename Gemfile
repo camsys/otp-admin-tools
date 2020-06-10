@@ -38,7 +38,7 @@ gem 'bootstrap-sass'
 gem 'kaminari', '~> 0.16.1'
 
 ### Geocding ##########################
-gem 'geocoder', '~> 1.4', '>= 1.4.4'
+gem 'geocoder', '~> 1.6'
 gem 'Indirizzo'
 
 ### User Mgmt #########################
