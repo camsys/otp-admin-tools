@@ -133,7 +133,7 @@ GEM
     flatpickr (4.5.7.0)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
-    geocoder (1.5.1)
+    geocoder (1.6.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     groupdate (4.1.2)
@@ -329,7 +329,7 @@ DEPENDENCIES
   figaro
   flatpickr
   font-awesome-rails
-  geocoder (~> 1.4, >= 1.4.4)
+  geocoder (~> 1.6)
   groupdate
   haml-rails
   holidays (~> 6.2)
